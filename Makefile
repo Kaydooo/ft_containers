@@ -11,7 +11,7 @@ CXX = c++
 
 CXXFLAGS = -Werror -Wall -Wextra -g3 -std=c++98
 
-NAME = ex02
+NAME = ft_containers
 	
 all : $(NAME)
 

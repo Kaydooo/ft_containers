@@ -1,0 +1,1 @@
+c++ -Werror -Wall -Wextra -g3 -std=c++98   -c -o main.o main.cpp
