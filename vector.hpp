@@ -6,11 +6,13 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/06/22 02:53:12 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/06/22 09:58:47 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include <vector>
+#include <exception>
+#include <stdexcept> 
 #include <memory>
 #include <cstddef>
 
@@ -61,11 +63,47 @@ namespace ft
 
             // Postfix increment
             Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
+            
+            // Prefix dec
+            Iterator& operator--() { itPtr--; return *this; }  
 
-            friend bool operator== (const Iterator& a, const Iterator& b) { return a.itPtr == b.itPtr; };
-            friend bool operator!= (const Iterator& a, const Iterator& b) { return a.itPtr != b.itPtr; };
-            friend Iterator& operator+ (const Iterator& a, const Iterator& b) { return a.itPtr + b.itPtr; };
-            friend Iterator& operator- (const Iterator& a, const Iterator& b) { return a.itPtr - b.itPtr; };
+            // Postfix dec
+            Iterator operator--(int) { Iterator tmp = *this; --(*this); return tmp; }
+
+
+			Iterator& operator+(difference_type num) {
+				Iterator temp;
+                temp.itPtr = itPtr + num;
+				return (temp);
+			}	
+			
+			Iterator& operator-(difference_type num) {
+				Iterator temp;
+                temp.itPtr = itPtr - num;
+				return (temp);
+			}
+            
+			Iterator& operator+=(difference_type num) {
+				itPtr = itPtr + num;
+				return (*this);
+			}	
+			
+			Iterator& operator-=(difference_type num) {
+				itPtr = itPtr - num;
+				return (*this);
+			}
+
+            Iterator& operator[](difference_type num) {
+				
+				return (*(itPtr + num));
+			}
+
+            friend bool operator== (const Iterator& a, const Iterator& b) { return a.itPtr == b.itPtr; }
+            friend bool operator!= (const Iterator& a, const Iterator& b) { return a.itPtr != b.itPtr; }
+            friend bool operator< (const Iterator& a, const Iterator& b) { return a.itPtr < b.itPtr; }
+            friend bool operator> (const Iterator& a, const Iterator& b) { return a.itPtr > b.itPtr; }
+            friend bool operator<= (const Iterator& a, const Iterator& b) { return a.itPtr <= b.itPtr; }
+            friend bool operator>= (const Iterator& a, const Iterator& b) { return a.itPtr >= b.itPtr; }
 
         private:
             pointer_type    itPtr;
@@ -110,9 +148,8 @@ namespace ft
             }
 
             /* Range Constrctor */
-            // template <class InputIterator>
-            vector (iterator first, iterator last,
-            const allocator_type& alloc = allocator_type()): vectorAllocator(alloc)
+            template <class InputIterator>
+            vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): vectorAllocator(alloc)
             {
                 difference_type diff = last - first; // use distance instead when implemented in iterator 
                 vectorData = vectorAllocator.allocate(diff);
@@ -138,16 +175,130 @@ namespace ft
                 }
             }
             
+            /*  Destructor */
+            ~vector()
+            {
+                //check if its empty here
+                for(size_t i = 0; i < vectorSize; i++)
+                    vectorAllocator.destroy(&vectorData[i]);
+                vectorAllocator.deallocate(vectorData, vectorCapacity);
+            }
+            /* Assignment operator overload */
+
+            vector& operator= (const vector& x)
+            {
+                // To be done..
+            };
             /*  */
+
+        /* Iterators */
+        
             iterator begin() { return iterator(vectorData); }
             iterator end()   { return iterator(vectorData + vectorSize); }
+            const_iterator begin() const{ return const_iterator(vectorData); }
+            const_iterator end() const { return const_iterator(vectorData + vectorSize); }
+        //////////////////// rbegin + rend To Be Done !//////////////////
+        
+
+        /* member functions (Capacity) */
+
+        size_type   size() const { return (vectorSize);}
+        size_type   max_size() const { return (vectorAllocator.max_size());}
+        size_type   capacity() const { return (vectorCapacity);}
+        bool        empty() const { return (vectorSize == 0);}
+        void        reserve (size_type n)
+        {
+            if(n > max_size())
+                return ;
+            if(vectorCapacity < n)
+            {
+                pointer temp;
+                temp = vectorAllocator.allocate(n);
+                for(size_type i = 0; i < vectorSize; i++)
+                    vectorAllocator.construct(&(temp[i]), vectorData[i]);
+                
+                for(size_type i = 0; i < vectorSize; i++)
+                {
+                    vectorAllocator.destroy(&(vectorData[i]));
+                }
+                vectorAllocator.deallocate(vectorData, vectorCapacity);
+                vectorData = temp;
+                vectorCapacity = n;
+            }
+            
+        }
+        void resize (size_type n, value_type val = value_type())
+        {
+            if(n != vectorSize)
+            {
+                if(n > vectorCapacity)
+                {
+                    if(n > vectorSize*2)
+                        this->reserve(n);
+                    else
+                        this->reserve(vectorSize * 2);
+
+                }
+
+                if(n < vectorSize)
+                {
+                    for(size_type i = vectorSize - 1; i >= n ; i--)
+                        vectorAllocator.destroy(&vectorData[i]);
+                }
+                else
+                {
+                    for(size_type i = vectorSize; i < n; i++)
+                    {
+                        vectorAllocator.construct(&vectorData[i], val);
+                    }
+                }
+                vectorSize = n;
+            }
+        }
+
+        /* Element access */
+        reference operator[] (size_type n){ return (vectorData[n]);}
+        const_reference operator[] (size_type n) const{ return vectorData[n];}
+        reference at (size_type n){
+        
+            if(n >= vectorSize)
+                throw std::out_of_range("Out Of Range");
+            return (vectorData[n]);    
+        }
+        const_reference at (size_type n) const
+        { 
+            if(n >= vectorSize)
+                throw std::out_of_range("Out Of Range");
+            return (vectorData[n]);   
+        }
+        reference front(){ return (vectorData[0]);}
+        const_reference front() const{ return (vectorData[0]);}
+        reference back(){ return (vectorData[vectorSize - 1]);}
+        const_reference back() const{ return (vectorData[vectorSize - 1]);}
+        
+        /* Modifiers: */
+
+        void push_back (const value_type& val)
+        {
+            if(vectorSize == vectorCapacity)
+                this->reserve((vectorSize) * 2);
+            vectorAllocator.construct(&vectorData[vectorSize], val);
+            vectorSize++;
+        }
+
+        void pop_back()
+        {
+            if(vectorSize != 0)
+            {
+                vectorAllocator.destroy(&vectorData[vectorSize - 1]);
+                vectorSize--;
+            }
+        }
         private:
             allocator_type  vectorAllocator;
             pointer         vectorData;
             size_type       vectorSize;
             size_type       vectorCapacity;
-
-
 
     };
 

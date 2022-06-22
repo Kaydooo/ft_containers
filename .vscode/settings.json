@@ -29,6 +29,10 @@
         "streambuf": "cpp",
         "system_error": "cpp",
         "iostream": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "ctime": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "map": "cpp"
     }
 }
