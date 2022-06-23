@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/06/23 02:45:41 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:15:09 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@
 #include <memory>
 #include <cstddef>
 #include <algorithm>
+#include <type_traits>
+
 
 namespace ft
 {
+    
     /* Iterator Categaorie Tags */
     struct input_iterator_tag{};
     struct output_iterator_tag{};
@@ -183,10 +186,10 @@ namespace ft
             }
             /* Assignment operator overload */
 
-            vector& operator= (const vector& x)
-            {
-                // To be done..
-            };
+            // vector& operator= (const vector& x)
+            // {
+            //     // To be done..
+            // };
             /*  */
 
         /* Iterators */
@@ -336,5 +339,31 @@ namespace ft
     {
         x.swap(y);
     }
+
+
+    template<bool B, class T = void>
+    struct enable_if {};
+
+    template<class T>
+    struct enable_if<true, T> { typedef T type; };
+    
+    template <class T>   struct is_integral                     : public std::false_type {};
+    template <>          struct is_integral<bool>               : public std::true_type {};
+    template <>          struct is_integral<char>               : public std::true_type {};
+    template <>          struct is_integral<signed char>        : public std::true_type {};
+    template <>          struct is_integral<unsigned char>      : public std::true_type {};
+    template <>          struct is_integral<wchar_t>            : public std::true_type {};
+    template <>          struct is_integral<char16_t>           : public std::true_type {};
+    template <>          struct is_integral<char32_t>           : public std::true_type {};
+    template <>          struct is_integral<short>              : public std::true_type {};
+    template <>          struct is_integral<unsigned short>     : public std::true_type {};
+    template <>          struct is_integral<int>                : public std::true_type {};
+    template <>          struct is_integral<unsigned int>       : public std::true_type {};
+    template <>          struct is_integral<long>               : public std::true_type {};
+    template <>          struct is_integral<unsigned long>      : public std::true_type {};
+    template <>          struct is_integral<long long>          : public std::true_type {};
+    template <>          struct is_integral<unsigned long long> : public std::true_type {};
+    template <>          struct is_integral<__int128_t>         : public std::true_type {};
+    template <>          struct is_integral<__uint128_t>        : public std::true_type {};
 
 }
