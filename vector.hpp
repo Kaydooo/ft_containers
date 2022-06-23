@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/06/22 09:58:47 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/06/23 02:45:41 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdexcept> 
 #include <memory>
 #include <cstddef>
-
+#include <algorithm>
 
 namespace ft
 {
@@ -25,8 +25,6 @@ namespace ft
     struct forward_iterator_tag: public input_iterator_tag{};
     struct bidirectional_iterator_tag: public forward_iterator_tag{};
     struct random_access_iterator_tag: public bidirectional_iterator_tag{};
-
-
 
 
     /* My Iterator Class */
@@ -149,7 +147,7 @@ namespace ft
 
             /* Range Constrctor */
             template <class InputIterator>
-            vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): vectorAllocator(alloc)
+            vector(const_iterator first, const_iterator last, const allocator_type& alloc = allocator_type()): vectorAllocator(alloc)
             {
                 difference_type diff = last - first; // use distance instead when implemented in iterator 
                 vectorData = vectorAllocator.allocate(diff);
@@ -294,6 +292,37 @@ namespace ft
                 vectorSize--;
             }
         }
+        template <class InputIterator>
+        void assign (const_iterator first, const_iterator last)
+        {
+            difference_type diff = last - first;    
+            
+        }
+
+        // void assign (size_type n, const value_type& val)
+        // {
+            
+        // }
+
+        void swap (vector& x)
+        {
+            size_type sTemp = vectorSize;
+            size_type cTemp = vectorCapacity;
+            allocator_type aTemp = vectorAllocator;
+            pointer         dTemp = vectorData;
+
+            vectorSize = x.vectorSize;
+            vectorCapacity = x.vectorCapacity;
+            vectorAllocator = x.vectorAllocator;
+            vectorData = x.vectorData;
+            
+            x.vectorSize = sTemp;
+            x.vectorCapacity = cTemp;
+            x.vectorAllocator = aTemp;
+            x.vectorData = dTemp;
+        }
+        
+        
         private:
             allocator_type  vectorAllocator;
             pointer         vectorData;
@@ -302,5 +331,10 @@ namespace ft
 
     };
 
+    template <class T, class Alloc>
+    void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+    {
+        x.swap(y);
+    }
 
 }
