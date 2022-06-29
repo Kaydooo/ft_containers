@@ -67,6 +67,25 @@
         "sstream": "cpp",
         "tuple": "cpp",
         "unordered_map": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "stdlib.h": "c",
+        "stack": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "fstream": "cpp",
+        "queue": "cpp",
+        "set": "cpp",
+        "xfacet": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocinfo": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "xmemory0": "cpp",
+        "xstddef": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
     }
 }

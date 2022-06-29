@@ -3,112 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/06/23 11:15:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/06/29 13:12:48 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 // #include <vector>
+#include "myIterator.hpp"
 #include <exception>
 #include <stdexcept> 
 #include <memory>
 #include <cstddef>
 #include <algorithm>
-#include <type_traits>
+#include <vector>
+#include <iostream>
+
+// #include <type_traits>
 
 
 namespace ft
 {
-    
-    /* Iterator Categaorie Tags */
-    struct input_iterator_tag{};
-    struct output_iterator_tag{};
-    struct forward_iterator_tag: public input_iterator_tag{};
-    struct bidirectional_iterator_tag: public forward_iterator_tag{};
-    struct random_access_iterator_tag: public bidirectional_iterator_tag{};
+    struct false_type { static const bool value = false;};
+    struct true_type { static const bool value = true;};
 
+    template<bool B, class T = void>
+    struct enable_if {};
 
-    /* My Iterator Class */
     template<class T>
-    class   Iterator
-    {
-        public:
-            typedef  T valuetype;
-            typedef  T* pointer_type;
-            typedef  T& reference_type;
-            typedef  ptrdiff_t difference_type;
-            typedef  random_access_iterator_tag iterator_category;
-
-            // using value_type = vector::value_type;
-            // using pointer_type = vector::pointer;
-            // using reference_type = vector::reference;
-            // using difference_type = vector::difference_type;
-            // using iterator_category = random_access_iterator_tag;
-
-            Iterator(): itPtr(NULL){}
-            Iterator(pointer_type ptr): itPtr(ptr){}
-            Iterator(const Iterator& other): itPtr(other.itPtr){}
-            Iterator&   operator=(const Iterator& rhs)
-            {
-                this->itPtr = rhs.itPtr;
-                return (*this);
-            }
-
-            reference_type operator*() const { return *itPtr; }
-            pointer_type operator->() { return itPtr; }
-
-            // Prefix increment
-            Iterator& operator++() { itPtr++; return *this; }  
-
-            // Postfix increment
-            Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
-            
-            // Prefix dec
-            Iterator& operator--() { itPtr--; return *this; }  
-
-            // Postfix dec
-            Iterator operator--(int) { Iterator tmp = *this; --(*this); return tmp; }
-
-
-			Iterator& operator+(difference_type num) {
-				Iterator temp;
-                temp.itPtr = itPtr + num;
-				return (temp);
-			}	
-			
-			Iterator& operator-(difference_type num) {
-				Iterator temp;
-                temp.itPtr = itPtr - num;
-				return (temp);
-			}
-            
-			Iterator& operator+=(difference_type num) {
-				itPtr = itPtr + num;
-				return (*this);
-			}	
-			
-			Iterator& operator-=(difference_type num) {
-				itPtr = itPtr - num;
-				return (*this);
-			}
-
-            Iterator& operator[](difference_type num) {
-				
-				return (*(itPtr + num));
-			}
-
-            friend bool operator== (const Iterator& a, const Iterator& b) { return a.itPtr == b.itPtr; }
-            friend bool operator!= (const Iterator& a, const Iterator& b) { return a.itPtr != b.itPtr; }
-            friend bool operator< (const Iterator& a, const Iterator& b) { return a.itPtr < b.itPtr; }
-            friend bool operator> (const Iterator& a, const Iterator& b) { return a.itPtr > b.itPtr; }
-            friend bool operator<= (const Iterator& a, const Iterator& b) { return a.itPtr <= b.itPtr; }
-            friend bool operator>= (const Iterator& a, const Iterator& b) { return a.itPtr >= b.itPtr; }
-
-        private:
-            pointer_type    itPtr;
-    };
+    struct enable_if<true, T> { typedef T type; };
+    
+    template <class T>   struct is_integral                     : public ft::false_type {};
+    template <>          struct is_integral<bool>               : public ft::true_type {};
+    template <>          struct is_integral<char>               : public ft::true_type {};
+    template <>          struct is_integral<signed char>        : public ft::true_type {};
+    template <>          struct is_integral<unsigned char>      : public ft::true_type {};
+    template <>          struct is_integral<wchar_t>            : public ft::true_type {};
+    template <>          struct is_integral<short>              : public ft::true_type {};
+    template <>          struct is_integral<unsigned short>     : public ft::true_type {};
+    template <>          struct is_integral<int>                : public ft::true_type {};
+    template <>          struct is_integral<unsigned int>       : public ft::true_type {};
+    template <>          struct is_integral<long>               : public ft::true_type {};
+    template <>          struct is_integral<unsigned long>      : public ft::true_type {};
+    template <>          struct is_integral<long long>          : public ft::true_type {};
+    template <>          struct is_integral<unsigned long long> : public ft::true_type {};
 
 
     /* My Vector Class */
@@ -150,10 +91,12 @@ namespace ft
 
             /* Range Constrctor */
             template <class InputIterator>
-            vector(const_iterator first, const_iterator last, const allocator_type& alloc = allocator_type()): vectorAllocator(alloc)
+            vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL): vectorAllocator(alloc)
             {
                 difference_type diff = last - first; // use distance instead when implemented in iterator 
                 vectorData = vectorAllocator.allocate(diff);
+                vectorSize = diff;
+                vectorCapacity = diff;
                 pointer	temp = vectorData;
                 for (size_type i = 0; i < (size_type)diff; i++)
                 {
@@ -161,7 +104,6 @@ namespace ft
                     temp++;
                     first++;
                 }
-                
             }
 
             /* Copy Constrctor */
@@ -207,6 +149,7 @@ namespace ft
         size_type   max_size() const { return (vectorAllocator.max_size());}
         size_type   capacity() const { return (vectorCapacity);}
         bool        empty() const { return (vectorSize == 0);}
+        
         void        reserve (size_type n)
         {
             if(n > max_size())
@@ -228,6 +171,7 @@ namespace ft
             }
             
         }
+
         void resize (size_type n, value_type val = value_type())
         {
             if(n != vectorSize)
@@ -240,10 +184,9 @@ namespace ft
                         this->reserve(vectorSize * 2);
 
                 }
-
                 if(n < vectorSize)
                 {
-                    for(size_type i = vectorSize - 1; i >= n ; i--)
+                    for(size_type i = vectorSize - 1; i >= n  && i < vectorSize ; i--)
                         vectorAllocator.destroy(&vectorData[i]);
                 }
                 else
@@ -278,7 +221,116 @@ namespace ft
         const_reference back() const{ return (vectorData[vectorSize - 1]);}
         
         /* Modifiers: */
+        void clear()
+        {
+            this->resize(0);
+        }
+        
+        // void    destroy(void)
+        // {
+        //     for(size_t i = 0; i < vectorSize; i++)
+        //         vectorAllocator.destroy(&vectorData[i]);
+        //     vectorAllocator.deallocate(vectorData, vectorCapacity);
+        // }
+            
+        iterator insert( iterator pos, const T& value )
+        {
+            pointer temp;
+            size_type insertPos = &(*pos) - vectorData;
+            if(vectorSize == vectorCapacity)
+            {
+                temp = vectorAllocator.allocate(vectorSize * 2);
+                for(size_type i = 0; i < insertPos; ++i)
+                    vectorAllocator.construct(&temp[i], vectorData[i]);
+                vectorAllocator.construct(&temp[insertPos], value);
+                for(size_type i = vectorSize - 1; i >= insertPos && i <= capacity(); --i)
+                    vectorAllocator.construct(&temp[i + 1], vectorData[i]);
+                for(size_t i = 0; i < vectorSize; i++)
+                    vectorAllocator.destroy(&vectorData[i]);
+                vectorAllocator.deallocate(vectorData, vectorCapacity);
+                vectorCapacity = vectorSize * 2;
+                vectorSize++;
+                vectorData = temp;
+            }
+            else
+            {
+                for(size_type i = vectorSize; i >= (size_type) insertPos && i <= capacity(); --i)
+                    vectorData[i] = vectorData[i - 1];
+                vectorData[insertPos] = value;
+                vectorSize++;
+            }
+            return (vectorData + insertPos);
+        }
+        
+        void insert( iterator pos, size_type count, const T& value )
+        {
 
+            pointer temp;
+            size_type insertPos = &(*pos) - vectorData;
+            if(vectorSize + count > vectorCapacity)
+            {
+                temp = vectorAllocator.allocate(vectorSize + std::max(size(), count));
+                for(size_type i = 0; i < insertPos; ++i)
+                    vectorAllocator.construct(&temp[i], vectorData[i]);
+                for(size_type i = insertPos; i < insertPos + count; ++i)
+                    vectorAllocator.construct(&temp[i], value);
+                for(size_type i = vectorSize - 1; i >= insertPos && i <= capacity(); --i)
+                    vectorAllocator.construct(&temp[i + count], vectorData[i]);
+                for(size_t i = 0; i < vectorSize; i++)
+                    vectorAllocator.destroy(&vectorData[i]);
+                vectorAllocator.deallocate(vectorData, vectorCapacity);
+                vectorCapacity = vectorSize + std::max(size(), count);
+                vectorSize += count;
+                vectorData = temp;
+            }
+            else
+            {
+                for(size_type i = vectorSize - 1; i >= (size_type) insertPos && i <= capacity(); --i)
+                    vectorData[i + count] = vectorData[i];
+                for(size_type i = insertPos; i < insertPos + count; ++i)
+                    vectorData[i] = value;
+                vectorSize += count;
+            }
+        }
+
+        template< class InputIt >
+        void insert( iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
+        {
+            difference_type count = last - first;
+            pointer temp;
+            size_type insertPos = &(*pos) - vectorData;
+            if(vectorSize + count > vectorCapacity)
+            {
+                temp = vectorAllocator.allocate(vectorSize + std::max(size(), (size_type) count));
+                for(size_type i = 0; i < insertPos; ++i)
+                    vectorAllocator.construct(&temp[i], vectorData[i]); 
+                for(size_type i = insertPos; i < insertPos + count; ++i)
+                {   
+                    vectorAllocator.construct(&temp[i], *first);
+                    ++first;   
+                }
+                for(size_type i = vectorSize - 1; i >= insertPos && i <= capacity(); --i)
+                    vectorAllocator.construct(&temp[i + count], vectorData[i]);
+                for(size_t i = 0; i < vectorSize; i++)
+                    vectorAllocator.destroy(&vectorData[i]);
+                vectorAllocator.deallocate(vectorData, vectorCapacity);
+                vectorCapacity = vectorSize + std::max(size(), (size_type) count);
+                vectorSize += count;
+                vectorData = temp;
+            }
+            else
+            {
+                for(size_type i = vectorSize - 1; i >= (size_type) insertPos && i <= capacity(); --i)
+                    vectorData[i + count] = vectorData[i];
+                for(size_type i = insertPos; i < insertPos + count; ++i)
+                {
+                    vectorData[i] = *first;
+                    ++first;
+                }
+                vectorSize += count;
+            }
+        }
+        
         void push_back (const value_type& val)
         {
             if(vectorSize == vectorCapacity)
@@ -295,13 +347,11 @@ namespace ft
                 vectorSize--;
             }
         }
-        template <class InputIterator>
-        void assign (const_iterator first, const_iterator last)
-        {
-            difference_type diff = last - first;    
-            
-        }
+        void assign( size_type count, const T& value );
 
+        template< class InputIt >
+        void assign( InputIt first, InputIt last );
+        
         // void assign (size_type n, const value_type& val)
         // {
             
@@ -332,6 +382,8 @@ namespace ft
             size_type       vectorSize;
             size_type       vectorCapacity;
 
+
+
     };
 
     template <class T, class Alloc>
@@ -341,29 +393,8 @@ namespace ft
     }
 
 
-    template<bool B, class T = void>
-    struct enable_if {};
 
-    template<class T>
-    struct enable_if<true, T> { typedef T type; };
-    
-    template <class T>   struct is_integral                     : public std::false_type {};
-    template <>          struct is_integral<bool>               : public std::true_type {};
-    template <>          struct is_integral<char>               : public std::true_type {};
-    template <>          struct is_integral<signed char>        : public std::true_type {};
-    template <>          struct is_integral<unsigned char>      : public std::true_type {};
-    template <>          struct is_integral<wchar_t>            : public std::true_type {};
-    template <>          struct is_integral<char16_t>           : public std::true_type {};
-    template <>          struct is_integral<char32_t>           : public std::true_type {};
-    template <>          struct is_integral<short>              : public std::true_type {};
-    template <>          struct is_integral<unsigned short>     : public std::true_type {};
-    template <>          struct is_integral<int>                : public std::true_type {};
-    template <>          struct is_integral<unsigned int>       : public std::true_type {};
-    template <>          struct is_integral<long>               : public std::true_type {};
-    template <>          struct is_integral<unsigned long>      : public std::true_type {};
-    template <>          struct is_integral<long long>          : public std::true_type {};
-    template <>          struct is_integral<unsigned long long> : public std::true_type {};
-    template <>          struct is_integral<__int128_t>         : public std::true_type {};
-    template <>          struct is_integral<__uint128_t>        : public std::true_type {};
 
 }
+
+#endif

@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'main.o', needed by 'ft_containers'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,12 +6,12 @@ make: *** No rule to make target 'main.o', needed by 'ft_containers'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jun 22 22:15:48 2022
+# Make data base, printed on Mon Jun 27 05:22:20 2022
 
 # Variables
 
 # environment
-REMOTE_CONTAINERS_SOCKETS = ["/tmp/vscode-ssh-auth-f48c8480eaee9159bf9d4a062f02bd78c6a1de5f.sock"]
+REMOTE_CONTAINERS_SOCKETS = ["/tmp/vscode-ssh-auth-cd2c7954de41e74547a2ee0c4e5333b7230a19c1.sock"]
 # environment
 LC_ALL = C
 # environment
@@ -55,7 +53,7 @@ CURDIR := /home/vscode/src/Cursus/ft_containers
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # makefile (from 'Makefile', line 6)
 SRCS = main.cpp
 # automatic
@@ -63,7 +61,7 @@ SRCS = main.cpp
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/vscode-ssh-auth-f48c8480eaee9159bf9d4a062f02bd78c6a1de5f.sock
+SSH_AUTH_SOCK = /tmp/vscode-ssh-auth-cd2c7954de41e74547a2ee0c4e5333b7230a19c1.sock
 # default
 .SHELLFLAGS := -c
 # automatic
@@ -107,7 +105,7 @@ MAKEFILES :=
 # environment
 VSCODE_LOG_NATIVE = false
 # environment
-REMOTE_CONTAINERS_IPC = /tmp/vscode-remote-containers-ipc-f48c8480eaee9159bf9d4a062f02bd78c6a1de5f.sock
+REMOTE_CONTAINERS_IPC = /tmp/vscode-remote-containers-ipc-cd2c7954de41e74547a2ee0c4e5333b7230a19c1.sock
 # environment
 REMOTE_CONTAINERS = true
 # automatic
@@ -137,7 +135,7 @@ VSCODE_AGENT_FOLDER = /root/.vscode-server
 # environment
 _ = /bin/cat
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-1de1badb-d977-4109-8bcf-c06d3f677691.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-852f67a6-5cbe-486d-96a2-08ae5ab3f7ff.sock
 # environment
 DEBIAN_FRONTEND = dialog
 # environment
@@ -165,9 +163,9 @@ CXX = c++
 
 # Directories
 
-# . (device 66, inode 29836347531407236): 15 files, no impossibilities.
+# . (device 55, inode 29836347531407236): 17 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 17 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -178,7 +176,7 @@ CXX = c++
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-22 02:54:13.0621037
+#  Last modified 2022-06-24 07:41:52.6823463
 #  File has been updated.
 #  Successfully updated.
 
@@ -207,7 +205,8 @@ all: ft_containers
 #  Command line target.
 #  Implicit rule search has not been done.
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Successfully updated.
 
 fclean: clean
 #  Phony target (prerequisite of .PHONY).
@@ -221,13 +220,15 @@ fclean: clean
 # Not a target:
 main.o:
 #  Implicit rule search has been done.
-#  File does not exist.
-#  File has not been updated.
+#  Last modified 2022-06-26 23:23:32.9358145
+#  File has been updated.
+#  Successfully updated.
 
 ft_containers: main.o
 #  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
+#  Last modified 2022-06-26 23:23:33.1438161
+#  File has been updated.
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 19):
 	$(CXX) $(OBJS) -o $(NAME)
 
@@ -247,9 +248,9 @@ ft_containers: main.o
 # strcache buffers: 1 (0) / strings = 26 / storage = 238 B / avg = 9 B
 # current buf: size = 8162 B / used = 238 B / count = 26 / avg = 9 B
 
-# strcache performance: lookups = 45 / hit rate = 42%
+# strcache performance: lookups = 47 / hit rate = 44%
 # hash-table stats:
-# Load=26/8192=0%, Rehash=0, Collisions=0/45=0%
-# Finished Make data base on Wed Jun 22 22:15:48 2022
+# Load=26/8192=0%, Rehash=0, Collisions=0/47=0%
+# Finished Make data base on Mon Jun 27 05:22:20 2022
 
  
