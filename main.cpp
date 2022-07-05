@@ -35,6 +35,15 @@ int main()
     std::cout << "size = " << test.size() << std::endl;
     std::cout << "max_size = " << test.max_size() << std::endl;
     std::cout << "Capacity = " << test.capacity() << std::endl;
+
+    test.assign(20, 193);
+    std::cout << "Assigned" << std::endl;
+    for(it = test.begin() ; it < test.end(); ++it)
+        std::cout << *it << std::endl;
+    std::cout << "size = " << test.size() << std::endl;
+    std::cout << "max_size = " << test.max_size() << std::endl;
+    std::cout << "Capacity = " << test.capacity() << std::endl;
+
     // try{
     //     std::cout << "access element at 25 :" << test.at(25) << std::endl;
     // }
@@ -102,25 +111,51 @@ int main()
     std::cout << "size = " << test.size() << std::endl;
     std::cout << "max_size = " << test.max_size() << std::endl;
     std::cout << "Capacity = " << test.capacity() << std::endl;
+
+    // ft::vector<int> empty;
+    // std::vector<int> empty;
+    // empty.push_back(10);
+    // empty.erase(empty.begin());
+    // std::cout << "Erase empty Vector" << std::endl;
+
+    // for(it = empty.begin() ; it < empty.end(); ++it)
+    //     std::cout << *it << std::endl;
+    // std::cout << "size = " << empty.size() << std::endl;
+    // std::cout << "max_size = " << empty.max_size() << std::endl;
+    // std::cout << "Capacity = " << empty.capacity() << std::endl;
+
+
+
+
+    test.erase(test.begin() + 5);
+    std::cout << "Erase  Vector" << std::endl;
+
+    for(it = test.begin() ; it < test.end(); ++it)
+        std::cout << *it << std::endl;
+    std::cout << "size = " << test.size() << std::endl;
+    std::cout << "max_size = " << test.max_size() << std::endl;
+    std::cout << "Capacity = " << test.capacity() << std::endl;
+
+    ft::vector<int> copy_vec(test);
     /* Clear */
 
-    // std::vector<int> test3;
-    // test3.push_back(10);
-    // test3.push_back(12);
-    // test3.push_back(13);
-    // test3.push_back(14);
-    // test3.push_back(15);
-    // std::vector<int>::iterator it1 = test3.begin();
-    // std::vector<int>::iterator it2 = test3.end();
-    // ft::vector<int> test4(it1, it2);
-    // ft::vector<int>::iterator it3;
-    // std::cout << "Range Constructed  " << std::endl;
+    ft::vector<int> test3;
+    test3.push_back(10);
+    test3.push_back(12);
+    test3.push_back(13);
+    test3.push_back(14);
+    test3.push_back(15);
+    ft::vector<int>::iterator it1 = test3.begin();
+    ft::vector<int>::iterator it2 = test3.end();
+    ft::vector<int> test4(it1, it2);
+    ft::vector<int>::iterator it3;
+    std::cout << "Range Constructed  " << std::endl;
 
-    // for(it3 = test4.begin() ; it3 < test4.end(); ++it3)
-    //     std::cout << *it3 << std::endl;
-    // std::cout << "size = " << test4.size() << std::endl;
-    // std::cout << "max_size = " << test4.max_size() << std::endl;
-    // std::cout << "Capacity = " << test4.capacity() << std::endl;
+    for(it3 = test4.begin() ; it3 < test4.end(); ++it3)
+        std::cout << *it3 << std::endl;
+    std::cout << "size = " << test4.size() << std::endl;
+    std::cout << "max_size = " << test4.max_size() << std::endl;
+    std::cout << "Capacity = " << test4.capacity() << std::endl;
 
     // test4.clear();
     // std::cout << "Cleared " << std::endl;
@@ -130,5 +165,15 @@ int main()
     // std::cout << "size = " << test4.size() << std::endl;
     // std::cout << "max_size = " << test4.max_size() << std::endl;
     // std::cout << "Capacity = " << test4.capacity() << std::endl;
+
+    // std::vector<int> revTest;
+    // revTest.push_back(1);
+    // revTest.push_back(2);
+    // revTest.push_back(3);
+    // revTest.push_back(4);
+    // std::vector<int>::reverse_iterator rit = revTest.rend();
+    // std::cout << "before rend = " << &(revTest[-1]) << std::endl;
+
+    // std::cout << "rend = " << &(*rit) << std::endl;
 
 }

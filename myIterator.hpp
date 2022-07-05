@@ -19,15 +19,17 @@ namespace   ft
     struct random_access_iterator_tag: public bidirectional_iterator_tag{};
 
 
+
+
     /* My Iterator Class */
-    template<class T>
+    template <class T>
     class   Iterator
     {
         public:
             typedef  T valuetype;
             typedef  T* pointer_type;
             typedef  T& reference_type;
-            typedef  ptrdiff_t difference_type;
+            typedef  std::ptrdiff_t difference_type;
             typedef  random_access_iterator_tag iterator_category;
 
             // using value_type = vector::value_type;
@@ -36,9 +38,11 @@ namespace   ft
             // using difference_type = vector::difference_type;
             // using iterator_category = random_access_iterator_tag;
 
-            Iterator(): itPtr(NULL){}
+            Iterator(void): itPtr(NULL){}
             Iterator(pointer_type ptr): itPtr(ptr){}
-            Iterator(const Iterator& other): itPtr(other.itPtr){}
+            template <typename U>
+            Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
+
             Iterator&   operator=(const Iterator& rhs)
             {
                 this->itPtr = rhs.itPtr;
@@ -86,7 +90,7 @@ namespace   ft
 				return (*this);
 			}
 
-            Iterator& operator[](difference_type num) {
+            valuetype& operator[](difference_type num) {
 				return (*(itPtr + num));
 			}
 
@@ -147,6 +151,24 @@ namespace   ft
     typename ft::Iterator<T1>::difference_type operator+(const ft::Iterator<T1> lhs, const ft::Iterator<T2> rhs)
     {
         return (lhs.getPtr() + rhs.getPtr());
+    }
+
+    template<typename T> ft::Iterator<T> operator+(
+        typename ft::Iterator<T>::difference_type x,
+        typename ft::Iterator<T>& rhs)
+        {
+            return (&(*rhs) + x);
+        }
+    template<class InputIterator>
+    size_t distance(InputIterator first, InputIterator last)
+    {
+        size_t i = 0;
+        while (first != last)
+        {
+            i++;
+            first++;
+        }	
+        return (i);
     }
 }
 

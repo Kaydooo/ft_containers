@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/06/29 13:12:48 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/07/05 01:01:27 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #define VECTOR_HPP
 // #include <vector>
 #include "myIterator.hpp"
+#include "myRevIterator.hpp"
+
 #include <exception>
 #include <stdexcept> 
 #include <memory>
 #include <cstddef>
 #include <algorithm>
-#include <vector>
 #include <iostream>
 
 // #include <type_traits>
@@ -60,12 +61,15 @@ namespace ft
         //Typedefs for shorter and more readable code.
             typedef Alloc                               allocator_type;
             typedef T                                   value_type;
+            typedef const value_type                    const_value_type;
             typedef typename allocator_type::reference           reference;
             typedef typename allocator_type::const_reference     const_reference;
             typedef typename allocator_type::pointer             pointer;
             typedef typename allocator_type::const_pointer       const_pointer;
-            typedef Iterator<value_type>                iterator;
-            typedef Iterator<const value_type>          const_iterator;
+            typedef ft::Iterator<value_type>                iterator;
+            typedef ft::Iterator<const value_type>          const_iterator;
+            typedef ft::reverse_Iterator<value_type>                reverse_iterator;
+            typedef ft::reverse_Iterator<const value_type>          const_reverse_iterator ;
             //reverse_it
             //const_reverse_it
             typedef typename allocator_type::difference_type     difference_type;
@@ -73,11 +77,11 @@ namespace ft
 
 
             /* Default Constrctor */
-            explicit vector (const allocator_type& alloc = allocator_type()): vectorAllocator(alloc), vectorData(NULL), vectorSize(0), vectorCapacity(0){}
+            explicit vector (const allocator_type& alloc = allocator_type()): vectorAllocator(alloc), vectorData(NULL), vectorCapacity(0), vectorSize(0){}
             
             /* Fill Constrctor */
             explicit vector (size_type n, const value_type& val = value_type(),
-                            const allocator_type& alloc = allocator_type()): vectorAllocator(alloc), vectorData(NULL), vectorSize(n), vectorCapacity(n)
+                            const allocator_type& alloc = allocator_type()): vectorAllocator(alloc), vectorData(NULL), vectorCapacity(n), vectorSize(n)
             {
                 this->vectorData = vectorAllocator.allocate(n);
                 // todo: Try std::uninitialized_fill_n to construct the array
@@ -91,9 +95,10 @@ namespace ft
 
             /* Range Constrctor */
             template <class InputIterator>
-            vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL): vectorAllocator(alloc)
+            vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL): vectorAllocator(alloc), vectorData(NULL), vectorCapacity(0), vectorSize(0)
             {
-                difference_type diff = last - first; // use distance instead when implemented in iterator 
+                // assign(first, last);
+                difference_type diff = ft::distance(first, last); // use distance instead when implemented in iterator
                 vectorData = vectorAllocator.allocate(diff);
                 vectorSize = diff;
                 vectorCapacity = diff;
@@ -104,18 +109,23 @@ namespace ft
                     temp++;
                     first++;
                 }
+
             }
 
             /* Copy Constrctor */
-            vector (const vector& x): vectorAllocator(x.vectorAllocator), vectorCapacity(x.vectorCapacity), vectorSize(x.vectorSize)
+            vector (const vector& x): vectorAllocator(x.vectorAllocator), vectorData(NULL), vectorCapacity(0), vectorSize(0)
             {
-                vectorData = vectorAllocator.allocate(vectorCapacity);
-                pointer	temp = vectorData;
-                for (size_type i = 0; i < vectorSize; i++)
-                {
-                    vectorAllocator.construct(temp, x.vectorData[i]);	
-                    temp++;
-                }
+
+                assign(x.begin(), x.end());
+                // vectorAllocator = allocator_type();
+                // vectorData = vectorAllocator.allocate(vectorCapacity);
+                // pointer	temp = vectorData;
+                // for (size_type i = 0; i < vectorSize; i++)
+                // {
+                //     vectorAllocator.construct(temp, x.vectorData[i]);	
+                //     temp++;
+                // }
+                
             }
             
             /*  Destructor */
@@ -128,10 +138,14 @@ namespace ft
             }
             /* Assignment operator overload */
 
-            // vector& operator= (const vector& x)
-            // {
-            //     // To be done..
-            // };
+            vector& operator= (const vector& x)
+            {
+                // To be done..
+                clear();
+                assign(x.begin(), x.end());
+                return (*this);
+                
+            };
             /*  */
 
         /* Iterators */
@@ -140,15 +154,19 @@ namespace ft
             iterator end()   { return iterator(vectorData + vectorSize); }
             const_iterator begin() const{ return const_iterator(vectorData); }
             const_iterator end() const { return const_iterator(vectorData + vectorSize); }
+            
+            reverse_iterator rbegin() { return reverse_iterator(vectorData + vectorSize); }
+            reverse_iterator rend()   { return reverse_iterator(&vectorData[-1]); }
+            const_reverse_iterator rbegin() const{ return const_reverse_iterator(vectorData + vectorSize); }
+            const_reverse_iterator rend() const { return const_reverse_iterator(&vectorData[-1]); }
         //////////////////// rbegin + rend To Be Done !//////////////////
-        
 
         /* member functions (Capacity) */
 
-        size_type   size() const { return (vectorSize);}
-        size_type   max_size() const { return (vectorAllocator.max_size());}
-        size_type   capacity() const { return (vectorCapacity);}
-        bool        empty() const { return (vectorSize == 0);}
+        size_type   size() const { return (vectorSize); } 
+        size_type   max_size() const { return (vectorAllocator.max_size()); }
+        size_type   capacity() const { return (vectorCapacity); }
+        bool        empty() const { return (vectorSize == 0); }
         
         void        reserve (size_type n)
         {
@@ -182,7 +200,6 @@ namespace ft
                         this->reserve(n);
                     else
                         this->reserve(vectorSize * 2);
-
                 }
                 if(n < vectorSize)
                 {
@@ -296,7 +313,7 @@ namespace ft
         template< class InputIt >
         void insert( iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
         {
-            difference_type count = last - first;
+            difference_type count =ft::distance(first, last);
             pointer temp;
             size_type insertPos = &(*pos) - vectorData;
             if(vectorSize + count > vectorCapacity)
@@ -333,6 +350,8 @@ namespace ft
         
         void push_back (const value_type& val)
         {
+            if(vectorCapacity == 0)
+                reserve(1);
             if(vectorSize == vectorCapacity)
                 this->reserve((vectorSize) * 2);
             vectorAllocator.construct(&vectorData[vectorSize], val);
@@ -347,10 +366,18 @@ namespace ft
                 vectorSize--;
             }
         }
-        void assign( size_type count, const T& value );
+        void assign( size_type count, const T& value )
+        {
+            resize(0);
+            insert(begin(), count, value);
+        }
 
         template< class InputIt >
-        void assign( InputIt first, InputIt last );
+        void assign( InputIt first, InputIt last )
+        {
+            resize(0);
+            insert(begin(), first, last);
+        }
         
         // void assign (size_type n, const value_type& val)
         // {
@@ -374,14 +401,56 @@ namespace ft
             x.vectorAllocator = aTemp;
             x.vectorData = dTemp;
         }
+        allocator_type get_allocator() const
+        {
+            return (vectorAllocator);
+        }
         
+        T* data()
+        {
+            return vectorData;
+        }
+        const T* data() const
+        {
+            return vectorData;
+        }
         
+        iterator erase( iterator pos )
+        {
+            pointer p_pos = &(*pos);
+            difference_type diff = &(*pos) - vectorData;
+            if (pos + 1 != end())
+            {
+                for(size_type i = diff; i < vectorSize - 1; ++i)
+                    vectorData[i] = vectorData[i + 1];
+            }
+            vectorSize--;
+            vectorAllocator.destroy(&vectorData[size()]);
+            return(iterator(p_pos));
+        }
+        
+        iterator erase( iterator first, iterator last )
+        {
+            size_t eraseLen = ft::distance(first, last);
+            size_t firstErasePos = ft::distance(begin(), first);
+
+            if(last != end())
+            {
+                for(size_type i = firstErasePos + eraseLen; i < vectorSize; ++i)
+                {
+                    vectorData[i - eraseLen] = vectorData[i];
+                }
+            }
+            for(size_type i = firstErasePos + eraseLen; i < vectorSize; ++i)
+                vectorAllocator.destroy(&vectorData[i]);
+            vectorSize -= eraseLen;
+            return (first);
+        }
         private:
             allocator_type  vectorAllocator;
             pointer         vectorData;
-            size_type       vectorSize;
             size_type       vectorCapacity;
-
+            size_type       vectorSize;
 
 
     };
@@ -391,9 +460,6 @@ namespace ft
     {
         x.swap(y);
     }
-
-
-
 
 }
 
