@@ -13,9 +13,9 @@ int main()
     a[2].second = 22;
     a[3].first = 'y';
     a[3].second = 33;
-    a[4].first = 'a';
+    a[4].first = 'c';
     a[4].second = 44;
-    a[0].first = 'x';
+    a[0].first = 'b';
     a[0].second = 123222;
 
     // std::pair<char, int> b[4];
@@ -86,6 +86,27 @@ int main()
     {
         std::cout << "test" << it->first << std::endl;
     }
+    std::cout << "Find z : \n";
+    it = myMap.find(a[1].first);
+    std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
+    std::cout << "Find a : \n";
+    it = myMap.find(a[4].first);
+    std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
+    myMap.testPrint();
+    myMap.erase(it);
+    myMap.testPrint();
+
+    // std::cout << "Find O : \n";
+    // it = myMap.find('O');
+    // std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
+    // ft::map<char, int> secondMap;
+
+    // secondMap.insert(myMap.begin(), myMap.end());
+    // for(it = secondMap.begin(); it != secondMap.end(); ++it)
+    // {
+    //     std::cout << "test" << it->first << std::endl;
+    // }
+    //     std::cout << "test2" << it->first << std::endl;
 
     // myMap.testPrint();
     // std::cout << "start here : )" << std:: endl;

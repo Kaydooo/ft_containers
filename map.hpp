@@ -8,6 +8,7 @@
 #include <memory>
 #include <cstddef>
 #include "MapIterator.hpp"
+#include "container_utils.hpp"
 // #include <algorithm>
 // #include <iostream>
 
@@ -88,15 +89,12 @@ namespace ft
         iterator    begin()
         {
             node_pointer    temp;
-            temp = rootNode->leftChild;
+            temp = rootNode;
             if(temp->leftChild)
             {
                 while(temp->leftChild)
                     temp = temp->leftChild;
-                temp->rightChild->parent = temp;
-                return (iterator(temp->leftChild));
             }
-            temp->parent = rootNode;
             return (iterator(temp));
         }
 
@@ -104,6 +102,7 @@ namespace ft
         {
             return (iterator(rootNode->endNode));
         }
+
 
         std::pair<iterator,bool>    insert( const value_type& value )
         {
@@ -130,13 +129,54 @@ namespace ft
             ++mapSize;
             return (result);
         }
+
+
+
+
+        iterator insert (iterator position, const value_type& val)
+        {
+            std::pair<iterator, bool> result;
+            result = this->insert(val);
+            return (result.first);
+        }
+        
+        template <class InputIterator>
+        void insert (InputIterator f, InputIterator last)
+        {
+            size_type dist = ft::distance(f, last);
+
+            for (size_type i = 0; i < dist; ++i)
+            {
+                insert(*f);
+                ++f;
+            }
+        }
+
         void    testPrint()
         {
             std::cout << "TEST PRINT\n";
             rootNode->printTree(rootNode);
-            std::cout << "END TEST PRINT\n";
+            std::cout << "\nEND TEST PRINT\n";
         }
+        
+        void erase (iterator position)
+        {
+            node_pointer result;
+            result = rootNode->find(rootNode, position->first);
+            result->erase(result);
+        }
+        size_type erase (const key_type& k);
+        void erase (iterator first, iterator last);
 
+        iterator find (const key_type& k)
+        {
+            node_pointer result;
+            result = rootNode->find(rootNode, k);
+            if (result == NULL)
+                return(end());
+            return(iterator(result));
+        }
+        const_iterator find (const key_type& k) const;   
         value_compare value_comp() const
         {
             return (value_compare(key_compare()));

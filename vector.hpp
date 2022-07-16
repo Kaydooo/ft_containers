@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/07 02:45:23 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/07/16 05:46:25 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // #include <vector>
 #include "myIterator.hpp"
 #include "reverse_iterator.hpp"
+#include "container_utils.hpp"
 
 #include <exception>
 #include <stdexcept> 
@@ -28,31 +29,6 @@
 
 namespace ft
 {
-    struct false_type { static const bool value = false;};
-    struct true_type { static const bool value = true;};
-
-    template<bool B, class T = void>
-    struct enable_if {};
-
-    template<class T>
-    struct enable_if<true, T> { typedef T type; };
-    
-    template <class T>   struct is_integral                     : public ft::false_type {};
-    template <>          struct is_integral<bool>               : public ft::true_type {};
-    template <>          struct is_integral<char>               : public ft::true_type {};
-    template <>          struct is_integral<signed char>        : public ft::true_type {};
-    template <>          struct is_integral<unsigned char>      : public ft::true_type {};
-    template <>          struct is_integral<wchar_t>            : public ft::true_type {};
-    template <>          struct is_integral<short>              : public ft::true_type {};
-    template <>          struct is_integral<unsigned short>     : public ft::true_type {};
-    template <>          struct is_integral<int>                : public ft::true_type {};
-    template <>          struct is_integral<unsigned int>       : public ft::true_type {};
-    template <>          struct is_integral<long>               : public ft::true_type {};
-    template <>          struct is_integral<unsigned long>      : public ft::true_type {};
-    template <>          struct is_integral<long long>          : public ft::true_type {};
-    template <>          struct is_integral<unsigned long long> : public ft::true_type {};
-
-
     /* My Vector Class */
     template < class T, class Alloc = std::allocator<T> >
     class vector
