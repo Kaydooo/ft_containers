@@ -25,7 +25,7 @@ namespace   ft
             typedef  T valuetype;
             typedef  T* pointer_type;
             typedef  T& reference_type;
-            typedef  std::ptrdiff_t difference_type;
+            typedef  ptrdiff_t difference_type;
             typedef  random_access_iterator_tag iterator_category;
 
             // using value_type = vector::value_type;
@@ -36,6 +36,7 @@ namespace   ft
 
             reverse_Iterator(void): itPtr(NULL){}
             reverse_Iterator(pointer_type ptr): itPtr(ptr){}
+            reverse_Iterator(Iterator<T> it): itPtr(it.getPtr()) {}
             template <typename U>
             reverse_Iterator(const reverse_Iterator<U>& other): itPtr(other.getPtr()){}
 
@@ -45,14 +46,17 @@ namespace   ft
                 return (*this);
             }
 
-            pointer_type base()const {
+            Iterator<T> base()const {
                 return (itPtr);
             }	
             pointer_type getPtr() const
             { return (this->itPtr); }
 
-            reference_type operator*() const { return *itPtr; }
-            pointer_type operator->() { return itPtr; }
+            reference_type operator*() const 
+            { 			
+			    return (*(itPtr - 1));
+            }
+            pointer_type operator->() { return (itPtr - 1); }
 
             // Prefix increment
             reverse_Iterator& operator++() { --itPtr; return *this; }  
@@ -64,7 +68,7 @@ namespace   ft
             reverse_Iterator& operator--() { ++itPtr; return *this; }  
 
             // Postfix dec
-            reverse_Iterator operator--(int) { reverse_Iterator tmp = *this; --(*this); return tmp;}
+            reverse_Iterator operator--(int) { reverse_Iterator tmp = *this; --(*this); return tmp; }
 
             reverse_Iterator    operator+(difference_type n) const { return (itPtr - n); }
 			// reverse_Iterator& operator+(difference_type num) {
@@ -112,34 +116,34 @@ namespace   ft
     bool operator!=(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() != rhs.getPtr()); }
     
     template<typename T>
-    bool  operator>(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() > rhs.getPtr()); }
+    bool  operator>(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() < rhs.getPtr()); }
     template<typename T1, typename T2>
-    bool operator>(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() > rhs.getPtr()); }
+    bool operator>(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() < rhs.getPtr()); }
 
     template<typename T>
-    bool  operator<(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() < rhs.getPtr()); }
+    bool  operator<(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() > rhs.getPtr()); }
     template<typename T1, typename T2>
-    bool operator<(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() < rhs.getPtr()); }
+    bool operator<(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() > rhs.getPtr()); }
 
     template<typename T>
-    bool  operator>=(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() >= rhs.getPtr()); }
+    bool  operator>=(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() <= rhs.getPtr()); }
     template<typename T1, typename T2>
-    bool operator>=(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() >= rhs.getPtr()); }
+    bool operator>=(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() <= rhs.getPtr()); }
 
     template<typename T>
-    bool  operator<=(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() <= rhs.getPtr()); }
+    bool  operator<=(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.getPtr() >= rhs.getPtr()); }
     template<typename T1, typename T2>
-    bool operator<=(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() <= rhs.getPtr()); }
+    bool operator<=(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs){ return (lhs.getPtr() >= rhs.getPtr()); }
 
     template<typename T>
     typename ft::reverse_Iterator<T>::difference_type operator-(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs)
     {
-        return (lhs.getPtr() - rhs.getPtr());
+        return (rhs.getPtr() - lhs.getPtr());
     }
     template<typename T1, typename T2>
     typename ft::reverse_Iterator<T1>::difference_type operator-(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs)
     {
-        return (lhs.getPtr() - rhs.getPtr());
+        return (rhs.getPtr() - lhs.getPtr());
     }
     template<typename T>
     typename ft::reverse_Iterator<T>::difference_type operator+(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs)
@@ -156,8 +160,9 @@ namespace   ft
         typename ft::reverse_Iterator<T>::difference_type x,
         typename ft::reverse_Iterator<T>& rhs)
         {
-            return (&(*rhs) + x);
+            return (rhs + x);
         }
+    
 
 }
 

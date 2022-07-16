@@ -103,9 +103,9 @@ namespace   ft
         We used template so these overloads can work with iterators and const_interators
     */
     template<typename T>
-    bool  operator==(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs){ return (lhs.getPtr() == rhs.getPtr()); }
+    typename ft::Iterator<T>::difference_type  operator==(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs){ return (lhs.getPtr() == rhs.getPtr()); }
     template<typename T1, typename T2>
-    bool operator==(const ft::Iterator<T1> lhs, const ft::Iterator<T2> rhs){ return (lhs.getPtr() == rhs.getPtr()); }
+    typename ft::Iterator<T1>::difference_type operator==(const ft::Iterator<T1> lhs, const ft::Iterator<T2> rhs){ return (lhs.getPtr() == rhs.getPtr()); }
 
     template<typename T>
     bool  operator!=(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs){ return (lhs.getPtr() != rhs.getPtr()); }

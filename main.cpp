@@ -1,179 +1,122 @@
-#include "vector.hpp"
-#include <vector>
+#include "map.hpp"
+#include <map>
 #include <iostream>
+
 
 int main()
 {
-    ft::vector<int> test(13, 11);
-    ft::vector<int>::iterator it;
-    ft::vector<int> test1;
-
-    // std::vector<int> test(13, 11);
-    // std::vector<int>::iterator it;
-    // std::vector<int> test1;
-    test1.pop_back();
-    std::cout << "1size = " << test1.size() << std::endl;
-    std::cout << "1max_size = " << test1.max_size() << std::endl;
-    std::cout << "1Capacity = " << test1.capacity() << std::endl;
-
-    // it = test.begin();
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-    test.reserve(21);
-    std::cout << "Reserved 10000" << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-    test.resize(25, 8);
-    std::cout << "resized to  10" << std::endl;
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-
-    test.assign(20, 193);
-    std::cout << "Assigned" << std::endl;
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-
-    // try{
-    //     std::cout << "access element at 25 :" << test.at(25) << std::endl;
-    // }
-    // catch(std::exception &e)
-    // {
-    //     std::cout << e.what() << std::endl;
-    // }
-
-    /* Push + Pop */
-    std::cout << "push_back" << std::endl;
-    test.push_back(15);
-    // test.push_back(19);
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-    test.pop_back();
-       for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-    test.pop_back();
-       for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-    test.pop_back();
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
+    std::pair<char, int> a[5];
     
-    /* Insert */
-     std::cout << "Insert" << std::endl;
-    // test.insert(test.end(), 5, 99);
-    // test.insert(test.end(), 100, 99);
-    std::vector<int> a;
-    a.push_back(1);
-    a.push_back(332);
-    a.push_back(443);
-    a.push_back(554);
-    // a.push_back(534);
-    test.insert(test.begin(), 5, 444);
-    test.insert(test.begin(), a.begin(), a.end());
+    a[1].first = 'z';
+    a[1].second = 10;
+    a[2].first = 'x';
+    a[2].second = 22;
+    a[3].first = 'y';
+    a[3].second = 33;
+    a[4].first = 'a';
+    a[4].second = 44;
+    a[0].first = 'x';
+    a[0].second = 123222;
+
+    // std::pair<char, int> b[4];
+    // b[2].first = 'x';
+    // a[2].second = 22;
+
+    // ft::bstNode< std::pair<char, int> > root;
+    // ft::bstNode< std::pair<char, int> > node1(a[1]);
+    // ft::bstNode< std::pair<char, int> > node2(a[2]);
+    // ft::bstNode< std::pair<char, int> > node3(a[3]);
+    // ft::bstNode< std::pair<char, int> > node4(a[4]);
 
 
-    std::vector<int> insertArray;
-    // insertArray.push_back(11);
-    // insertArray.push_back(22);
-    // insertArray.push_back(33);
-    // insertArray.push_back(44);
-    // insertArray.push_back(55);
-    // test.insert(test.begin(), insertArray.begin()+2, insertArray.end());
-    // test.insert(test.begin(), 233);
-    // test.insert(test.begin() + 10, 17);
-    // test.insert(test.end(), 17);
+    // // root.addRecursive(&root, &node4);
+    // // root.addRecursive(&root, &node2);
+    // // root.addRecursive(&root, &node1);
+    // // root.addRecursive(&root, &node3);
 
 
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
+    // // root.addRecursive(&root, a[2]);
+    // // root.addRecursive(&root, a[3]);
+    // // root.addRecursive(&root, a[4]);
+    // // root.printTree(&root);
 
-    // ft::vector<int> empty;
-    // std::vector<int> empty;
-    // empty.push_back(10);
-    // empty.erase(empty.begin());
-    // std::cout << "Erase empty Vector" << std::endl;
+    // std::map<char, int> testMap;
 
-    // for(it = empty.begin() ; it < empty.end(); ++it)
-    //     std::cout << *it << std::endl;
-    // std::cout << "size = " << empty.size() << std::endl;
-    // std::cout << "max_size = " << empty.max_size() << std::endl;
-    // std::cout << "Capacity = " << empty.capacity() << std::endl;
+    // std::cout << "New Map\n";
+    // std::cout << "Empty = " << testMap.empty() << std::endl;
+    // std::cout << "Size = " << testMap.size() << std::endl;
+    // std::cout << "Max Size = " << testMap.max_size() << std::endl;
+    // testMap.insert(a[1]);
+    // testMap.insert(a[2]);
+    // std::map<char, int>::iterator it;
+    // std::map<char, int>::iterator ite;
+    // for(it = testMap.begin(); it != testMap.end(); ++it)
+    // {
+    //     std::cout << it->first << std::endl;
+    // }
+    // it = testMap.end();
+    // it++;
+    // it++;
+    // testMap.insert(a[4]);
+    // it--;
+    // std::cout << "haa " << it->first << std::endl;
+    // std::map<char, int> myMap;
+    // std::map<char, int>::iterator it;
 
+    ft::map<char, int> myMap;
+    ft::map<char, int>::iterator it;
+    std::cout << "New Map\n";
+    std::cout << "Empty = " << myMap.empty() << std::endl;
+    std::cout << "Size = " << myMap.size() << std::endl;
+    std::cout << "Max Size = " << myMap.max_size() << std::endl;
+    std::pair<ft::map<char, int>::iterator, bool> abc;
+    abc = myMap.insert(a[1]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[2]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[4]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[3]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[0]);
+    std::cout << abc.second << std::endl;
 
+    std::cout << "start here : )" << std:: endl;
+    for(it = abc.first; it != myMap.end(); ++it)
+    {
+        std::cout << "test" << it->first << std::endl;
+    }
 
+    // myMap.testPrint();
+    // std::cout << "start here : )" << std:: endl;
+    // for(it = myMap.begin(); it != myMap.end(); ++it)
+    // {
+    //     std::cout << it->first << std::endl;
+    // }
+    // it = myMap.end();
+    // std::cout << "xd" << it->first << std::endl;
+    // it--;
+    // std::cout << it->first << std::endl;
+    // it--;
+    // std::cout << it->first << std::endl;
+    // it--;
+    // std::cout << it->first << std::endl;
+    // it--;
+    // std::cout << it->first << std::endl;
+    // it--;
+    // std::cout << it->first << std::endl;
+    // std::cout << "xd" << it->first << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
+    // std::cout << it->second << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
 
-    test.erase(test.begin() + 5);
-    std::cout << "Erase  Vector" << std::endl;
-
-    for(it = test.begin() ; it < test.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "size = " << test.size() << std::endl;
-    std::cout << "max_size = " << test.max_size() << std::endl;
-    std::cout << "Capacity = " << test.capacity() << std::endl;
-
-    ft::vector<int> copy_vec(test);
-    /* Clear */
-
-    ft::vector<int> test3;
-    test3.push_back(10);
-    test3.push_back(12);
-    test3.push_back(13);
-    test3.push_back(14);
-    test3.push_back(15);
-    ft::vector<int>::iterator it1 = test3.begin();
-    ft::vector<int>::iterator it2 = test3.end();
-    ft::vector<int> test4(it1, it2);
-    ft::vector<int>::iterator it3;
-    std::cout << "Range Constructed  " << std::endl;
-
-    for(it3 = test4.begin() ; it3 < test4.end(); ++it3)
-        std::cout << *it3 << std::endl;
-    std::cout << "size = " << test4.size() << std::endl;
-    std::cout << "max_size = " << test4.max_size() << std::endl;
-    std::cout << "Capacity = " << test4.capacity() << std::endl;
-
-    // test4.clear();
-    // std::cout << "Cleared " << std::endl;
-
-    // for(it3 = test4.begin() ; it3 < test4.end(); ++it3)
-    //     std::cout << *it3 << std::endl;
-    // std::cout << "size = " << test4.size() << std::endl;
-    // std::cout << "max_size = " << test4.max_size() << std::endl;
-    // std::cout << "Capacity = " << test4.capacity() << std::endl;
-
-    // std::vector<int> revTest;
-    // revTest.push_back(1);
-    // revTest.push_back(2);
-    // revTest.push_back(3);
-    // revTest.push_back(4);
-    // std::vector<int>::reverse_iterator rit = revTest.rend();
-    // std::cout << "before rend = " << &(revTest[-1]) << std::endl;
-
-    // std::cout << "rend = " << &(*rit) << std::endl;
+    
+    // myMap.testPrint();
 
 }

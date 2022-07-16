@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/05 01:01:27 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/07/07 02:45:23 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define VECTOR_HPP
 // #include <vector>
 #include "myIterator.hpp"
-#include "myRevIterator.hpp"
+#include "reverse_iterator.hpp"
 
 #include <exception>
 #include <stdexcept> 
@@ -68,8 +68,8 @@ namespace ft
             typedef typename allocator_type::const_pointer       const_pointer;
             typedef ft::Iterator<value_type>                iterator;
             typedef ft::Iterator<const value_type>          const_iterator;
-            typedef ft::reverse_Iterator<value_type>                reverse_iterator;
-            typedef ft::reverse_Iterator<const value_type>          const_reverse_iterator ;
+            typedef ft::reverse_Iterator<iterator>                reverse_iterator;
+            typedef ft::reverse_Iterator<const_iterator>          const_reverse_iterator ;
             //reverse_it
             //const_reverse_it
             typedef typename allocator_type::difference_type     difference_type;
@@ -155,10 +155,10 @@ namespace ft
             const_iterator begin() const{ return const_iterator(vectorData); }
             const_iterator end() const { return const_iterator(vectorData + vectorSize); }
             
-            reverse_iterator rbegin() { return reverse_iterator(vectorData + vectorSize); }
-            reverse_iterator rend()   { return reverse_iterator(&vectorData[-1]); }
-            const_reverse_iterator rbegin() const{ return const_reverse_iterator(vectorData + vectorSize); }
-            const_reverse_iterator rend() const { return const_reverse_iterator(&vectorData[-1]); }
+            reverse_iterator rbegin() { return reverse_iterator(end()); }
+            reverse_iterator rend()   { return reverse_iterator(begin()); }
+            const_reverse_iterator rbegin() const{ return const_reverse_iterator(end()); }
+            const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
         //////////////////// rbegin + rend To Be Done !//////////////////
 
         /* member functions (Capacity) */
@@ -460,7 +460,73 @@ namespace ft
     {
         x.swap(y);
     }
+    /* Vector operators overloads */
+    template< class T, class Alloc>
+    bool operator==( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+            if(lhs.size() != rhs.size())
+                return (false);
+            for(size_t i = 0; i < lhs.size(); ++i)
+            {
+                if(lhs.at(i) != rhs.at(i))
+                    return (false);
+            }
+            return (true);
+    }
 
+    template< class T, class Alloc >
+    bool operator!=( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+            return !(lhs == rhs);
+    }
+    
+    template< class T, class Alloc >
+    bool operator<( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+        return(lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+    
+    template< class T, class Alloc >
+    bool operator<=( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+            
+        if(rhs == lhs)
+            return (true);
+        return(lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+    
+    template< class T, class Alloc >
+    bool operator>( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+        if(lhs == rhs)
+            return (false);
+        return(!(lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())));
+            
+    }
+    template< class T, class Alloc >
+    bool operator>=( const ft::vector<T,Alloc>& lhs,
+                 const ft::vector<T,Alloc>& rhs )
+    {
+        if(rhs == lhs)
+            return (true);
+        return(!lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+
+    template<class InputIt1, class InputIt2>
+    bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
+                                InputIt2 first2, InputIt2 last2)
+    {
+        for ( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2 ) {
+            if (*first1 < *first2) return true;
+            if (*first2 < *first1) return false;
+        }
+        return (first1 == last1) && (first2 != last2);
+    }
 }
 
 #endif
