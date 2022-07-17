@@ -159,6 +159,17 @@ namespace   ft
         {
             return (&(*rhs) + x);
         }
+    template<class InputIterator>
+    size_t distance(InputIterator first, InputIterator last)
+    {
+        size_t i = 0;
+        while (first != last)
+        {
+            i++;
+            first++;
+        }	
+        return (i);
+    }
 }
 
 

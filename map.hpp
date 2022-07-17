@@ -27,9 +27,10 @@ namespace ft
             typedef typename allocator_type::const_reference    const_reference;
             typedef bstNode<value_type, Compare>     node_type;
             typedef bstNode<value_type, Compare>*    node_pointer;
+            
             //iteraors here
             typedef MapIterator<value_type, Compare>     iterator;
-            typedef MapIterator<const value_type, Compare>     const_iterator;
+            typedef MapIterator<value_type, Compare>     const_iterator;
             typedef typename allocator_type::difference_type    difference_type;
             typedef typename allocator_type::size_type          size_type;
             typedef typename allocator_type::pointer    pointer;
@@ -59,9 +60,10 @@ namespace ft
 
         /* Constructors  */
         explicit map( const Compare& comp = Compare(), const Alloc& alloc = Alloc())
-        {
+        {            
             compare = comp;
             mapAllocator = alloc;
+            nodeAllocator = node_allocator();
             rootNode = NULL;
             mapSize = 0;
         }
@@ -69,10 +71,32 @@ namespace ft
         template <class InputIterator>
         map (InputIterator first, InputIterator last,
         const key_compare& comp = key_compare(),
-        const allocator_type& alloc = allocator_type());
+        const allocator_type& alloc = allocator_type())
+        {
+            compare = comp;
+            mapAllocator = alloc;
+            nodeAllocator = node_allocator();
+            rootNode = NULL;
+            mapSize = 0;
+            insert(first, last);
+        }
 
         map (const map& x) : compare(x.compare), mapAllocator(x.mapAllocator)
-        , nodeAllocator(x.nodeAllocator), rootNode(x.rootNode), mapSize(x.mapSize){} // fix it later
+        , nodeAllocator(x.nodeAllocator), rootNode(NULL), mapSize(0)
+        {
+            if(x.size())
+                insert(x.begin(), x.end());
+        }
+        
+        // map& operator= (const map& x)
+        // {
+        //     if(this != &x)
+        //     {
+                
+        //     }
+            
+        //     return (*this);
+        // }
 
 
         // template< class InputIt >
@@ -101,6 +125,23 @@ namespace ft
         iterator    end()
         {
             return (iterator(rootNode->endNode));
+        }
+
+        const_iterator    begin() const
+        {
+            node_pointer    temp;
+            temp = rootNode;
+            if(temp->leftChild)
+            {
+                while(temp->leftChild)
+                    temp = temp->leftChild;
+            }
+            return (const_iterator(temp));
+        }
+
+        const_iterator    end() const
+        {
+            return (const_iterator(rootNode->endNode));
         }
 
 
@@ -141,14 +182,13 @@ namespace ft
         }
         
         template <class InputIterator>
-        void insert (InputIterator f, InputIterator last)
+        void insert (InputIterator first, InputIterator last)
         {
-            size_type dist = ft::distance(f, last);
-
+            size_type dist = ft::distance(first, last);
             for (size_type i = 0; i < dist; ++i)
             {
-                insert(*f);
-                ++f;
+                insert(*first);
+                ++first;
             }
         }
 
@@ -163,10 +203,34 @@ namespace ft
         {
             node_pointer result;
             result = rootNode->find(rootNode, position->first);
-            result->erase(result);
+            if(result == NULL)
+                return;
+            result = result->erase(result);
+            --mapSize;
+            // nodeAllocator.destroy(result);
+            // nodeAllocator.deallocate(result, 1);
         }
-        size_type erase (const key_type& k);
-        void erase (iterator first, iterator last);
+        size_type erase (const key_type& k)
+        {
+            node_pointer result;
+            result = rootNode->find(rootNode, k);
+            if(result == NULL)
+                return 0;
+            result = result->erase(result);
+            --mapSize;
+            nodeAllocator.destroy(result);
+            nodeAllocator.deallocate(result, 1);
+            return 1;
+        }
+        void erase (iterator first, iterator last)
+        {
+            size_type dist = ft::distance(first, last);
+            for (size_type i = 0; i < dist; ++i)
+            {
+                erase(first->first);
+                ++first;
+            }
+        }
 
         iterator find (const key_type& k)
         {
@@ -188,6 +252,8 @@ namespace ft
             node_allocator       nodeAllocator;
             node_pointer     rootNode;
             size_type   mapSize;
+
+
     };
 }
 

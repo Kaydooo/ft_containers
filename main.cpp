@@ -5,18 +5,28 @@
 
 int main()
 {
-    std::pair<char, int> a[5];
+    std::pair<char, int> a[11];
     
-    a[1].first = 'z';
-    a[1].second = 10;
-    a[2].first = 'x';
-    a[2].second = 22;
-    a[3].first = 'y';
-    a[3].second = 33;
-    a[4].first = 'c';
-    a[4].second = 44;
-    a[0].first = 'b';
+    a[0].first = '9';
     a[0].second = 123222;
+    a[1].first = '7';
+    a[1].second = 10;
+    a[2].first = '8';
+    a[2].second = 22;
+    a[3].first = '6';
+    a[3].second = 33;
+    a[4].first = '1';
+    a[4].second = 44;
+    a[5].first = '0';
+    a[5].second = 123;
+    a[6].first = '4';
+    a[6].second = 1234;
+    a[7].first = '3';
+    a[7].second = 1234;
+    a[8].first = '2';
+    a[8].second = 1234;
+    a[9].first = 'A';
+    a[9].second = 1234;
 
     // std::pair<char, int> b[4];
     // b[2].first = 'x';
@@ -62,23 +72,36 @@ int main()
     // std::cout << "haa " << it->first << std::endl;
     // std::map<char, int> myMap;
     // std::map<char, int>::iterator it;
+    // std::pair<std::map<char, int>::iterator, bool> abc;
+
 
     ft::map<char, int> myMap;
     ft::map<char, int>::iterator it;
+    std::pair<ft::map<char, int>::iterator, bool> abc;
+
     std::cout << "New Map\n";
     std::cout << "Empty = " << myMap.empty() << std::endl;
     std::cout << "Size = " << myMap.size() << std::endl;
     std::cout << "Max Size = " << myMap.max_size() << std::endl;
-    std::pair<ft::map<char, int>::iterator, bool> abc;
+    abc = myMap.insert(a[0]);
+    std::cout << abc.second << std::endl;
     abc = myMap.insert(a[1]);
     std::cout << abc.second << std::endl;
     abc = myMap.insert(a[2]);
     std::cout << abc.second << std::endl;
-    abc = myMap.insert(a[4]);
-    std::cout << abc.second << std::endl;
     abc = myMap.insert(a[3]);
     std::cout << abc.second << std::endl;
-    abc = myMap.insert(a[0]);
+    abc = myMap.insert(a[4]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[5]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[6]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[7]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[8]);
+    std::cout << abc.second << std::endl;
+    abc = myMap.insert(a[9]);
     std::cout << abc.second << std::endl;
 
     std::cout << "start here : )" << std:: endl;
@@ -89,13 +112,30 @@ int main()
     std::cout << "Find z : \n";
     it = myMap.find(a[1].first);
     std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
-    std::cout << "Find a : \n";
-    it = myMap.find(a[4].first);
+    std::cout << "Find c : \n";
+    it = myMap.find(a[0].first);
     std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
-    myMap.testPrint();
+    // myMap.testPrint();
+    std::cout << "removed " << it->first << std:: endl;
     myMap.erase(it);
-    myMap.testPrint();
+    // ++it;
+    // std::cout << "removed " << it->first << std:: endl;
+    // myMap.erase(it);
+    // myMap.testPrint();
+    for(it = myMap.begin(); it != myMap.end(); ++it)
+        std::cout << it->first << std::endl;
 
+    // ft::map<char, int> coppyMAP(myMap);
+    // coppyMAP.testPrint();
+
+    // coppyMAP.erase(coppyMAP.begin(), coppyMAP.end());
+    // coppyMAP.testPrint();
+
+    // ft::map<char, int>  cpyMap(myMap.begin(), myMap.end());
+    // std::cout << "Copy myMap  " << std::endl;
+    // cpyMap.testPrint();
+    // for(it = cpyMap.begin(); it != cpyMap.end(); ++it)
+    //     std::cout << it->first << std::endl;
     // std::cout << "Find O : \n";
     // it = myMap.find('O');
     // std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;

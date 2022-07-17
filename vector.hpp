@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/16 05:46:25 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/07/17 13:51:28 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ namespace ft
         
             iterator begin() { return iterator(vectorData); }
             iterator end()   { return iterator(vectorData + vectorSize); }
-            const_iterator begin() const{ return const_iterator(vectorData); }
-            const_iterator end() const { return const_iterator(vectorData + vectorSize); }
+            const_iterator cbegin() const{ return const_iterator(vectorData); }
+            const_iterator cend() const { return const_iterator(vectorData + vectorSize); }
             
             reverse_iterator rbegin() { return reverse_iterator(end()); }
             reverse_iterator rend()   { return reverse_iterator(begin()); }

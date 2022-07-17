@@ -63,33 +63,89 @@ namespace ft
             if(curr->rightChild == NULL && curr->leftChild == NULL)
             {
                 temp =  curr;
-                if(curr->parent->leftChild == curr)
-                    curr->parent->leftChild = NULL;
-                else if(curr->parent->rightChild == curr)
-                    curr->parent->rightChild = NULL;
+                if(curr->parent)
+                {
+                        if(curr->parent->leftChild == curr)
+                            curr->parent->leftChild = NULL;
+                        else if(curr->parent->rightChild == curr)
+                            curr->parent->rightChild = NULL;
+                }
                 curr = NULL;
             }
             else if(curr->rightChild == NULL)
             {
                 temp =  curr;
-                if(curr->parent->leftChild == curr)
-                    curr->parent->leftChild = curr->leftChild;
-                else if(curr->parent->rightChild == curr)
-                    curr->parent->rightChild = curr->leftChild;
+                if(curr->parent)
+                {
+                    if(curr->parent->leftChild == curr)
+                        curr->parent->leftChild = curr->leftChild;
+                    else if(curr->parent->rightChild == curr)
+                        curr->parent->rightChild = curr->leftChild;
+                    curr->leftChild->parent = curr->parent;
+                }
+                curr->leftChild->root = curr->leftChild;
+                curr->leftChild->endNode = curr->endNode;
+                curr->leftChild->parent = NULL;
                 curr = NULL;
             }
             else if(curr->leftChild == NULL)
             {
                 temp =  curr;
-                if(curr->parent->leftChild == curr)
-                    curr->parent->leftChild = curr->rightChild;
-                else if(curr->parent->rightChild == curr)
-                    curr->parent->rightChild = curr->rightChild;
+                if(curr->parent)
+                {
+                    if(curr->parent->leftChild == curr)
+                        curr->parent->leftChild = curr->rightChild;
+                    else if(curr->parent->rightChild == curr)
+                        curr->parent->rightChild = curr->rightChild;
+                    curr->rightChild->parent = curr->parent;
+                }
+                curr->rightChild->root = curr->rightChild;
+                curr->rightChild->endNode = curr->endNode;
+                curr->rightChild->parent = NULL;
                 curr = NULL;
+            }
+            else
+            {
+                temp = curr;
+                bstNode * replacement = get_far_left(curr->rightChild);
+                replacement = erase(replacement);
+                replacement->rightChild = curr->rightChild;
+                replacement->leftChild = curr->leftChild;
+                replacement->parent = curr->parent;
+                if(curr->parent)
+                {
+                    if(curr->parent->leftChild == curr)
+                        curr->parent->leftChild = replacement;
+                    else if(curr->parent->rightChild == curr)
+                        curr->parent->rightChild = replacement;
+                }
+                if(curr->rightChild)
+                    curr->rightChild->parent = replacement;
+                if(curr->leftChild)
+                    curr->leftChild->parent = replacement;
+                replacement->root = replacement;
+                replacement->endNode = curr->endNode;
+                // replacement->endNode->root = replacement;
+                curr = replacement;
             }
             return (temp);
         }
 
+        bstNode *get_far_left(bstNode* &node)
+        {
+            bstNode *temp = node;
+            while(temp->leftChild)
+                temp = temp->leftChild;
+            return (temp);
+        }
+
+        bstNode *get_root(bstNode* &node)
+        {
+            bstNode *temp = node;
+            while(temp->parent)
+                temp = temp->parent;
+            return (temp);
+        }
         // template<class U>
         // bool    isEqual(value_type &a, U &b)
         // {

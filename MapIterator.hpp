@@ -26,11 +26,17 @@ namespace ft
         Compare c;
 
         MapIterator(): dataNode(NULL){}
-        MapIterator(const node_pointer& node): dataNode(node){}
-
-
-        // template <typename U, class Comp = Compare>
+        MapIterator( const node_pointer& node): dataNode(node){}
         MapIterator(const MapIterator& other): dataNode(other.dataNode){}
+
+        //Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
+
+
+        // template <typename U>
+        // MapIterator(const MapIterator<U, Compare>& other): dataNode(other.dataNode){}
+        // template <typename U>
+        // Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
+
 
         MapIterator&   operator=(const MapIterator& rhs)
         {
@@ -149,6 +155,9 @@ namespace ft
         //     bstNode *dataNode;
 
     };
+
+// template <typename T, typename Compare>
+// MapIterator<T, Compare>::MapIterator(node_pointer src) {this->dataNode = src;}
 
 
 
