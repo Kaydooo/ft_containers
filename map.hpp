@@ -144,7 +144,6 @@ namespace ft
             return (const_iterator(rootNode->endNode));
         }
 
-
         std::pair<iterator,bool>    insert( const value_type& value )
         {
             std::pair<iterator, bool> result;
@@ -167,6 +166,8 @@ namespace ft
                 rootNode->addRecursive(rootNode, newNode, result.second, nodeRes);
                 result.first = iterator(nodeRes);
             }
+            // if(mapSize % 100000 == 0)
+            rootNode = rootNode->buildTree(rootNode);
             ++mapSize;
             return (result);
         }
@@ -176,6 +177,7 @@ namespace ft
 
         iterator insert (iterator position, const value_type& val)
         {
+            (void) position;
             std::pair<iterator, bool> result;
             result = this->insert(val);
             return (result.first);

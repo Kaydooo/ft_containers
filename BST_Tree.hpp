@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <vector>
 
 namespace ft
 {
@@ -165,6 +166,58 @@ namespace ft
                 printTree(node->rightChild);
             }
         }
+
+        bstNode* buildTreeUtil(std::vector<bstNode*> &nodes, int start, 
+                        int end) 
+        { 
+            // base case 
+            if (start > end) 
+                return NULL; 
+        
+            /* Get the middle element and make it root */
+            int mid = (start + end)/2; 
+            bstNode* root = nodes[mid]; 
+        
+            /* Using index in Inorder traversal, construct 
+            left and right subtress */
+            root->leftChild  = buildTreeUtil(nodes, start, mid-1); 
+            root->rightChild = buildTreeUtil(nodes, mid+1, end); 
+        
+            return root; 
+        } 
+
+        void storeBSTNodes(bstNode* root, std::vector<bstNode*> &nodes) 
+        { 
+        // Base case 
+        if (root==NULL) 
+            return; 
+
+        // Store nodes in Inorder (which is sorted 
+        // order for BST) 
+        storeBSTNodes(root->leftChild, nodes); 
+        nodes.push_back(root); 
+        storeBSTNodes(root->rightChild, nodes); 
+        } 
+
+        bstNode* buildTree(bstNode* root) 
+        { 
+            // Store nodes of given BST in sorted order 
+            std::vector<bstNode*> nodes; 
+            storeBSTNodes(root, nodes); 
+        
+            // Constucts BST from nodes[] 
+            int n = nodes.size(); 
+            return buildTreeUtil(nodes, 0, n-1); 
+        } 
+
+        void preOrder(bstNode* node) 
+        { 
+            if (node == NULL) 
+                return; 
+            std::cout<<node->key<<" "; 
+            preOrder(node->leftChild); 
+            preOrder(node->rightChild); 
+        } 
 
         
     };
