@@ -6,9 +6,9 @@
 int main()
 {
 
-    const int SIZE = 1000;
-    // ft::map<int, int> testMap;
-    std::map<int, int> testMap;
+    const int SIZE = 1000000;
+    ft::map<int, int> testMap;
+    // std::map<int, int> testMap;
     // std::map<int, int>::iterator it;
 
     for(int i = 0; i < SIZE; ++i)

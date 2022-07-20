@@ -9,6 +9,7 @@
 #include <cstddef>
 #include "MapIterator.hpp"
 #include "container_utils.hpp"
+#include <bits/stdc++.h>
 // #include <algorithm>
 // #include <iostream>
 
@@ -66,6 +67,7 @@ namespace ft
             nodeAllocator = node_allocator();
             rootNode = NULL;
             mapSize = 0;
+            test = 0;
         }
 
         template <class InputIterator>
@@ -166,8 +168,11 @@ namespace ft
                 rootNode->addRecursive(rootNode, newNode, result.second, nodeRes);
                 result.first = iterator(nodeRes);
             }
-            // if(mapSize % 100000 == 0)
-            rootNode = rootNode->buildTree(rootNode);
+            if(mapSize > test)
+            {
+                test = size() * 1.5;
+                rootNode = rootNode->buildTree(rootNode);
+            }
             ++mapSize;
             return (result);
         }
@@ -254,6 +259,7 @@ namespace ft
             node_allocator       nodeAllocator;
             node_pointer     rootNode;
             size_type   mapSize;
+            size_type         test;
 
 
     };
