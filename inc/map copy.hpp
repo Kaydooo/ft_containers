@@ -3,15 +3,12 @@
 
 #include <functional>
 #include <utility>
-// #include <exception>
-// #include <stdexcept>
 #include <memory>
 #include <cstddef>
-#include "MapIterator.hpp"
-#include "container_utils.hpp"
+#include "../utils/MapIterator.hpp"
+#include "../utils/container_utils.hpp"
+#include "../utils/RedBlackTree.hpp"
 #include <bits/stdc++.h>
-// #include <algorithm>
-// #include <iostream>
 
 namespace ft
 {
@@ -28,7 +25,9 @@ namespace ft
             typedef typename allocator_type::const_reference    const_reference;
             typedef bstNode<value_type, Compare>     node_type;
             typedef bstNode<value_type, Compare>*    node_pointer;
-            
+            typedef RedBlackTree<value_type, Compare, Alloc> tree_type;
+            typedef tree_type*                               tree_pointer;
+
             //iteraors here
             typedef MapIterator<value_type, Compare>     iterator;
             typedef MapIterator<value_type, Compare>     const_iterator;
@@ -37,6 +36,8 @@ namespace ft
             typedef typename allocator_type::pointer    pointer;
             typedef typename allocator_type::const_pointer    const_pointer;
             typedef std::allocator<node_type>   node_allocator;
+            typedef std::allocator<tree_type>   tree_allocator;
+
 
 
         /* Value Compare .. This class will create an object that can be used
@@ -258,7 +259,8 @@ namespace ft
             Alloc       mapAllocator;
             node_allocator       nodeAllocator;
             node_pointer     rootNode;
-            size_type   mapSize;
+            tree_pointer     mapTree;
+            size_type           mapSize;
             size_type         test;
 
 

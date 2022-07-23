@@ -1,4 +1,6 @@
-#include "BST_Tree.hpp"
+#ifndef MAPITERATOR_HPP
+#define  MAPITERATOR_HPP
+#include "RedBlackTree.hpp"
 
 
 namespace ft
@@ -16,18 +18,19 @@ namespace ft
 
         typedef T   value_type;
         typedef T*  pointer_type;
-        typedef T&  reference_type;
-        typedef bstNode<T, Compare> node_type;
-        typedef bstNode<T, Compare>* node_pointer;
-        typedef  std::ptrdiff_t difference_type;
-        typedef  bidirectional_iterator_tag iterator_category;
+        typedef T&                  reference_type;
+        typedef RedBlackTree_Node<T> node_type;
+        typedef node_type*           node_pointer;
+        typedef std::ptrdiff_t difference_type;
+        typedef bidirectional_iterator_tag  iterator_category;
 
         node_pointer    dataNode;
+        node_pointer    endNode;
         Compare c;
 
         MapIterator(): dataNode(NULL){}
-        MapIterator( const node_pointer& node): dataNode(node){}
-        MapIterator(const MapIterator& other): dataNode(other.dataNode){}
+        MapIterator(const node_pointer& node,  const node_pointer& endN): dataNode(node), endNode(endN){}
+        MapIterator(const MapIterator& other): dataNode(other.dataNode), endNode(other.endNode){}
 
         //Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
 
@@ -41,7 +44,10 @@ namespace ft
         MapIterator&   operator=(const MapIterator& rhs)
         {
             if(this != &rhs)
+            {
                 this->dataNode = rhs.dataNode;
+                this->endNode = rhs.endNode;
+            }
             return (*this);
         }
 
@@ -60,9 +66,11 @@ namespace ft
 
         MapIterator&       operator++()
         {
-            if(dataNode->rightChild == NULL)
+            if(dataNode->child[1] == NULL)
             {
                 node_pointer temp = dataNode;
+                if(temp == endNode)
+                    return (*this);
                 if (dataNode->parent)
                 {
                     dataNode = dataNode->parent;
@@ -72,16 +80,17 @@ namespace ft
                     }
                     if(dataNode->data.first < temp->data.first)
                     {
-                        dataNode = dataNode->endNode;
+                        endNode->parent = dataNode;
+                        dataNode = endNode;
                     }
                 }
                 else{
-                    dataNode = dataNode->endNode;
+                    dataNode = endNode;
                 }
             }
-            else if (dataNode->rightChild != NULL)
+            else if (dataNode->child[1] != NULL)
             {
-                dataNode = dataNode->rightChild;
+                dataNode = dataNode->child[1];
                 get_far_left();
             }
             return (*this);
@@ -89,7 +98,12 @@ namespace ft
 
         MapIterator&       operator--()
         {    
-            if(dataNode->leftChild == NULL)
+            if(dataNode == endNode)
+            {
+                dataNode = endNode->parent;
+                get_far_right();
+            }
+            else if(dataNode->child[0] == NULL)
             {
                 node_pointer temp = dataNode;
                 if (dataNode->parent)
@@ -97,7 +111,7 @@ namespace ft
                     dataNode = dataNode->parent;
                     while(dataNode->parent && c(temp->data.first, dataNode->data.first)) // use compare here later
                     {
-                        dataNode = dataNode->parent;                            
+                        dataNode = dataNode->parent;
                     }
                     if(dataNode->data.first > temp->data.first)
                     {
@@ -106,59 +120,52 @@ namespace ft
                 }
                 else
                 {
-                    if(dataNode->endNode == dataNode)
+                    if(dataNode == endNode)
                     {
-                        dataNode = dataNode->root;
+                        dataNode = endNode->parent;
                         get_far_right();
                     }
                     else
                         get_far_left();
                 }
             }
-            else if (dataNode->leftChild != NULL)
+            else if (dataNode->child[0] != NULL)
             {
-                dataNode = dataNode->leftChild;
+                dataNode = dataNode->child[0];
                 get_far_right();
             }
             return (*this);
         }
-        // MapIterator       operator++(int)
-        // {
-        //     MapIterator temp(dataNode);
-        //     ++(*this);
-        //     return (temp);
 
-        // }
         MapIterator operator++(int)
         {
-            MapIterator tmp(dataNode);
+            MapIterator tmp(dataNode, endNode);
             ++(*this);
             return (tmp);
         }  
         MapIterator operator--(int)
         {
-            MapIterator tmp(dataNode);
+            MapIterator tmp(dataNode, endNode);
             --(*this);
             return (tmp);
         }          
         private:
             void    get_far_left()
             {
-                while(dataNode->leftChild)
-                    dataNode = dataNode->leftChild;
+                while(dataNode->child[0])
+                    dataNode = dataNode->child[0];
             }
             void    get_far_right()
             {
-                while(dataNode->rightChild)
-                    dataNode = dataNode->rightChild;
+                while(dataNode->child[1])
+                    dataNode = dataNode->child[1];
             }
         //     bstNode *dataNode;
 
     };
 
-// template <typename T, typename Compare>
-// MapIterator<T, Compare>::MapIterator(node_pointer src) {this->dataNode = src;}
-
 
 
 }
+
+#endif 

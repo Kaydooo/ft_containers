@@ -1,23 +1,45 @@
-#include "map.hpp"
-#include <map>
-#include <iostream>
+#include "inc/map.hpp"
+// #include <map>
+// #include <iostream>
+#include <utility>
 
 
 int main()
 {
-
-    const int SIZE = 1000000;
+    const int SIZE = 10;
     ft::map<int, int> testMap;
     // std::map<int, int> testMap;
     // std::map<int, int>::iterator it;
 
     for(int i = 0; i < SIZE; ++i)
     {
-        testMap.insert(std::make_pair(i, i));
+        testMap.insert(std::make_pair(i, i + 1));
     }
-    std::cout << std::endl <<  testMap.max_size() << std::endl;
+    // std::cout << std::endl <<  testMap.max_size() << std::endl;
 
     // testMap.testPrint();
+    ft::map<int, int> testMap2;
+    ft::map<int, int>::iterator it;
+    ft::map<int, int>::iterator ite;
+    it = testMap.begin();
+    ite = testMap.end();
+
+    for(it = testMap.begin(); it != testMap.end(); ++it)
+    {
+        testMap2.insert(*it);
+    }
+    
+    // testMap2.insert(it, ite);
+
+    testMap2.testPrint();
+
+    // it = testMap2.find(10);
+    --it;
+    --it;
+
+    std::cout << std::endl << " :: )" <<  it->first << " | " << it->second << std::endl;
+
+    std::cout << testMap2.count(3) << std::endl;
     // for(it = testMap.begin(); it != testMap.end(); ++it)
     // {
     //     std::cout << it->first << " : " << it->second << std::endl;
