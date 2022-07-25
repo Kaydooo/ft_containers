@@ -6,16 +6,16 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/17 13:51:28 by dfurneau         ###   ########.fr       */
+/*   Updated: 2022/07/25 02:36:13 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 // #include <vector>
-#include "myIterator.hpp"
-#include "reverse_iterator.hpp"
-#include "container_utils.hpp"
+#include "../utils/myIterator.hpp"
+#include "../utils/reverse_iterator.hpp"
+#include "../utils/container_utils.hpp"
 
 #include <exception>
 #include <stdexcept> 
@@ -128,8 +128,8 @@ namespace ft
         
             iterator begin() { return iterator(vectorData); }
             iterator end()   { return iterator(vectorData + vectorSize); }
-            const_iterator cbegin() const{ return const_iterator(vectorData); }
-            const_iterator cend() const { return const_iterator(vectorData + vectorSize); }
+            const_iterator begin() const{ return const_iterator(vectorData); }
+            const_iterator end() const { return const_iterator(vectorData + vectorSize); }
             
             reverse_iterator rbegin() { return reverse_iterator(end()); }
             reverse_iterator rend()   { return reverse_iterator(begin()); }
@@ -493,16 +493,6 @@ namespace ft
         return(!lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
     }
 
-    template<class InputIt1, class InputIt2>
-    bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
-                                InputIt2 first2, InputIt2 last2)
-    {
-        for ( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2 ) {
-            if (*first1 < *first2) return true;
-            if (*first2 < *first1) return false;
-        }
-        return (first1 == last1) && (first2 != last2);
-    }
 }
 
 #endif

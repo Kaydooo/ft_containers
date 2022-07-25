@@ -9,8 +9,10 @@
 // #include "../utils/MapIterator.hpp"
 #include "../utils/container_utils.hpp"
 #include "../utils/RedBlackTree.hpp"
+#include "../utils/reverse_iterator.hpp"
 // #include <bits/stdc++.h>
 // #include <iostream>
+#include  <stdexcept>
 
 namespace ft
 {
@@ -30,11 +32,16 @@ namespace ft
             //iteraors here
             typedef MapIterator<value_type, Compare>     iterator;
             typedef MapIterator<value_type, Compare>     const_iterator;
+            typedef reverse_Iterator<iterator>           reverse_iterator;
+            typedef reverse_Iterator<const_iterator>     const_reverse_iterator;
             typedef typename allocator_type::difference_type    difference_type;
             typedef typename allocator_type::size_type          size_type;
             typedef typename allocator_type::pointer    pointer;
             typedef typename allocator_type::const_pointer    const_pointer;
-            // typedef          std::allocator<tree_type>         tree_allocator;
+            typedef RedBlackTree_Node<value_type>        node_type;
+            typedef node_type*                  node_pointer;
+            
+            typedef          std::allocator<tree_type>         tree_allocator;
 
 
 
@@ -61,8 +68,10 @@ namespace ft
         /* Constructors  */
         explicit map( const Compare& comp = Compare(), const Alloc& alloc = Alloc())
         {
-                        (void)comp;
-            (void)alloc;            
+            (void)comp;
+            (void)alloc; 
+            mapTree = treeAllocator.allocate(1);
+            treeAllocator.construct(mapTree);
         }
 
         template <class InputIterator>
@@ -81,13 +90,18 @@ namespace ft
                 insert(x.begin(), x.end());
         }
 
-        ~map(void){}
+        ~map(void)
+        {
+            clear();
+            treeAllocator.destroy(mapTree);
+            treeAllocator.deallocate(mapTree, 1);
+        }
 
         map& operator= (const map& x)
         {
             if(this != &x)
             {
-                //clear first after clear() is done
+                clear();
                 insert(x.begin(), x.end());
             }
             
@@ -102,40 +116,40 @@ namespace ft
 
         /* Capacity And size */
 
-        size_type	size(void) const { return (mapTree.size()); }
-        size_type	max_size(void) const {return (mapTree.max_size());}
-        bool		empty(void) const {return (mapTree.empty());}
+        size_type	size(void) const { return (mapTree->size()); }
+        size_type	max_size(void) const {return (mapTree->max_size());}
+        bool		empty(void) const {return (mapTree->empty());}
 
         iterator    begin()
         {
-            return(mapTree.begin());
+            return(mapTree->begin());
         }
 
         iterator    end()
         {
-            return (mapTree.end());
+            return (mapTree->end());
         }
 
         const_iterator    begin() const
         {
-            return (mapTree.begin());
+            return (mapTree->begin());
         }
 
         const_iterator    end() const
         {
-            return (mapTree.end());
+            return (mapTree->end());
         }
 
         std::pair<iterator,bool> insert( const value_type& value )
         {
-            return (mapTree.insert(value));
+            return (mapTree->insert(value));
         }
 
         iterator insert (iterator position, const value_type& val)
         {
             (void) position;
             std::pair<iterator, bool> result;
-            result = mapTree.insert(val);
+            result = mapTree->insert(val);
             return (result.first);
         }
         
@@ -145,7 +159,7 @@ namespace ft
             size_type dist = ft::distance(first, last);
             for (size_type i = 0; i < dist; ++i)
             {
-                mapTree.insert(*first);
+                mapTree->insert(*first);
                 ++first;
             }
         }
@@ -153,66 +167,145 @@ namespace ft
         void    testPrint()
         {
             // std::cout << "TEST PRINT\n";
-            mapTree.printTree();
+            mapTree->printTree();
             // std::cout << "\nEND TEST PRINT\n";
         }
         
-        // void erase (iterator position)
-        // {
-        //     node_pointer result;
-        //     result = rootNode->find(rootNode, position->first);
-        //     if(result == NULL)
-        //         return;
-        //     result = result->erase(result);
-        //     --mapSize;
-        //     // nodeAllocator.destroy(result);
-        //     // nodeAllocator.deallocate(result, 1);
-        // }
-        // size_type erase (const key_type& k)
-        // {
-        //     node_pointer result;
-        //     result = rootNode->find(rootNode, k);
-        //     if(result == NULL)
-        //         return 0;
-        //     result = result->erase(result);
-        //     --mapSize;
-        //     nodeAllocator.destroy(result);
-        //     nodeAllocator.deallocate(result, 1);
-        //     return 1;
-        // }
-        // void erase (iterator first, iterator last)
-        // {
-        //     size_type dist = ft::distance(first, last);
-        //     for (size_type i = 0; i < dist; ++i)
-        //     {
-        //         erase(first->first);
-        //         ++first;
-        //     }
-        // }
+        void erase (iterator position)
+        {
+            erase(position->first);
+            // nodeAllocator.destroy(result);
+            // nodeAllocator.deallocate(result, 1);
+        }
+        size_type erase (const key_type& k)
+        {
+            // std::cout << "HE HE : " << k << std::endl;
+            return(mapTree->erase_key(k));
+        }
+        void erase (iterator first, iterator last)
+        {
+            size_type dist = ft::distance(first, last);
+            key_type    *keys = new key_type[dist];
+            for (size_type i = 0; i < dist; ++i, ++first)
+                keys[i] = first->first;
+            for (size_type i = 0; i < dist; ++i)
+                erase(keys[i]);
 
+            delete [] keys;
+                
+        }
+
+        void clear()
+        {
+            mapTree->clear();
+        }
+
+        T& operator[]( const Key& key )
+        {
+            
+            return insert(std::make_pair(key, T())).first->second;
+        }
+        T& at( const Key& key )
+        {
+            iterator it = mapTree->find(key);
+            if(it == end())
+                throw std::out_of_range("wronge use of at : OUT OF RANGE\n");
+            return(it->second);
+        }
+
+        const T& at( const Key& key ) const
+        {
+            const_iterator it = mapTree->find(key);
+            if(it == end())
+                throw std::out_of_range("wronge use of at : OUT OF RANGE\n");
+            return(it->second);
+        }
+
+        void swap( map& other )
+        {
+            tree_pointer tmp = mapTree;
+            mapTree = other.mapTree;
+            other.mapTree = tmp;
+        }
         size_type count( const key_type& k ) const
         {
-            return (mapTree.count(k));
+            return (mapTree->count(k));
         }
         iterator find (const key_type& k)
         {
-            return(mapTree.find(k));
+            return(mapTree->find(k));
         }
-        const_iterator find (const key_type& k) const;   
+        const_iterator find (const key_type& k) const
+        {
+            return(mapTree->find_const(k));
+        } 
         value_compare value_comp() const
         {
             return (value_compare(key_compare()));
+        }
+
+        key_compare key_comp() const
+        {
+            return (key_compare());
         }
 
         allocator_type get_allocator() const
         {
             return(allocator_type());
         }
+        
+        
         private:
-            tree_type     mapTree;
-
+            tree_pointer     mapTree;
+            tree_allocator   treeAllocator;
 
     };
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator==(const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        if (lhs.size() != rhs.size())
+            return false;
+        return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator!=(const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        return !(lhs == rhs);
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator< (const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator<=(const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        return !(rhs < lhs);
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator> (const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        return (rhs < lhs);
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool	operator>=(const map<Key, T, Compare, Alloc> &lhs,
+                        const map<Key, T, Compare, Alloc> &rhs) {
+        return !(lhs < rhs);
+    }
+
+    template< class Key, class T, class Compare, class Alloc >
+    void swap( ft::map<Key,T,Compare,Alloc>& lhs,
+            ft::map<Key,T,Compare,Alloc>& rhs )
+    {
+        lhs.swap(rhs);
+    }
+
 }
 
 

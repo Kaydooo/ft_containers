@@ -10,7 +10,7 @@ PURPLE="\e[95m"
 CYAN="\e[96m"
 DGREY="\e[1;90m"
 
-include_path=".."
+include_path="../inc"
 srcs="srcs"
 
 CC="clang++"

@@ -37,10 +37,14 @@ namespace ft
       {
         nodeAllocator = node_allocator();
         endNode = nodeAllocator.allocate(1);
-        std::cout << endNode << " < -- \n";
+
       }
 
-      ~RedBlackTree(){} // Free Tree + endNode here later
+      ~RedBlackTree()
+      {
+        nodeAllocator.deallocate(endNode, 1);
+      
+      } // Free Tree + endNode here later
       
       void printTree()
       {
@@ -114,6 +118,7 @@ namespace ft
         result.second = true;
         if(treeSize == 0)
         {
+          newNode->color = BLACK;
           root = newNode;
           result.first = iterator(newNode, this->endNode);
         }
@@ -126,10 +131,16 @@ namespace ft
             // nodeAllocator.deallocate(newNode);
             // nodeAllocator.destory(newNode, 1);
           }
+          
           result.first = iterator(nodeRes, this->endNode);
         }
         if (result.second)
           treeSize++;
+        else
+        {
+          nodeAllocator.destroy(newNode);
+          nodeAllocator.deallocate(newNode, 1);
+        }
         return (result);
 
       }
@@ -145,7 +156,7 @@ namespace ft
               }
               temp = current->right;
           }
-          else if(c(current->data.first, newNode->data.first))
+          else if(c(newNode->data.first, current->data.first))
           {
               if(current->left == NULL)
               {
@@ -155,7 +166,7 @@ namespace ft
               temp = current->left;
           }
           else{
-              std::cout << "OBJECT DOUBLICATE FOUND !!" << std::endl;
+              // std::cout << "OBJECT DOUBLICATE FOUND11 !!" << current->data.first << std::endl;
               return current;
           }
           while(temp)
@@ -169,7 +180,7 @@ namespace ft
                   }
                   temp = temp->right;
               }
-              else if(c(temp->data.first , newNode->data.first))
+              else if(c(newNode->data.first, temp->data.first))
               {
                   if(temp->left == NULL)
                   {
@@ -179,7 +190,7 @@ namespace ft
                   temp = temp->left;
               }
               else{
-                  std::cout << "OBJECT DOUBLICATE FOUND !!" << std::endl;
+                  // std::cout << "OBJECT DOUBLICATE FOUND !!" << std::endl;
                   return temp;
               }
           }
@@ -255,6 +266,179 @@ namespace ft
 
       } // end of insertBalanced
 
+      template<class U>
+      size_type   erase_key(U& k)
+      {
+        node_pointer result;
+        result = find(root, k);
+        if(result == NULL)
+            return 0;
+        erase(result);
+        --treeSize;
+        return 1;
+      }
+      void  erase(node_pointer& node)
+      {
+        if(node->left == NULL && node->right == NULL)
+        {
+          if(node == root)
+          {
+            nodeAllocator.destroy(node);
+            nodeAllocator.deallocate(node, 1);
+            node = NULL;
+            root = NULL;
+            return;
+          }
+          if(node->color == RED)
+          {
+            node->parent->child[childDir(node)] = NULL;
+            nodeAllocator.destroy(node);
+            nodeAllocator.deallocate(node, 1);
+            node = NULL;
+          }
+          else
+            rbtRemove(this, node);
+          return;
+        }
+        else if (node->right == NULL)
+        {
+          node_pointer temp = get_predecessor(node);
+          replaceNode(node, temp);
+          erase(temp);
+        }
+        else
+        {
+          node_pointer temp = get_successor(node);
+          replaceNode(node, temp);
+          erase(temp);
+        }
+        return;
+      }
+      
+      void    replaceNode(node_pointer &dest, node_pointer &source)
+      {
+        node_pointer  newNode;
+        newNode = nodeAllocator.allocate(1);
+        nodeAllocator.construct(newNode, source->data);
+        if(dest->parent)
+        { 
+          int dir = childDir(dest);
+          dest->parent->child[dir] = newNode;
+        }
+        else
+        {
+          root = newNode;
+        }
+        newNode->color = dest->color;
+        newNode->right = dest->right;
+        newNode->left = dest->left;
+        if(dest->right)
+          dest->right->parent = newNode;
+        if(dest->left)
+          dest->left->parent = newNode;
+          
+        newNode->parent = dest->parent;
+
+        nodeAllocator.destroy(dest);
+        nodeAllocator.deallocate(dest, 1);
+      }
+      node_pointer  get_successor(node_pointer node)
+      {
+        node = node->right;
+        while(node->left != NULL)
+          node = node->left;
+        return (node);
+      }
+      
+      node_pointer  get_predecessor(node_pointer node)
+      {
+
+        node = node->left;
+        while(node->right != NULL)
+          node = node->right;
+        return (node);
+      }
+
+
+      void rbtRemove(RedBlackTree* tree, node_pointer N)
+      {
+        node_pointer P = N->parent;  // -> parent node of N
+        int  dir;          // side of P on which N is located (∈ { LEFT, RIGHT })
+        node_pointer S;  // -> sibling of N
+        node_pointer C;  // -> close   nephew
+        node_pointer D;  // -> distant nephew
+        bool first_iteration = true;
+        // P != NULL, since N is not the root.
+        dir = childDir(N); // side of parent P on which the node N is located
+        // Replace N at its parent P by NULL:
+        nodeAllocator.destroy(P->child[dir]);
+        nodeAllocator.deallocate(P->child[dir], 1);
+        P->child[dir] = NULL;
+        // start of the (do while)-loop:
+        do 
+        {
+          if(!first_iteration)
+          {
+            dir = childDir(N);   // side of parent P on which node N is located
+            first_iteration = false;
+          }
+          S = P->child[1-dir]; // sibling of N (has black height >= 1)
+          D = S->child[1-dir]; // distant nephew
+          C = S->child[  dir]; // close   nephew
+          if (S->color == RED)
+          {
+            ///case 3
+            RotateDirRoot(tree,P,dir); // P may be the root
+            P->color = RED;// swap color with sibiling .
+            S->color = BLACK; // if sibling color was red then parent is black for sure
+            S = C; // != NULL  -- new sibling is the old close nephew ( after rotation)
+            // now: P red && S black
+            D = S->child[1-dir]; // distant nephew               // S red ===> P+C+D black
+          }
+          // S is black:
+          if (D != NULL && D->color == RED) // not considered black
+          {
+            //case 6
+            RotateDirRoot(tree,P,dir); // P may be the root
+            S->color = P->color;
+            P->color = BLACK;
+            D->color = BLACK;
+            return; // deletion complete                  // D red && S black
+          }
+          if (C != NULL && C->color == RED) // not considered black
+          {
+            //Case_D5: // C red && S+D black:
+            RotateDirRoot(tree, S,1-dir); // S is never the root
+            S->color = RED;
+            C->color = BLACK;
+            D = S;
+            S = C;
+            //Case_D6: // D red && S black:
+            RotateDirRoot(tree,P,dir); // P may be the root
+            S->color = P->color;
+            P->color = BLACK;
+            D->color = BLACK;
+            return; // deletion complete                // C red && S+D black
+          }
+          // Here both nephews are == NULL (first iteration) or black (later).
+          if (P->color == RED)
+          {
+            //Case_D4: // P red && S+C+D black:
+            S->color = RED;
+            P->color = BLACK;
+            return;
+          }
+          //case 1
+          S->color = RED;
+          N = P; // new current node (maybe the root)
+        } while ((P = N->parent) != NULL);
+
+        return; // deletion complete
+
+      } // end of rbtRemove
+
+
+
 
       template<class U>
       size_type    count(U &toFind) const
@@ -273,13 +457,22 @@ namespace ft
             return(end());
         return(iterator(result, endNode));
       }
+      template<class U>
+      const_iterator    find_const(U &toFind) const
+      {
+        node_pointer result;
+        result = find(root, toFind);
+        if (result == NULL)
+            return(end());
+        return(const_iterator(result, endNode));
+      }
 
       template<class U>
       node_pointer    find(node_pointer &curr, U &toFind)
       {
         if(curr == NULL)
         {
-            std::cout << "NOT FOUND !! \n";
+            // std::cout << "NOT FOUND !! \n";
             return(curr);
         }
         if(c(curr->data.first, toFind))
@@ -295,7 +488,7 @@ namespace ft
       {
         if(curr == NULL)
         {
-            std::cout << "NOT FOUND !! \n";
+            // std::cout << "NOT FOUND 2 !! \n";
             return(curr);
         }
         if(c(curr->data.first, toFind))
@@ -305,7 +498,29 @@ namespace ft
 
         return(curr);
       }
-      
+      void clear()
+      {
+        size_t s = size();
+        for(size_t i = 0; i < s; ++i)
+        {
+            erase_key(begin()->first);
+        }
+      }
+      void swap(RedBlackTree& other)
+			{
+				if (&other != this)
+				{
+          node_pointer endTmp = endNode;
+          node_pointer rootTmp = root;
+          endNode = other.endNode;
+          root = other.root;
+          other.root = rootTmp;
+          other.endNode = endTmp;
+        }
+        return ;
+				
+
+			}
   };
 
   

@@ -2,14 +2,14 @@
 // #include <map>
 // #include <iostream>
 #include <utility>
+#include <map>
 
 
 int main()
 {
-    const int SIZE = 10;
+    const int SIZE = 20;
     ft::map<int, int> testMap;
     // std::map<int, int> testMap;
-    // std::map<int, int>::iterator it;
 
     for(int i = 0; i < SIZE; ++i)
     {
@@ -21,6 +21,9 @@ int main()
     ft::map<int, int> testMap2;
     ft::map<int, int>::iterator it;
     ft::map<int, int>::iterator ite;
+    // std::map<int, int> testMap2;
+    // std::map<int, int>::iterator it;
+    // std::map<int, int>::iterator ite;
     it = testMap.begin();
     ite = testMap.end();
 
@@ -28,18 +31,41 @@ int main()
     {
         testMap2.insert(*it);
     }
-    
-    // testMap2.insert(it, ite);
-
-    testMap2.testPrint();
-
-    // it = testMap2.find(10);
-    --it;
-    --it;
-
-    std::cout << std::endl << " :: )" <<  it->first << " | " << it->second << std::endl;
-
     std::cout << testMap2.count(3) << std::endl;
+    for(it = testMap2.begin(); it != testMap2.end(); ++it)
+        std::cout  << it->first << " | ";
+    std::cout << std::endl;
+
+    std::cout << " map1 size = " << testMap.size() << "  Map2 size = " << testMap2.size() << std::endl;
+    // for(int i = 0; i < 20 ; ++i)
+    //     testMap2.erase(i);
+    // for(int i = 0; i < 20 ; ++i)
+    //     testMap.erase(i);
+    testMap.insert(std::make_pair(30, 3 + 1));
+    // testMap2 = testMap;
+    // testMap2.testPrint();
+    std::cout << std::endl;
+    // testMap2[44];
+    std::cout << "at 1 :" <<  testMap2[1] << std::endl ;
+    std::cout << "Before Swap : " << std::endl;
+    testMap2.testPrint();
+    std::cout << std::endl;
+    testMap.testPrint();
+    testMap2.swap(testMap);
+    std::cout << std::endl << "After Swap : " << std::endl;
+    testMap2.testPrint();
+    std::cout << std::endl;
+    testMap.testPrint();
+    std::cout << std::endl;
+
+
+    // testMap2.erase(testMap2.begin(), testMap2.end());
+    // testMap2.erase(testMap2.begin());
+
+    // for(it = testMap2.begin(); it != testMap2.end(); ++it)
+    //     std::cout  << it->first << " | ";
+
+
     // for(it = testMap.begin(); it != testMap.end(); ++it)
     // {
     //     std::cout << it->first << " : " << it->second << std::endl;
@@ -116,9 +142,9 @@ int main()
     // // std::pair<std::map<char, int>::iterator, bool> abc;
 
 
-    // ft::map<char, int> myMap;
-    // ft::map<char, int>::iterator it;
-    // std::pair<ft::map<char, int>::iterator, bool> abc;
+    // std::map<char, int> myMap;
+    // std::map<char, int>::iterator it;
+    // std::pair<std::map<char, int>::iterator, bool> abc;
 
     // std::cout << "New Map\n";
     // std::cout << "Empty = " << myMap.empty() << std::endl;
@@ -166,13 +192,13 @@ int main()
     // for(it = myMap.begin(); it != myMap.end(); ++it)
     //     std::cout << it->first << std::endl;
 
-    // // ft::map<char, int> coppyMAP(myMap);
+    // // std::map<char, int> coppyMAP(myMap);
     // // coppyMAP.testPrint();
 
     // // coppyMAP.erase(coppyMAP.begin(), coppyMAP.end());
     // // coppyMAP.testPrint();
 
-    // // ft::map<char, int>  cpyMap(myMap.begin(), myMap.end());
+    // // std::map<char, int>  cpyMap(myMap.begin(), myMap.end());
     // // std::cout << "Copy myMap  " << std::endl;
     // // cpyMap.testPrint();
     // // for(it = cpyMap.begin(); it != cpyMap.end(); ++it)
@@ -180,7 +206,7 @@ int main()
     // // std::cout << "Find O : \n";
     // // it = myMap.find('O');
     // // std::cout << "Key = " << it->first << " Value = " << it->second << std::endl;
-    // // ft::map<char, int> secondMap;
+    // // std::map<char, int> secondMap;
 
     // // secondMap.insert(myMap.begin(), myMap.end());
     // // for(it = secondMap.begin(); it != secondMap.end(); ++it)
@@ -222,3 +248,39 @@ int main()
     // // myMap.testPrint();
 
 }
+
+
+/* SWAP TEST */
+// int main()
+// {
+//     ft::map<int, char> alice;
+//     ft::map<int, char> bob;
+//     alice.insert(std::make_pair(1, 'a'));
+//     alice.insert(std::make_pair(2, 'b'));
+//     alice.insert(std::make_pair(3, 'C'));
+//     bob.insert(std::make_pair(7, 'Z'));
+//     bob.insert(std::make_pair(8, 'Y'));
+//     bob.insert(std::make_pair(9, 'W'));
+
+ 
+//     auto print = [](std::pair<const int, char>& n) { 
+//         std::cout << " " << n.first << '(' << n.second << ')'; 
+//     };
+ 
+//     // Print state before swap
+//     std::cout << "alice:";
+//     std::for_each(alice.begin(), alice.end(), print);
+//     std::cout << "\n" "bob  :";
+//     std::for_each(bob.begin(), bob.end(), print);
+//     std::cout << '\n';
+ 
+//     std::cout << "-- SWAP\n";
+//     ft::swap(alice, bob);
+ 
+//     // Print state after swap
+//     std::cout << "alice:";
+//     std::for_each(alice.begin(), alice.end(), print);
+//     std::cout << "\n" "bob  :";
+//     std::for_each(bob.begin(), bob.end(), print);
+//     std::cout << '\n';
+// }

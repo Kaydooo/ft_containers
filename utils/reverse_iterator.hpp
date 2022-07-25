@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <iostream>
-#include "myIterator.hpp"
+// #include "myIterator.hpp"
 
 
 namespace   ft
@@ -22,7 +22,7 @@ namespace   ft
             typedef  typename   Iterator::pointer_type      pointer_type;
             typedef  typename   Iterator::reference_type    reference_type;
             typedef  ptrdiff_t                              difference_type;
-            typedef  random_access_iterator_tag             iterator_category;
+            typedef  typename Iterator::iterator_category             iterator_category;
 
             reverse_Iterator(void): baseIterator(NULL){}
             reverse_Iterator(pointer_type ptr): baseIterator(ptr){}
