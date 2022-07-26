@@ -23,8 +23,8 @@ int		main(void)
 	printPair(++ite);
 
 	it->second.m();
+	std::cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n";
 	ite->second.m();
-
 	printPair(++it);
 	printPair(it++);
 	printPair(it++);

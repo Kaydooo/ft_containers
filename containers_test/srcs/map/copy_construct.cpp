@@ -14,8 +14,8 @@ int		main(void)
 
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
 	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin(), ite = mp.end();
-
 	TESTED_NAMESPACE::map<T1, T2> mp_range(it, --(--ite));
+
 	for (int i = 0; it != ite; ++it)
 		it->second = ++i * 5;
 

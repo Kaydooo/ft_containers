@@ -63,15 +63,15 @@ namespace ft
 
 			pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 
-			pair& operator=(const pair& other) 
-            {
-                if (this != &other)
-                {    
-				    this->first = other.first;
-				    this->second = other.second;
-                }
-				return (*this);
-			}
+			// pair& operator=(const pair& other) 
+            // {
+            //     if (this != &other)
+            //     {    
+			// 	    this->first = other.first;
+			// 	    this->second = other.second;
+            //     }
+			// 	return (*this);
+			// }
 
 		};
 

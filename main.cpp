@@ -5,15 +5,46 @@
 #include <map>
 
 
-int main()
+int main(int argc, char **argv)
 {
+
+    if(argc != 1)
+    {    
+        if(argv[1] == std::string("ft"))
+        {
+            #define TEST_NAMESPACE ft
+            std::cout << "FTTTTTT" << std ::endl;
+        }
+        else if (argv[1] == std::string("std"))
+        {
+            #ifndef TEST_NAMESPACE
+             #define TEST_NAMESPACE std
+             #endif
+            std::cout << "STD" << std ::endl;
+
+        }
+
+        const int SIZE = 100000000;
+        TEST_NAMESPACE::map<int, int> testMap;
+        // std::map<int, int> testMap;
+
+        for(int i = 0; i < SIZE; ++i)
+        {
+            testMap.insert(TEST_NAMESPACE::make_pair(i, i + 1));
+        }
+        std::cout << "Insertion Completed ! " << std::endl;
+        std::cout << "Size before Deletion = " << testMap.size() << std::endl;
+        testMap.erase(testMap.begin(), testMap.end());
+        std::cout << "Size after Deletion = " << testMap.size() << std::endl;
+        return 0;
+    }
     const int SIZE = 20;
     ft::map<int, int> testMap;
     // std::map<int, int> testMap;
 
     for(int i = 0; i < SIZE; ++i)
     {
-        testMap.insert(std::make_pair(i, i + 1));
+        testMap.insert(ft::make_pair(i, i + 1));
     }
     // std::cout << std::endl <<  testMap.max_size() << std::endl;
 
@@ -41,7 +72,7 @@ int main()
     //     testMap2.erase(i);
     // for(int i = 0; i < 20 ; ++i)
     //     testMap.erase(i);
-    testMap.insert(std::make_pair(30, 3 + 1));
+    testMap.insert(ft::make_pair(30, 3 + 1));
     // testMap2 = testMap;
     // testMap2.testPrint();
     std::cout << std::endl;
@@ -51,7 +82,7 @@ int main()
     testMap2.testPrint();
     std::cout << std::endl;
     testMap.testPrint();
-    testMap2.swap(testMap);
+    // testMap2.swap(testMap);
     std::cout << std::endl << "After Swap : " << std::endl;
     testMap2.testPrint();
     std::cout << std::endl;
@@ -59,6 +90,25 @@ int main()
     std::cout << std::endl;
 
 
+    // ft::map<int, std::string> mp;
+    // mp[42] = "fgzgxfn";
+	// mp[25] = "funny";
+	// mp[80] = "hey";
+	// mp[12] = "no";
+	// mp[27] = "bee";
+	// mp[90] = "8";
+
+    // std::cout << "size: " << mp.size() << std::endl;
+    // std::cout << "max_size: " << mp.max_size() << std::endl;
+
+    // if (print_content)
+    // {
+    // typename ft::map<int, std::string>::const_iterator it = mp.begin(), ite = mp.end();
+    // std::cout << std::endl << "Content is:" << std::endl;
+    // for (; it != ite; ++it)
+    //     std::cout << "- key = " << it->first << " value = " << it->second << std::endl;
+    // std::cout << std::endl;
+    // }
     // testMap2.erase(testMap2.begin(), testMap2.end());
     // testMap2.erase(testMap2.begin());
 

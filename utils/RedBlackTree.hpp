@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <iostream>
 #include "MapIterator.hpp"
+#include "map_reverse_Iterator.hpp"
+
 #define RED_COLOR "\033[0;31m"
 #define CYAN_COLOR "\033[0;36m"
 #define RESET "\033[0m"
@@ -17,12 +19,12 @@
 
 namespace ft
 {
-  template<class T, class Compare>
+  template<class T, class Compare, class node_type>
   class RedBlackTree {
     public:
-    typedef MapIterator<T, Compare>     iterator;
-    typedef MapIterator<T, Compare>     const_iterator;
-    typedef RedBlackTree_Node<T>        node_type;
+    // typedef RedBlackTree_Node<T>        node_type;
+    typedef MapIterator<T, Compare, node_type>     iterator;
+    typedef MapIterator<const T, Compare, node_type>     const_iterator;
     typedef node_type*                  node_pointer;
     typedef std::allocator<node_type>   node_allocator;
     typedef typename std::allocator<T>::size_type  size_type;
@@ -37,7 +39,7 @@ namespace ft
       {
         nodeAllocator = node_allocator();
         endNode = nodeAllocator.allocate(1);
-
+        nodeAllocator.construct(endNode, node_type());
       }
 
       ~RedBlackTree()
@@ -66,6 +68,8 @@ namespace ft
 
       iterator    begin()
       {
+          if(treeSize == 0)
+            return (end());
           node_pointer    temp;
           temp = root;
           if(temp->child[0])
@@ -85,6 +89,8 @@ namespace ft
       const_iterator    begin() const
       {
           node_pointer    temp;
+          if(treeSize == 0)
+            return (end());
           temp = root;
           if(temp->child[0])
           {
@@ -105,9 +111,10 @@ namespace ft
         size_type	max_size(void) const {return (node_allocator().max_size());}
         bool		empty(void) const {return (treeSize == 0? true : false);}
 
-      std::pair<iterator,bool>    insert(const T& value )
+      ft::pair<iterator,bool>    insert(const T& value )
       {
-        std::pair<iterator, bool> result;
+
+        ft::pair<iterator, bool> result;
         node_pointer              nodeRes;
         node_pointer              newNode = nodeAllocator.allocate(1);
 
@@ -135,7 +142,7 @@ namespace ft
           result.first = iterator(nodeRes, this->endNode);
         }
         if (result.second)
-          treeSize++;
+          ++treeSize;
         else
         {
           nodeAllocator.destroy(newNode);
@@ -269,6 +276,10 @@ namespace ft
       template<class U>
       size_type   erase_key(U& k)
       {
+        // std::cout << "key = "<< k << std::endl;
+        // printTree();
+        // std::cout << std::endl;
+        // std::cout << "root is -> " << root->data.first << std::endl;
         node_pointer result;
         result = find(root, k);
         if(result == NULL)
@@ -371,9 +382,11 @@ namespace ft
         // P != NULL, since N is not the root.
         dir = childDir(N); // side of parent P on which the node N is located
         // Replace N at its parent P by NULL:
+        S = P->child[1-dir]; // sibling of N (has black height >= 1)
         nodeAllocator.destroy(P->child[dir]);
         nodeAllocator.deallocate(P->child[dir], 1);
         P->child[dir] = NULL;
+
         // start of the (do while)-loop:
         do 
         {
@@ -383,6 +396,8 @@ namespace ft
             first_iteration = false;
           }
           S = P->child[1-dir]; // sibling of N (has black height >= 1)
+          if(S == NULL)
+            return;
           D = S->child[1-dir]; // distant nephew
           C = S->child[  dir]; // close   nephew
           if (S->color == RED)
@@ -510,17 +525,88 @@ namespace ft
 			{
 				if (&other != this)
 				{
-          node_pointer endTmp = endNode;
-          node_pointer rootTmp = root;
+          node_pointer root_tmp = root;
+          node_pointer end_tmp = endNode;
+          size_t size_temp = treeSize;
           endNode = other.endNode;
           root = other.root;
-          other.root = rootTmp;
-          other.endNode = endTmp;
+          treeSize = other.treeSize;
+          other.root = root_tmp;
+          other.endNode = end_tmp;
+          other.treeSize = size_temp;
+
         }
         return ;
-				
-
 			}
+    template<class U>
+    iterator		lower_bound(const U &key) {
+		iterator first = begin();
+		iterator last = end();
+
+		while (first != last)
+		{
+			if (!c(first->first, key))
+				break;
+			first++;
+		}
+		return first;
+	}
+  template<class U>
+	const_iterator	lower_bound_const(const U &key) const {
+		const_iterator first = begin();
+		const_iterator last = end();
+
+		while (first != last)
+		{
+			if (!c(first->first, key))
+				break;
+			first++;
+		}
+		return first;
+	}
+
+  template<class U>
+	iterator		upper_bound(const U &key) {
+		iterator first = begin();
+		iterator last = end();
+
+		while (first != last)
+		{
+			if (c(key, first->first))
+				break;
+			first++;
+		}
+		return first;
+	}
+
+  template<class U>
+	const_iterator	upper_bound_const(const U &key) const {
+		const_iterator first = begin();
+		const_iterator last = end();
+
+		while (first != last)
+		{
+			if (c(key, first->first))
+				break;
+			first++;
+		}
+		return first;
+	}
+		// void swap(RedBlackTree& x)
+		// 	{
+		// 		if (&x != this)
+		// 		{	
+    //       node_pointer root_temp = this->root;
+    //       node_pointer end_temp = this->endNode;
+
+    //       this->root = x.root;
+    //       this->endNode = x.endNode;
+    //       x.root = root_temp;
+    //       x.endNode = end_temp;
+    //     }
+    //     return ;
+		// 	}
+
   };
 
   

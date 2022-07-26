@@ -25,8 +25,7 @@ namespace   ft
             typedef  typename Iterator::iterator_category             iterator_category;
 
             reverse_Iterator(void): baseIterator(NULL){}
-            reverse_Iterator(pointer_type ptr): baseIterator(ptr){}
-            reverse_Iterator(iterator_type it): baseIterator(it.getPtr()) {}
+            reverse_Iterator(iterator_type it): baseIterator(it) {}
             template <typename U>
             reverse_Iterator(const reverse_Iterator<U>& other): baseIterator(other.base()){}
 

@@ -22,6 +22,7 @@ int		main(void)
 	mp[12] = "no";
 	mp[27] = "bee";
 	mp[90] = "8";
+	// mp.testPrint();
 	printSize(mp);
 
 	return (0);

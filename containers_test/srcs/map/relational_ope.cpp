@@ -8,7 +8,6 @@ template <class MAP>
 void	cmp(const MAP &lhs, const MAP &rhs)
 {
 	static int i = 0;
-
 	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
 	std::cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << std::endl;
 	std::cout << "lt: " << (lhs <  rhs) << " | le: " << (lhs <= rhs) << std::endl;
@@ -40,6 +39,7 @@ int		main(void)
 
 	cmp(mp1, mp2); // 6
 	cmp(mp2, mp1); // 7
+
 
 	return (0);
 }

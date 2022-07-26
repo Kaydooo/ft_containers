@@ -11,7 +11,7 @@ namespace ft
     struct bidirectional_iterator_tag: public forward_iterator_tag{};
     struct random_access_iterator_tag: public bidirectional_iterator_tag{};
 
-    template<class T, class Compare>
+    template<class T, class Compare, class node_type>
     class MapIterator
     {
         public:
@@ -19,7 +19,7 @@ namespace ft
         typedef T   value_type;
         typedef T*  pointer_type;
         typedef T&                  reference_type;
-        typedef RedBlackTree_Node<T> node_type;
+        // typedef RedBlackTree_Node<T> node_type;
         typedef node_type*           node_pointer;
         typedef std::ptrdiff_t difference_type;
         typedef bidirectional_iterator_tag  iterator_category;
@@ -28,11 +28,18 @@ namespace ft
         node_pointer    endNode;
         Compare c;
 
-        MapIterator(): dataNode(NULL){}
-        MapIterator(const node_pointer& node,  const node_pointer& endN): dataNode(node), endNode(endN){}
-        MapIterator(const MapIterator& other): dataNode(other.dataNode), endNode(other.endNode){}
-
-        //Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
+        // MapIterator(): dataNode(NULL){}
+        // MapIterator(const node_pointer& node,  const node_pointer& endN): dataNode(node), endNode(endN){}
+        // MapIterator(const MapIterator& other): dataNode(other.dataNode), endNode(other.endNode){}
+        MapIterator(void);
+		MapIterator(node_type *src, node_type *en);
+        template <typename U>
+        MapIterator(const MapIterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
+        // template <typename T1>
+        // MapIterator(T1 &src):dataNode(src.dataNode), endNode(src.endNode) {
+        // }
+        // MapIterator(const MapIterator &src);
+        //Iterator(const Iterator<U>& other): itPtr(ot./her.getPtr()){}
 
 
         // template <typename U>
@@ -62,7 +69,7 @@ namespace ft
         }
 
         reference_type  operator*() const { return( dataNode->data );}
-        pointer_type operator->() { return &operator*(); }
+        pointer_type operator->()const { return &operator*(); }
 
         MapIterator&       operator++()
         {
@@ -78,7 +85,7 @@ namespace ft
                     {
                         dataNode = dataNode->parent;                            
                     }
-                    if(dataNode->data.first < temp->data.first)
+                    if(c(dataNode->data.first, temp->data.first))
                     {
                         endNode->parent = dataNode;
                         dataNode = endNode;
@@ -113,7 +120,7 @@ namespace ft
                     {
                         dataNode = dataNode->parent;
                     }
-                    if(dataNode->data.first > temp->data.first)
+                    if(c(temp->data.first, dataNode->data.first))
                     {
                         get_far_left();
                     }
@@ -163,6 +170,19 @@ namespace ft
         //     bstNode *dataNode;
 
     };
+
+    // template <typename T, class Comp, typename node_type>
+    // MapIterator<T, Comp, node_type>::MapIterator(const MapIterator<T, Comp, node_type> &src) {
+    //     dataNode = src.dataNode;
+    //     endNode = src.endNode;
+    // }
+
+
+        template <typename T, class Comp, typename node_type>
+        MapIterator<T, Comp, node_type>::MapIterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
+
+        template <typename T, class Comp, typename node_type>
+        MapIterator<T, Comp, node_type>::MapIterator(node_type *dn, node_type *end):dataNode(dn), endNode(end) {return ;}
 
 
 
