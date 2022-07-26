@@ -33,20 +33,14 @@ namespace ft
             //iteraors here
             typedef MapIterator<value_type, Compare, node_type>     iterator;
             typedef MapIterator<const value_type, Compare, node_type>     const_iterator;
-            typedef map_reverse_Iterator<iterator>           reverse_iterator;
-            typedef map_reverse_Iterator<const_iterator>     const_reverse_iterator;
+            typedef rbt_reverse_iterator<iterator>           reverse_iterator;
+            typedef rbt_reverse_iterator<const_iterator>     const_reverse_iterator;
             typedef typename allocator_type::difference_type    difference_type;
             typedef typename allocator_type::size_type          size_type;
             typedef typename allocator_type::pointer    pointer;
             typedef typename allocator_type::const_pointer    const_pointer;
             
             typedef          std::allocator<tree_type>         tree_allocator;
-
-
-
-        /* Value Compare .. This class will create an object that can be used
-        to compare 2 values of type ft::pair<const Key, T> , this object will 
-        only use the Compare (Which is less<Key>) to compare the keys of the passed pairs */
 
         class value_compare
         : public std::binary_function<value_type, value_type, bool>
@@ -62,6 +56,12 @@ namespace ft
             bool operator()(const value_type& x, const value_type& y) const
             { return comp(x.first, y.first); }
         };
+
+
+        /* Value Compare .. This class will create an object that can be used
+        to compare 2 values of type ft::pair<const Key, T> , this object will 
+        only use the Compare (Which is less<Key>) to compare the keys of the passed pairs */
+
 
 
         /* Constructors  */

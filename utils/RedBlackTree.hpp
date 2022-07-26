@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <iostream>
 #include "MapIterator.hpp"
-#include "map_reverse_Iterator.hpp"
+#include "rbt_reverse_iterator.hpp"
 
 #define RED_COLOR "\033[0;31m"
 #define CYAN_COLOR "\033[0;36m"
@@ -209,7 +209,8 @@ namespace ft
         node_pointer G = P->parent;
         node_pointer S = P->child[1-dir];
         node_pointer C;
-        assert(S != NULL);
+        if(S == NULL)
+          return NULL;
         C = S->child[dir];
         P->child[1-dir] = C; if (C != NULL) C->parent = P;
         S->child[  dir] = P; P->parent = S;
@@ -403,9 +404,11 @@ namespace ft
           if (S->color == RED)
           {
             ///case 3
-            RotateDirRoot(tree,P,dir); // P may be the root
+            if(C == NULL)
+              return;
             P->color = RED;// swap color with sibiling .
             S->color = BLACK; // if sibling color was red then parent is black for sure
+            RotateDirRoot(tree,P,dir); // P may be the root
             S = C; // != NULL  -- new sibling is the old close nephew ( after rotation)
             // now: P red && S black
             D = S->child[1-dir]; // distant nephew               // S red ===> P+C+D black
