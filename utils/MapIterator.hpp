@@ -10,39 +10,29 @@ namespace ft
     class MapIterator
     {
         public:
-
-        typedef T   value_type;
-        typedef T*  pointer_type;
-        typedef T&                  reference_type;
-        // typedef RedBlackTree_Node<T> node_type;
-        typedef node_type*           node_pointer;
-        typedef std::ptrdiff_t difference_type;
+        typedef T                           value_type;
+        typedef T*                          pointer_type;
+        typedef T&                          reference_type;
+        typedef node_type*                  node_pointer;
+        typedef std::ptrdiff_t              difference_type;
         typedef bidirectional_iterator_tag  iterator_category;
 
+        /* Iterator class vars */
         node_pointer    dataNode;
         node_pointer    endNode;
         Compare c;
 
-        // MapIterator(): dataNode(NULL){}
-        // MapIterator(const node_pointer& node,  const node_pointer& endN): dataNode(node), endNode(endN){}
-        // MapIterator(const MapIterator& other): dataNode(other.dataNode), endNode(other.endNode){}
+        /* Default Constructor */
         MapIterator(void);
-		MapIterator(node_type *src, node_type *en);
+
+        /*  Node  Constructor */
+		MapIterator(node_type *node, node_type *end);
+
+        /*  Copy  Constructor */
         template <typename U>
         MapIterator(const MapIterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
-        // template <typename T1>
-        // MapIterator(T1 &src):dataNode(src.dataNode), endNode(src.endNode) {
-        // }
-        // MapIterator(const MapIterator &src);
-        //Iterator(const Iterator<U>& other): itPtr(ot./her.getPtr()){}
 
-
-        // template <typename U>
-        // MapIterator(const MapIterator<U, Compare>& other): dataNode(other.dataNode){}
-        // template <typename U>
-        // Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
-
-
+        /*  Copy Assignment Operator */
         MapIterator&   operator=(const MapIterator& rhs)
         {
             if(this != &rhs)
@@ -77,9 +67,7 @@ namespace ft
                 {
                     dataNode = dataNode->parent;
                     while(dataNode->parent && c(dataNode->data.first, temp->data.first)) // use compare here later
-                    {
                         dataNode = dataNode->parent;                            
-                    }
                     if(c(dataNode->data.first, temp->data.first))
                     {
                         endNode->parent = dataNode;
@@ -112,13 +100,9 @@ namespace ft
                 {
                     dataNode = dataNode->parent;
                     while(dataNode->parent && c(temp->data.first, dataNode->data.first)) // use compare here later
-                    {
                         dataNode = dataNode->parent;
-                    }
                     if(c(temp->data.first, dataNode->data.first))
-                    {
                         get_far_left();
-                    }
                 }
                 else
                 {
@@ -152,32 +136,26 @@ namespace ft
             return (tmp);
         }          
         private:
-            void    get_far_left()
-            {
-                while(dataNode->child[0])
-                    dataNode = dataNode->child[0];
-            }
-            void    get_far_right()
-            {
-                while(dataNode->child[1])
-                    dataNode = dataNode->child[1];
-            }
-        //     bstNode *dataNode;
-
+        void    get_far_left()
+        {
+            while(dataNode->child[0])
+                dataNode = dataNode->child[0];
+        }
+        void    get_far_right()
+        {
+            while(dataNode->child[1])
+                dataNode = dataNode->child[1];
+        }
     };
 
-    // template <typename T, class Comp, typename node_type>
-    // MapIterator<T, Comp, node_type>::MapIterator(const MapIterator<T, Comp, node_type> &src) {
-    //     dataNode = src.dataNode;
-    //     endNode = src.endNode;
-    // }
+
 
 
         template <typename T, class Comp, typename node_type>
         MapIterator<T, Comp, node_type>::MapIterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
 
         template <typename T, class Comp, typename node_type>
-        MapIterator<T, Comp, node_type>::MapIterator(node_type *dn, node_type *end):dataNode(dn), endNode(end) {return ;}
+        MapIterator<T, Comp, node_type>::MapIterator(node_type *node, node_type *end):dataNode(node), endNode(end) {return ;}
 
 
 

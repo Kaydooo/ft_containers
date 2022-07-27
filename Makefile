@@ -3,13 +3,13 @@
 # $@ "include target"
 # $^ "include the full list of prerequisites"
 
-SRCS = subj_main.cpp
+SRCS = subj_main_ft.cpp
 
 OBJS = ${SRCS:.cpp=.o}
 
 CXX = c++
 
-CXXFLAGS = -Werror -Wall -Wextra -g3 
+CXXFLAGS =  -g3 
 
 NAME = ft_containers
 	

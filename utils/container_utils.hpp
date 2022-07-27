@@ -7,11 +7,47 @@ namespace ft
 {
     
     /* Iterator Categaorie Tags */
+
     struct input_iterator_tag{};
     struct output_iterator_tag{};
     struct forward_iterator_tag: public input_iterator_tag{};
     struct bidirectional_iterator_tag: public forward_iterator_tag{};
     struct random_access_iterator_tag: public bidirectional_iterator_tag{};
+
+
+    template<class it>
+    struct iterator_traits {
+        
+        public :
+            typedef typename it::iterator_category	iterator_category;
+            typedef typename it::value_type		    value_type;	
+            typedef typename it::difference_type	difference_type;	
+            typedef typename it::pointer		    pointer;	
+            typedef typename it::reference		    reference;	
+
+    };
+
+    template<typename Tp>
+    struct iterator_traits<Tp*> {
+
+        public :
+            typedef random_access_iterator_tag	iterator_category;	
+            typedef Tp		                    value_type;	
+            typedef std::ptrdiff_t		        difference_type;	
+            typedef Tp*		                    pointer;	
+            typedef Tp&		                    reference;
+    };
+
+
+    template<typename Tp>
+    struct iterator_traits<const Tp*> {
+        public :
+            typedef random_access_iterator_tag	iterator_category;	
+            typedef Tp		                    value_type;	
+            typedef std::ptrdiff_t		        difference_type;	
+            typedef const Tp*		            pointer;	
+            typedef const Tp&		            reference;
+    };
 
     struct false_type { static const bool value = false;};
     struct true_type { static const bool value = true;};
@@ -48,7 +84,7 @@ namespace ft
         enum color_t color;
         T data;
 
-        RedBlackTree_Node():parent(NULL){}
+        RedBlackTree_Node(): parent(NULL), data(T()){}
         RedBlackTree_Node(T value): parent(NULL), data(value){}
     };
 
