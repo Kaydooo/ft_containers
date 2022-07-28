@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <iostream>
-
+#include "container_utils.hpp"
 
 namespace   ft
 {
@@ -23,27 +23,20 @@ namespace   ft
             typedef  std::ptrdiff_t difference_type;
             typedef  random_access_iterator_tag iterator_category;
 
-            // using value_type = vector::value_type;
-            // using pointer_type = vector::pointer;
-            // using reference_type = vector::reference;
-            // using difference_type = vector::difference_type;
-            // using iterator_category = random_access_iterator_tag;
-
             Iterator(void): itPtr(NULL){}
             Iterator(pointer_type ptr): itPtr(ptr){}
             template <typename U>
             Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
-
             Iterator&   operator=(const Iterator& rhs)
             {
                 this->itPtr = rhs.itPtr;
                 return (*this);
             }
 
-            pointer_type getPtr() const
-            { return (this->itPtr); }
+            pointer_type getPtr() const { return (this->itPtr); }
 
             reference_type operator*() const { return *itPtr; }
+
             pointer_type operator->() { return itPtr; }
 
             // Prefix increment
@@ -54,22 +47,12 @@ namespace   ft
             
             // Prefix dec
             Iterator& operator--() { itPtr--; return *this; }  
-
             // Postfix dec
-            Iterator operator--(int) { Iterator tmp = *this; --(*this); return tmp;}
+            Iterator operator--(int) { Iterator tmp = *this; --(*this); return tmp; }
 
             Iterator    operator+(difference_type n) const { return (itPtr + n); }
-			// Iterator& operator+(difference_type num) {
-			// 	Iterator temp;
-            //     temp.itPtr = itPtr + num;
-			// 	return (temp);
-			// }	
+
             Iterator    operator-(difference_type n) const { return (itPtr - n); }
-			// Iterator& operator-(difference_type num) {
-			// 	Iterator temp;
-            //     temp.itPtr = itPtr - num;
-			// 	return (temp);
-			// }
             
 			Iterator& operator+=(difference_type num) {
 				itPtr = itPtr + num;
@@ -125,31 +108,22 @@ namespace   ft
 
     template<typename T>
     typename ft::Iterator<T>::difference_type operator-(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs)
-    {
-        return (lhs.getPtr() - rhs.getPtr());
-    }
+    { return (lhs.getPtr() - rhs.getPtr()); }
+
     template<typename T1, typename T2>
     typename ft::Iterator<T1>::difference_type operator-(const ft::Iterator<T1> lhs, const ft::Iterator<T2> rhs)
-    {
-        return (lhs.getPtr() - rhs.getPtr());
-    }
+    { return (lhs.getPtr() - rhs.getPtr()); }
+
     template<typename T>
     typename ft::Iterator<T>::difference_type operator+(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs)
-    {
-        return (lhs.getPtr() + rhs.getPtr());
-    }
+    { return (lhs.getPtr() + rhs.getPtr()); }
+
     template<typename T1, typename T2>
     typename ft::Iterator<T1>::difference_type operator+(const ft::Iterator<T1> lhs, const ft::Iterator<T2> rhs)
-    {
-        return (lhs.getPtr() + rhs.getPtr());
-    }
+    { return (lhs.getPtr() + rhs.getPtr()); }
 
-    template<typename T> ft::Iterator<T> operator+(
-        typename ft::Iterator<T>::difference_type x,
-        typename ft::Iterator<T>& rhs)
-        {
-            return (&(*rhs) + x);
-        }
+    template<typename T> ft::Iterator<T> operator+(typename ft::Iterator<T>::difference_type x, typename ft::Iterator<T>& rhs)
+    { return (&(*rhs) + x); }
 }
 
 

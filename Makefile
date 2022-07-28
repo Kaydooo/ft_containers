@@ -9,7 +9,7 @@ OBJS = ${SRCS:.cpp=.o}
 
 CXX = c++
 
-CXXFLAGS =  -g3 
+CXXFLAGS = -Werror -Wall -Wextra -std=c++98 -g3 
 
 NAME = ft_containers
 	

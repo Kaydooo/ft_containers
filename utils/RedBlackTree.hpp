@@ -1,9 +1,8 @@
 #ifndef REDBLACKTREE_HPP
 #define REDBLACKTREE_HPP
 #include "container_utils.hpp"
-#include <assert.h>
 #include <iostream>
-#include "MapIterator.hpp"
+#include "map_iterator.hpp"
 #include "rbt_reverse_iterator.hpp"
 
 #define RED_COLOR "\033[0;31m"
@@ -23,8 +22,8 @@ namespace ft
   class RedBlackTree {
     public:
     // typedef RedBlackTree_Node<T>        node_type;
-    typedef MapIterator<T, Compare, node_type>     iterator;
-    typedef MapIterator<const T, Compare, node_type>     const_iterator;
+    typedef map_iterator<T, Compare, node_type>     iterator;
+    typedef map_iterator<const T, Compare, node_type>     const_iterator;
     typedef node_type*                  node_pointer;
     typedef std::allocator<node_type>   node_allocator;
     typedef typename std::allocator<T>::size_type  size_type;
@@ -173,7 +172,6 @@ namespace ft
               temp = current->left;
           }
           else{
-              // std::cout << "OBJECT DOUBLICATE FOUND11 !!" << current->data.first << std::endl;
               return current;
           }
           while(temp)
@@ -197,7 +195,6 @@ namespace ft
                   temp = temp->left;
               }
               else{
-                  // std::cout << "OBJECT DOUBLICATE FOUND !!" << std::endl;
                   return temp;
               }
           }
@@ -277,10 +274,6 @@ namespace ft
       template<class U>
       size_type   erase_key(U& k)
       {
-        // std::cout << "key = "<< k << std::endl;
-        // printTree();
-        // std::cout << std::endl;
-        // std::cout << "root is -> " << root->data.first << std::endl;
         node_pointer result;
         result = find(root, k);
         if(result == NULL)
@@ -489,10 +482,7 @@ namespace ft
       node_pointer    find(node_pointer &curr, U &toFind)
       {
         if(curr == NULL)
-        {
-            // std::cout << "NOT FOUND !! \n";
             return(curr);
-        }
         if(c(curr->data.first, toFind))
             return(find(curr->child[1], toFind));
         if(c(toFind, curr->data.first))
@@ -505,10 +495,7 @@ namespace ft
       node_pointer    find(node_pointer curr, U &toFind) const
       {
         if(curr == NULL)
-        {
-            // std::cout << "NOT FOUND 2 !! \n";
             return(curr);
-        }
         if(c(curr->data.first, toFind))
             return(find(curr->child[1], toFind));
         if(c(toFind, curr->data.first))
@@ -595,20 +582,6 @@ namespace ft
 		}
 		return first;
 	}
-		// void swap(RedBlackTree& x)
-		// 	{
-		// 		if (&x != this)
-		// 		{	
-    //       node_pointer root_temp = this->root;
-    //       node_pointer end_temp = this->endNode;
-
-    //       this->root = x.root;
-    //       this->endNode = x.endNode;
-    //       x.root = root_temp;
-    //       x.endNode = end_temp;
-    //     }
-    //     return ;
-		// 	}
 
   };
 

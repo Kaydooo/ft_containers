@@ -1,13 +1,12 @@
-#ifndef MAPITERATOR_HPP
-#define  MAPITERATOR_HPP
-#include "RedBlackTree.hpp"
+#ifndef MAP_ITERATOR_HPP
+#define  MAP_ITERATOR_HPP
 
 
 namespace ft
 {
 
     template<class T, class Compare, class node_type>
-    class MapIterator
+    class map_iterator
     {
         public:
         typedef T                           value_type;
@@ -23,17 +22,17 @@ namespace ft
         Compare c;
 
         /* Default Constructor */
-        MapIterator(void);
+        map_iterator(void);
 
         /*  Node  Constructor */
-		MapIterator(node_type *node, node_type *end);
+		map_iterator(node_type *node, node_type *end);
 
         /*  Copy  Constructor */
         template <typename U>
-        MapIterator(const MapIterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
+        map_iterator(const map_iterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
 
         /*  Copy Assignment Operator */
-        MapIterator&   operator=(const MapIterator& rhs)
+        map_iterator&   operator=(const map_iterator& rhs)
         {
             if(this != &rhs)
             {
@@ -43,12 +42,12 @@ namespace ft
             return (*this);
         }
 
-        bool  operator==(const MapIterator& other) const 
+        bool  operator==(const map_iterator& other) const 
         { 
             return(this->dataNode == other.dataNode);
         }
 
-        bool  operator!=(const MapIterator& other) const 
+        bool  operator!=(const map_iterator& other) const 
         { 
             return(this->dataNode != other.dataNode);
         }
@@ -56,7 +55,7 @@ namespace ft
         reference_type  operator*() const { return( dataNode->data );}
         pointer_type operator->()const { return &operator*(); }
 
-        MapIterator&       operator++()
+        map_iterator&       operator++()
         {
             if(dataNode->child[1] == NULL)
             {
@@ -86,7 +85,7 @@ namespace ft
             return (*this);
         }
 
-        MapIterator&       operator--()
+        map_iterator&       operator--()
         {    
             if(dataNode == endNode)
             {
@@ -123,15 +122,15 @@ namespace ft
             return (*this);
         }
 
-        MapIterator operator++(int)
+        map_iterator operator++(int)
         {
-            MapIterator tmp(dataNode, endNode);
+            map_iterator tmp(dataNode, endNode);
             ++(*this);
             return (tmp);
         }  
-        MapIterator operator--(int)
+        map_iterator operator--(int)
         {
-            MapIterator tmp(dataNode, endNode);
+            map_iterator tmp(dataNode, endNode);
             --(*this);
             return (tmp);
         }          
@@ -152,10 +151,10 @@ namespace ft
 
 
         template <typename T, class Comp, typename node_type>
-        MapIterator<T, Comp, node_type>::MapIterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
+        map_iterator<T, Comp, node_type>::map_iterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
 
         template <typename T, class Comp, typename node_type>
-        MapIterator<T, Comp, node_type>::MapIterator(node_type *node, node_type *end):dataNode(node), endNode(end) {return ;}
+        map_iterator<T, Comp, node_type>::map_iterator(node_type *node, node_type *end):dataNode(node), endNode(end) {return ;}
 
 
 
