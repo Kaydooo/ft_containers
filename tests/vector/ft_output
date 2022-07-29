@@ -1,0 +1,89 @@
+ Vector 1
+Size = 10
+Capacity = 10
+max_size = 2305843009213693951
+Content : 
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ Vector 2 , copy of Vector 1
+Size = 10
+Capacity = 10
+max_size = 2305843009213693951
+Content : 
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ Vector 2 after inserting vec1.begin() to vec1.end()
+Size = 20
+Capacity = 20
+max_size = 2305843009213693951
+Content : 
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ Vector 2 after inserting vec1.begin() to vec1.begin() + 5 into vec2.begin() + 3
+Size = 25
+Capacity = 25
+max_size = 2305843009213693951
+Content : 
+ * 0
+ * 1
+ * 2
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ * 0
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ Vector 1 after erasing from vec1.begin() to vec1.end()
+Size = 0
+Capacity = 0
+max_size = 2305843009213693951

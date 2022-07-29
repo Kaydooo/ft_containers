@@ -6,9 +6,12 @@
 int main(int argc, char **argv)
 {
     if(argc != 1)
-    {      
-        const long SIZE = 100000000;
-
+    {     
+        long SIZE;
+        if(argc > 2)
+            SIZE = atol(argv[2]);
+        else
+            SIZE = 10000000;
         if(argv[1] == std::string("ft"))
         {
             #define TEST_NAMESPACE ft
