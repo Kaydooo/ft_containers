@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/28 23:05:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/07/29 05:45:29 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 #include <cstddef>
 #include <algorithm>
 #include <iostream>
-
-
 
 namespace ft
 {
@@ -200,6 +198,7 @@ namespace ft
 
 
             /* Element access */
+            
             reference operator[] (size_type n){ return (vectorData[n]);}
             const_reference operator[] (size_type n) const{ return vectorData[n];}
             reference at (size_type n)
@@ -220,6 +219,7 @@ namespace ft
             const_reference back() const{ return (vectorData[vectorSize - 1]);}
             
             /* Modifiers: */
+            
             void clear() { this->resize(0); }
             
             iterator insert( iterator pos, const T& value )

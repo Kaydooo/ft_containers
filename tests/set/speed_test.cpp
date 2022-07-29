@@ -2,32 +2,36 @@
 #include <set>
 #include <cstdlib>
 
+#ifdef STD
+#define TEST_NAMESPACE std
+#endif
+
+#ifdef FT
+#define TEST_NAMESPACE ft
+#endif
+
+#ifndef TEST_NAMESPACE
+#define TEST_NAMESPACE ft
+#endif
 
 int main(int argc, char **argv)
 {
-    if(argc != 1)
-    {      
-        const long SIZE = 10000000;
+    (void) argc;
+    (void) argv;
 
-        if(argv[1] == std::string("ft"))
-        {
-            #define TEST_NAMESPACE ft
-        }
-        else if (argv[1] == std::string("std"))
-        {
-            #ifndef TEST_NAMESPACE
-             #define TEST_NAMESPACE std
-            #endif
-        }
-        TEST_NAMESPACE::set<int> testSet;
+    long SIZE;
+    if(argc > 1)
+        SIZE = atol(argv[1]);
+    else
+        SIZE = 10000000;
 
-        for(int i = 0; i < SIZE; ++i)
-        {
-            testSet.insert(i);
-        }
-        testSet.erase(testSet.begin(), testSet.end());
-        return 0;
+    TEST_NAMESPACE::set<int> testSet;
+
+    for(int i = 0; i < SIZE; ++i)
+    {
+        testSet.insert(i);
     }
-    std::cout << "Pleaes Include Namespace as the argument .." << std::endl;
+    testSet.erase(testSet.begin(), testSet.end());
+    return 0;
   
 }
