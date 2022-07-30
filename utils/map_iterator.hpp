@@ -22,14 +22,22 @@ namespace ft
         Compare c;
 
         /* Default Constructor */
-        map_iterator(void);
+        map_iterator(void) : dataNode(NULL), endNode(NULL)  {}
 
         /*  Node  Constructor */
-		map_iterator(node_type *node, node_type *end);
+		map_iterator(const node_pointer &node, const node_pointer &end):dataNode(node), endNode(end) {}
 
         /*  Copy  Constructor */
-        template <typename U>
-        map_iterator(const map_iterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
+        map_iterator(const map_iterator& other):dataNode(other.dataNode), endNode(other.endNode){}
+
+        
+        /* Conversion Operators */
+        // * converts normal iterator to constant_iterator
+        operator map_iterator<const T, Compare, node_type> (void) const { return map_iterator<const T, Compare, node_type> (dataNode, endNode); }
+
+        // * converts const_iterator to iterator but because map doesn't allow const_it to iterator conversion this was commented.
+        // template<typename U>
+        // operator map_iterator<U, Compare, node_type> (void) { return map_iterator<U, Compare, node_type> (dataNode, endNode); }
 
         /*  Copy Assignment Operator */
         map_iterator&   operator=(const map_iterator& rhs)
@@ -142,11 +150,6 @@ namespace ft
         }
     };
 
-    template <typename T, class Comp, typename node_type>
-    map_iterator<T, Comp, node_type>::map_iterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
-
-    template <typename T, class Comp, typename node_type>
-    map_iterator<T, Comp, node_type>::map_iterator(node_type *node, node_type *end):dataNode(node), endNode(end) {return ;}
 }
 
 #endif 

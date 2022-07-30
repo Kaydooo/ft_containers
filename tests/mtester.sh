@@ -15,7 +15,7 @@ test_speed() {
     # $1 Container 
     # $2 Numbers
     echo -e "${MAGENTA}$1 speed_test${ENDCOLOR}"
-    echo -e "${CYAN}$2 NUMBERS ${ENDCOLOR}"
+    echo -e "${CYAN}$2 NUMBER ${ENDCOLOR}"
     g++ -Werror -Wextra -Wall -std=c++98 $1/speed_test.cpp -D=FT2 > /dev/null
     ft_speed=`{ time ./a.out $2; } 2>&1 | grep real | awk '{print $2}'`
     g++ -Werror -Wextra -Wall -std=c++98 $1/speed_test.cpp -D=STD > /dev/null
@@ -78,6 +78,23 @@ test stack modifiers
 echo "-------------------------------------------------------"
 test stack re_op
 echo "-------------------------------------------------------"
+test map constructor
+echo "-------------------------------------------------------"
+test map element_access
+echo "-------------------------------------------------------"
+test map modifiers
+echo "-------------------------------------------------------"
+test map re_op
+echo "-------------------------------------------------------"
+test set modifiers
+echo "-------------------------------------------------------"
+test set constructor
+echo "-------------------------------------------------------"
+test set re_op
+
+
+
+
 
 
 

@@ -33,21 +33,19 @@ namespace   ft
                 return (*this);
             }
 
+            
             pointer_type getPtr() const { return (this->itPtr); }
 
             reference_type operator*() const { return *itPtr; }
 
             pointer_type operator->() { return itPtr; }
 
-            // Prefix increment
             Iterator& operator++() { itPtr++; return *this; }  
 
-            // Postfix increment
             Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
             
-            // Prefix dec
             Iterator& operator--() { itPtr--; return *this; }  
-            // Postfix dec
+            
             Iterator operator--(int) { Iterator tmp = *this; --(*this); return tmp; }
 
             Iterator    operator+(difference_type n) const { return (itPtr + n); }

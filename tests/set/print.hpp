@@ -17,7 +17,7 @@ void    print_container_content(Iterator &first, Iterator &last)
     Iterator    it;
     std::cout << "Content : " << std::endl;
     for(it = first ; it != last; ++it)
-        std::cout << "Key = " << it->first << " |  value = " << it->second << std::endl;
+        std::cout << "Key = " << *it << std::endl;
     std::cout << "---------------------------------------------------------------------" << std::endl;
     std::cout << std::endl;
 }

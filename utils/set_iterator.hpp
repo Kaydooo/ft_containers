@@ -16,14 +16,20 @@ namespace ft
         typedef std::ptrdiff_t              difference_type;
         typedef bidirectional_iterator_tag  iterator_category;
 
+
+        /* Iterator class vars */
         node_pointer    dataNode;
         node_pointer    endNode;
         Compare c;
 
-        set_iterator(void);
+        /* Default Constructor */
+        set_iterator(void) : dataNode(NULL), endNode(NULL)  {}
+        /*  Node  Constructor */
+		set_iterator(node_type *dn, node_type *end):dataNode(dn), endNode(end) {}
 
-		set_iterator(node_type *src, node_type *en);
-        
+        /*  Copy  Constructor */
+        // * template was used to allow conversion from iterator to const_iterator and vice versa.. unlike map , set allows conversion from const_it to it.
+        // * conversion operator was used in map to allow one way conversion only --> it to const_it .
         template <typename U>
         set_iterator(const set_iterator<U, Compare, node_type>& other):dataNode(other.dataNode), endNode(other.endNode){}
 
@@ -135,12 +141,6 @@ namespace ft
                     dataNode = dataNode->child[1];
             }
     }; // end of set_iterator
-
-    template <typename T, class Comp, typename node_type>
-    set_iterator<T, Comp, node_type>::set_iterator(void) : dataNode(NULL), endNode(NULL)  { return ; }
-
-    template <typename T, class Comp, typename node_type>
-    set_iterator<T, Comp, node_type>::set_iterator(node_type *dn, node_type *end):dataNode(dn), endNode(end) {return ;}
 
 } // end of namespace ft
 
