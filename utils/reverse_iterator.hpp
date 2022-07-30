@@ -25,7 +25,9 @@ namespace   ft
             typedef  typename Iterator::iterator_category             iterator_category;
 
             reverse_Iterator(void): baseIterator(NULL){}
+
             reverse_Iterator(iterator_type it): baseIterator(it) {}
+            
             template <typename U>
             reverse_Iterator(const reverse_Iterator<U>& other): baseIterator(other.base()){}
 
@@ -116,7 +118,7 @@ namespace   ft
     template<typename T>
     typename ft::reverse_Iterator<T>::difference_type operator-(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs)
     { return (rhs.base() - lhs.base()); }
-    
+
     template<typename T1, typename T2>
     typename ft::reverse_Iterator<T1>::difference_type operator-(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs)
     { return (rhs.base() - lhs.base()); }
