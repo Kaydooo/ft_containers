@@ -8,7 +8,7 @@ CYAN="\e[36m"
 MAGENTA="\e[35m"
 WHITE_BK="\e[107m"
 ENDCOLOR="\e[0m"
-numbers=1000000000
+numbers=10000
 
 echo > diff.txt
 test_speed() {

@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/29 05:45:29 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/07/30 03:11:31 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,12 @@ namespace ft
             {
                 pointer temp;
                 size_type insertPos = &(*pos) - vectorData;
+                if(capacity() == 0)
+                {
+                    this->vectorData = vectorAllocator.allocate(1);
+                    vectorCapacity += 1;
+                }
+                    
                 if(vectorSize == vectorCapacity)
                 {
                     temp = vectorAllocator.allocate(vectorSize * 2);
@@ -263,7 +269,7 @@ namespace ft
                         vectorAllocator.construct(&temp[i], vectorData[i]);
                     for(size_type i = insertPos; i < insertPos + count; ++i)
                         vectorAllocator.construct(&temp[i], value);
-                    for(size_type i = vectorSize - 1; i >= insertPos && i <= capacity(); --i)
+                    for(size_type i = vectorSize - 1; i >= insertPos && i <= max_size(); --i)
                         vectorAllocator.construct(&temp[i + count], vectorData[i]);
                     for(size_t i = 0; i < vectorSize; i++)
                         vectorAllocator.destroy(&vectorData[i]);

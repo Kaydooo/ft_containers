@@ -138,7 +138,13 @@ int main(int argc, char **argv)
     print_container_size(testVector);
     print_container_content(it, ite);
 
-
+    TEST_NAMESPACE::vector<int> testVector3;
+    testVector3.insert(testVector3.end(), 1);
+    testVector3.insert(testVector3.end(), 2);
+    it = testVector3.begin();
+    ite = testVector3.end();
+    print_container_size(testVector3);
+    print_container_content(it, ite);
 
 
 
