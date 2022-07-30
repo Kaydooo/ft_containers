@@ -115,31 +115,24 @@ namespace   ft
 
     template<typename T>
     typename ft::reverse_Iterator<T>::difference_type operator-(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs)
-    {
-        return (rhs.base() - lhs.base());
-    }
+    { return (rhs.base() - lhs.base()); }
+    
     template<typename T1, typename T2>
     typename ft::reverse_Iterator<T1>::difference_type operator-(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs)
-    {
-        return (rhs.base() - lhs.base());
-    }
+    { return (rhs.base() - lhs.base()); }
+
     template<typename T>
     typename ft::reverse_Iterator<T>::difference_type operator+(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs)
-    {
-        return (lhs.base() + rhs.base());
-    }
+    { return (lhs.base() + rhs.base()); }
+
     template<typename T1, typename T2>
     typename ft::reverse_Iterator<T1>::difference_type operator+(const ft::reverse_Iterator<T1> lhs, const ft::reverse_Iterator<T2> rhs)
-    {
-        return (lhs.base() + rhs.base());
-    }
+    { return (lhs.base() + rhs.base()); }
 
     template<typename T> ft::reverse_Iterator<T> operator+(
         typename ft::reverse_Iterator<T>::difference_type x,
         typename ft::reverse_Iterator<T>& rhs)
-    {
-        return (rhs + x);
-    }
+    { return (rhs + x); }
 }
 
 #endif

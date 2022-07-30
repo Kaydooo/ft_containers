@@ -21,98 +21,91 @@ namespace ft
   template<class T, class Compare, class node_type>
   class RedBlackTree {
     public:
-    // typedef RedBlackTree_Node<T>        node_type;
-    typedef map_iterator<T, Compare, node_type>     iterator;
-    typedef map_iterator<const T, Compare, node_type>     const_iterator;
-    typedef node_type*                  node_pointer;
-    typedef std::allocator<node_type>   node_allocator;
-    typedef typename std::allocator<T>::size_type  size_type;
+      typedef map_iterator<T, Compare, node_type>     iterator;
+      typedef map_iterator<const T, Compare, node_type>     const_iterator;
+      typedef node_type*                  node_pointer;
+      typedef std::allocator<node_type>   node_allocator;
+      typedef typename std::allocator<T>::size_type  size_type;
+      
+      node_allocator nodeAllocator;
+      node_pointer  root; 
+      node_pointer  endNode;
+      size_t  treeSize;
+      Compare c;
     
-    node_allocator nodeAllocator;
-    node_pointer  root; 
-    node_pointer  endNode;
-    size_t  treeSize;
-    Compare c;
-    
-      RedBlackTree(): root(NULL),treeSize(0)
+     RedBlackTree(): root(NULL),treeSize(0)
       {
         nodeAllocator = node_allocator();
         endNode = nodeAllocator.allocate(1);
         nodeAllocator.construct(endNode, node_type());
       }
 
-      ~RedBlackTree()
-      {
-        nodeAllocator.deallocate(endNode, 1);
+      ~RedBlackTree() { nodeAllocator.deallocate(endNode, 1); } 
       
-      } // Free Tree + endNode here later
-      
-      void printTree()
-      {
-        printTree(root);
-      }
+      void printTree() { printTree(root); }
+
       void printTree(node_pointer node)
       {
-          if (node != NULL)
-          {
-              printTree(node->left);
-              if(node->color == RED)
-                std::cout << RED_COLOR << node->data.first << RESET << " | ";
-              else
-                std::cout << node->data.first << " | ";
-              
-              printTree(node->right);
-          }
+        if (node != NULL)
+        {
+          printTree(node->left);
+          if(node->color == RED)
+            std::cout << RED_COLOR << node->data << RESET << " | ";
+          else
+            std::cout << node->data << " | ";
+          
+          printTree(node->right);
+        }
       }
 
       iterator    begin()
       {
-          if(treeSize == 0)
-            return (end());
-          node_pointer    temp;
-          temp = root;
-          if(temp->child[0])
-          {
-              while(temp->child[0])
-                  temp = temp->child[0];
-          }
-          return (iterator(temp, endNode));
+        if(treeSize == 0)
+          return (end());
+        node_pointer    temp;
+        temp = root;
+        if(temp->child[0])
+        {
+          while(temp->child[0])
+            temp = temp->child[0];
+        }
+        return (iterator(temp, endNode));
       }
 
       iterator    end()
       {
-          endNode->parent = root;
-          return (iterator(endNode, endNode));
+        endNode->parent = root;
+        return (iterator(endNode, endNode));
       }
 
       const_iterator    begin() const
       {
-          node_pointer    temp;
-          if(treeSize == 0)
-            return (end());
-          temp = root;
-          if(temp->child[0])
-          {
-              while(temp->child[0])
-                  temp = temp->child[0];
-          }
-          return (const_iterator(temp, endNode));
+        node_pointer    temp;
+        if(treeSize == 0)
+          return (end());
+        temp = root;
+        if(temp->child[0])
+        {
+          while(temp->child[0])
+            temp = temp->child[0];
+        }
+        return (const_iterator(temp, endNode));
       }
 
       const_iterator    end() const
       {
-          endNode->parent = root;
-          return (const_iterator(endNode, endNode));
+        endNode->parent = root;
+        return (const_iterator(endNode, endNode));
       }
 
+      size_type	size(void) const { return (treeSize); }
 
-        size_type	size(void) const { return (treeSize); }
-        size_type	max_size(void) const {return (node_allocator().max_size());}
-        bool		empty(void) const {return (treeSize == 0? true : false);}
+      size_type	max_size(void) const {return (node_allocator().max_size());}
+
+      bool		empty(void) const {return (treeSize == 0? true : false);}
 
       ft::pair<iterator,bool>    insert(const T& value )
       {
-
         ft::pair<iterator, bool> result;
         node_pointer              nodeRes;
         node_pointer              newNode = nodeAllocator.allocate(1);
@@ -132,12 +125,7 @@ namespace ft
         {
           nodeRes = insertNode(root, newNode);
           if(nodeRes != newNode)
-          {
             result.second = false;
-            // nodeAllocator.deallocate(newNode);
-            // nodeAllocator.destory(newNode, 1);
-          }
-          
           result.first = iterator(nodeRes, this->endNode);
         }
         if (result.second)
@@ -147,58 +135,58 @@ namespace ft
           nodeAllocator.destroy(newNode);
           nodeAllocator.deallocate(newNode, 1);
         }
+
         return (result);
-
       }
-      node_pointer    insertNode(node_pointer &current, node_pointer &newNode) {
 
-          node_pointer temp;
-          if(c(current->data.first, newNode->data.first))
+      node_pointer    insertNode(node_pointer &current, node_pointer &newNode)
+      {
+        node_pointer temp;
+        if(c(current->data.first, newNode->data.first))
+        {
+          if(current->right == NULL)
           {
-              if(current->right == NULL)
-              {
-                  insertBalanced(this, newNode, current, RIGHT);
-                  return newNode;
-              }
-              temp = current->right;
+            insertBalanced(this, newNode, current, RIGHT);
+            return newNode;
           }
-          else if(c(newNode->data.first, current->data.first))
+          temp = current->right;
+        }
+        else if(c(newNode->data.first, current->data.first))
+        {
+          if(current->left == NULL)
           {
-              if(current->left == NULL)
-              {
-                  insertBalanced(this, newNode, current, LEFT);
-                  return newNode;
-              }
-              temp = current->left;
+            insertBalanced(this, newNode, current, LEFT);
+            return newNode;
           }
-          else{
-              return current;
-          }
-          while(temp)
-          {
-              if(c(temp->data.first , newNode->data.first))
-              {
-                  if(temp->right == NULL)
-                  {
-                      insertBalanced(this, newNode, temp, RIGHT);
-                      return newNode;
-                  }
-                  temp = temp->right;
-              }
-              else if(c(newNode->data.first, temp->data.first))
-              {
-                  if(temp->left == NULL)
-                  {
-                      insertBalanced(this, newNode, temp, LEFT);
-                      return newNode;
-                  }
-                  temp = temp->left;
-              }
-              else{
-                  return temp;
-              }
-          }
+          temp = current->left;
+        }
+        else
           return current;
+        
+        while(temp)
+        {
+          if(c(temp->data.first , newNode->data.first))
+          {
+            if(temp->right == NULL)
+            {
+              insertBalanced(this, newNode, temp, RIGHT);
+              return newNode;
+            }
+            temp = temp->right;
+          }
+          else if(c(newNode->data.first, temp->data.first))
+          {
+            if(temp->left == NULL)
+            {
+              insertBalanced(this, newNode, temp, LEFT);
+              return newNode;
+            }
+            temp = temp->left;
+          }
+          else
+            return temp;
+        }
+        return current;
       }
 
       node_pointer RotateDirRoot(RedBlackTree* Tree, node_pointer P, int dir)
@@ -277,11 +265,12 @@ namespace ft
         node_pointer result;
         result = find(root, k);
         if(result == NULL)
-            return 0;
+          return 0;
         erase(result);
         --treeSize;
         return 1;
       }
+
       void  erase(node_pointer& node)
       {
         if(node->left == NULL && node->right == NULL)
@@ -341,9 +330,7 @@ namespace ft
           dest->right->parent = newNode;
         if(dest->left)
           dest->left->parent = newNode;
-          
         newNode->parent = dest->parent;
-
         nodeAllocator.destroy(dest);
         nodeAllocator.deallocate(dest, 1);
       }
@@ -357,99 +344,89 @@ namespace ft
       
       node_pointer  get_predecessor(node_pointer node)
       {
-
         node = node->left;
         while(node->right != NULL)
           node = node->right;
         return (node);
       }
 
-
       void rbtRemove(RedBlackTree* tree, node_pointer N)
       {
-        node_pointer P = N->parent;  // -> parent node of N
-        int  dir;          // side of P on which N is located (∈ { LEFT, RIGHT })
-        node_pointer S;  // -> sibling of N
-        node_pointer C;  // -> close   nephew
-        node_pointer D;  // -> distant nephew
+        node_pointer P = N->parent;  
+
+        int  dir;          
         bool first_iteration = true;
-        // P != NULL, since N is not the root.
-        dir = childDir(N); // side of parent P on which the node N is located
-        // Replace N at its parent P by NULL:
-        S = P->child[1-dir]; // sibling of N (has black height >= 1)
+
+        node_pointer S;  
+        node_pointer C;  
+        node_pointer D;  
+        
+        dir = childDir(N);       
+        S = P->child[1-dir];
         nodeAllocator.destroy(P->child[dir]);
         nodeAllocator.deallocate(P->child[dir], 1);
         P->child[dir] = NULL;
 
-        // start of the (do while)-loop:
         do 
         {
           if(!first_iteration)
           {
-            dir = childDir(N);   // side of parent P on which node N is located
+            dir = childDir(N);
             first_iteration = false;
           }
-          S = P->child[1-dir]; // sibling of N (has black height >= 1)
+          S = P->child[1-dir];
           if(S == NULL)
             return;
-          D = S->child[1-dir]; // distant nephew
-          C = S->child[  dir]; // close   nephew
+          D = S->child[1-dir];
+          C = S->child[  dir];
           if (S->color == RED)
           {
             ///case 3
             if(C == NULL)
               return;
-            P->color = RED;// swap color with sibiling .
-            S->color = BLACK; // if sibling color was red then parent is black for sure
-            RotateDirRoot(tree,P,dir); // P may be the root
-            S = C; // != NULL  -- new sibling is the old close nephew ( after rotation)
-            // now: P red && S black
-            D = S->child[1-dir]; // distant nephew               // S red ===> P+C+D black
+            P->color = RED;
+            S->color = BLACK;
+            RotateDirRoot(tree,P,dir);
+            S = C; 
+            D = S->child[1-dir];
           }
-          // S is black:
-          if (D != NULL && D->color == RED) // not considered black
+          if (D != NULL && D->color == RED) 
           {
             //case 6
-            RotateDirRoot(tree,P,dir); // P may be the root
+            RotateDirRoot(tree,P,dir); 
             S->color = P->color;
             P->color = BLACK;
             D->color = BLACK;
-            return; // deletion complete                  // D red && S black
+            return;
           }
-          if (C != NULL && C->color == RED) // not considered black
+          if (C != NULL && C->color == RED) 
           {
-            //Case_D5: // C red && S+D black:
-            RotateDirRoot(tree, S,1-dir); // S is never the root
+            //case 5
+            RotateDirRoot(tree, S,1-dir);
             S->color = RED;
             C->color = BLACK;
             D = S;
             S = C;
-            //Case_D6: // D red && S black:
-            RotateDirRoot(tree,P,dir); // P may be the root
+            //case 6
+            RotateDirRoot(tree,P,dir);
             S->color = P->color;
             P->color = BLACK;
             D->color = BLACK;
-            return; // deletion complete                // C red && S+D black
+            return;
           }
-          // Here both nephews are == NULL (first iteration) or black (later).
           if (P->color == RED)
           {
-            //Case_D4: // P red && S+C+D black:
+            //case 4
             S->color = RED;
             P->color = BLACK;
             return;
           }
           //case 1
           S->color = RED;
-          N = P; // new current node (maybe the root)
+          N = P;
         } while ((P = N->parent) != NULL);
-
-        return; // deletion complete
-
-      } // end of rbtRemove
-
-
-
+        return;
+      }
 
       template<class U>
       size_type    count(U &toFind) const
@@ -468,6 +445,7 @@ namespace ft
             return(end());
         return(iterator(result, endNode));
       }
+
       template<class U>
       const_iterator    find_const(U &toFind) const
       {
@@ -503,6 +481,7 @@ namespace ft
 
         return(curr);
       }
+
       void clear()
       {
         size_t s = size();
@@ -511,6 +490,7 @@ namespace ft
             erase_key(begin()->first);
         }
       }
+
       void swap(RedBlackTree& other)
 			{
 				if (&other != this)
@@ -528,37 +508,56 @@ namespace ft
         }
         return ;
 			}
+
     template<class U>
-    iterator		lower_bound(const U &key) {
-		iterator first = begin();
-		iterator last = end();
+    iterator		lower_bound(const U &key)
+    {
+		  iterator first = begin();
+		  iterator last = end();
 
-		while (first != last)
-		{
-			if (!c(first->first, key))
-				break;
-			first++;
-		}
-		return first;
-	}
+		  while (first != last)
+		  {
+		  	if (!c(first->first, key))
+			  	break;
+			  first++;
+		  }
+		  return first;
+	  }
+    template<class U>
+    const_iterator	lower_bound_const(const U &key) const
+    {
+      const_iterator first = begin();
+      const_iterator last = end();
+
+      while (first != last)
+      {
+        if (!c(first->first, key))
+          break;
+        first++;
+      }
+      return first;
+    }
+
+    template<class U>
+    iterator		upper_bound(const U &key)
+    {
+      iterator first = begin();
+      iterator last = end();
+
+      while (first != last)
+      {
+        if (c(key, first->first))
+          break;
+        first++;
+      }
+      return first;
+    }
+
   template<class U>
-	const_iterator	lower_bound_const(const U &key) const {
+	const_iterator	upper_bound_const(const U &key) const
+  {
 		const_iterator first = begin();
 		const_iterator last = end();
-
-		while (first != last)
-		{
-			if (!c(first->first, key))
-				break;
-			first++;
-		}
-		return first;
-	}
-
-  template<class U>
-	iterator		upper_bound(const U &key) {
-		iterator first = begin();
-		iterator last = end();
 
 		while (first != last)
 		{
@@ -569,22 +568,7 @@ namespace ft
 		return first;
 	}
 
-  template<class U>
-	const_iterator	upper_bound_const(const U &key) const {
-		const_iterator first = begin();
-		const_iterator last = end();
+  }; // end of class RedBlackTree
 
-		while (first != last)
-		{
-			if (c(key, first->first))
-				break;
-			first++;
-		}
-		return first;
-	}
-
-  };
-
-  
 } // namespace ft
 #endif

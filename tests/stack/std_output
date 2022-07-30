@@ -1,0 +1,35 @@
+
+Stack 1 default constructor
+------------------------------------------
+Size = 0
+empty() = 1
+
+Stack 1 a to f
+------------------------------------------
+Size = 6
+empty() = 0
+top = f
+
+Stack 2 copy of Stack 1
+------------------------------------------
+Size = 6
+empty() = 0
+top = f
+
+Stack 2 pop 2 times
+------------------------------------------
+Size = 4
+empty() = 0
+Top = d
+
+Deep copy test .. Stack 3 copy of Stack 2
+------------------------------------------
+Size = 4
+empty() = 0
+top = d
+
+assignment operator .. Stack1=Stack2
+------------------------------------------
+Size = 4
+empty() = 0
+top = d
