@@ -146,17 +146,5 @@ int main(int argc, char **argv)
     print_container_size(testVector3);
     print_container_content(it, ite);
 
-
-
-
-
-
-
-    
-
-
-
-
     return 0;
-  
 }

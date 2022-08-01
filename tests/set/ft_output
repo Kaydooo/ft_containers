@@ -1,0 +1,16 @@
+speed_test.cpp: In function 'int main(int, char**)':
+speed_test.cpp:21:2: error: expected ';' before 'long'
+   21 | 1
+      |  ^
+      |  ;
+   22 |     long SIZE;
+      |     ~~~~
+speed_test.cpp:24:9: error: 'SIZE' was not declared in this scope
+   24 |         SIZE = atol(argv[1]);
+      |         ^~~~
+speed_test.cpp:26:9: error: 'SIZE' was not declared in this scope
+   26 |         SIZE = 10000000;
+      |         ^~~~
+speed_test.cpp:30:24: error: 'SIZE' was not declared in this scope
+   30 |     for(int i = 0; i < SIZE; ++i)
+      |                        ^~~~

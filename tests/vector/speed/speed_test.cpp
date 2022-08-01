@@ -1,17 +1,20 @@
-#include "../../inc/map.hpp"
-#include <map>
+
+#include <iostream>
 #include <cstdlib>
 
 #ifdef STD
 #define TEST_NAMESPACE std
+#include <vector>
 #endif
 
 #ifdef FT
 #define TEST_NAMESPACE ft
+#include "../../../inc/vector.hpp"
 #endif
 
 #ifndef TEST_NAMESPACE
 #define TEST_NAMESPACE ft
+#include "../../../inc/vector.hpp"
 #endif
 
 int main(int argc, char **argv)
@@ -25,12 +28,11 @@ int main(int argc, char **argv)
     else
         SIZE = 10000000;
 
-    TEST_NAMESPACE::map<int, int> testMap;
+    TEST_NAMESPACE::vector<int> testVector;
 
     for(int i = 0; i < SIZE; ++i)
-    {
-        testMap.insert(TEST_NAMESPACE::make_pair(i, i+1));
-    }
-    testMap.erase(testMap.begin(), testMap.end());
+        testVector.push_back(i);
+    testVector.erase(testVector.begin(), testVector.end());
     return 0;
+  
 }

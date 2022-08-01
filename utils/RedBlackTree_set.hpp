@@ -6,15 +6,10 @@
 #include "set_iterator.hpp"
 #include "rbt_reverse_iterator.hpp"
 
-#define RED_COLOR "\033[0;31m"
-#define CYAN_COLOR "\033[0;36m"
-#define RESET "\033[0m"
-
 #define LEFT  0
 #define RIGHT 1
 #define left  child[LEFT]
 #define right child[RIGHT]
-#define childDir(N) ( N == (N->parent)->right ? RIGHT : LEFT )
 
 namespace ft
 {
@@ -26,13 +21,8 @@ namespace ft
       typedef node_type*                  node_pointer;
       typedef std::allocator<node_type>   node_allocator;
       typedef size_t                      size_type;
-
-      node_allocator nodeAllocator;
-      node_pointer  root; 
-      node_pointer  endNode;
-      size_t  treeSize;
-      Compare c;
-    
+      
+      public:
       RedBlackTree_set(): root(NULL),treeSize(0)
       {
         nodeAllocator = node_allocator();
@@ -231,7 +221,7 @@ namespace ft
             return;
           } 
           
-          dir = childDir(P); 
+          dir = get_chid_dir(P); 
           U = G->child[1-dir]; 
           if (U == NULL || U->color == BLACK) 
           {
@@ -283,7 +273,7 @@ namespace ft
           }
           if(node->color == RED)
           {
-            node->parent->child[childDir(node)] = NULL;
+            node->parent->child[get_chid_dir(node)] = NULL;
             nodeAllocator.destroy(node);
             nodeAllocator.deallocate(node, 1);
             node = NULL;
@@ -315,7 +305,7 @@ namespace ft
         nodeAllocator.construct(newNode, source->data);
         if(dest->parent)
         { 
-          int dir = childDir(dest);
+          int dir = get_chid_dir(dest);
           dest->parent->child[dir] = newNode;
         }
         else
@@ -362,7 +352,7 @@ namespace ft
         node_pointer C;  
         node_pointer D;  
         
-        dir = childDir(N);       
+        dir = get_chid_dir(N);       
         S = P->child[1-dir];
         nodeAllocator.destroy(P->child[dir]);
         nodeAllocator.deallocate(P->child[dir], 1);
@@ -372,7 +362,7 @@ namespace ft
         {
           if(!first_iteration)
           {
-            dir = childDir(N);
+            dir = get_chid_dir(N);
             first_iteration = false;
           }
           S = P->child[1-dir];
@@ -564,6 +554,16 @@ namespace ft
         }
         return first;
       }
+
+
+    private:
+      node_allocator nodeAllocator;
+      node_pointer  root; 
+      node_pointer  endNode;
+      size_t  treeSize;
+      Compare c;
+
+      bool  get_chid_dir(node_pointer &node) { return (node == (node->parent)->right ? 1 : 0); }
 
   }; // end of class RedBlackTree_set
 

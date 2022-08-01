@@ -3,11 +3,14 @@
 
 #include <cstddef>
 
+#define RED_COLOR "\033[0;31m"
+#define CYAN_COLOR "\033[0;36m"
+#define RESET "\033[0m"
+
+
 namespace ft
 {
-    
     /* Iterator Categaorie Tags */
-
     struct input_iterator_tag{};
     struct output_iterator_tag{};
     struct forward_iterator_tag: public input_iterator_tag{};
@@ -106,15 +109,15 @@ namespace ft
 
 			pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 
-			// pair& operator=(const pair& other) 
-            // {
-            //     if (this != &other)
-            //     {    
-			// 	    this->first = other.first;
-			// 	    this->second = other.second;
-            //     }
-			// 	return (*this);
-			// }
+			pair& operator=(const pair& other) 
+            {
+                if (this != &other)
+                {    
+				    this->first = other.first;
+				    this->second = other.second;
+                }
+				return (*this);
+			}
 
 		};
 
@@ -150,7 +153,7 @@ namespace ft
         }
 
     /* ft::distance --> find the differnce between 2 iterators
-    only by using the ++ operator and != so this function will work with all iterators */
+    only by using the ++ operator and != so this function will work with both bidirectional and radoom iterators */
     template<class InputIterator>
     size_t distance(InputIterator first, InputIterator last)
     {
@@ -187,6 +190,5 @@ namespace ft
         return (first1 == last1) && (first2 != last2);
     }
 } // namespace ft
-
 
 #endif

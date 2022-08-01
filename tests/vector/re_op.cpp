@@ -62,7 +62,6 @@ int main(int argc, char **argv)
     std::cout << "VECT3 >  VECT1  " << (testVector3 > testVector) << std ::endl;
     std::cout << "VECT3 <  VECT1  " << (testVector3 < testVector) << std ::endl;
 
-
     return 0;
   
 }

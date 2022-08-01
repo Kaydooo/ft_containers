@@ -11,26 +11,26 @@ namespace ft
     class map
     {
         public:
-            typedef Key                                                 key_type;
-            typedef T                                                   mapped_type;
-            typedef ft::pair<const Key, T>                              value_type;
-            typedef Compare                                             key_compare;
-            typedef Alloc                                               allocator_type;
-            typedef typename allocator_type::reference                  reference;
-            typedef typename allocator_type::const_reference            const_reference;
-            typedef RedBlackTree_Node<value_type>                       node_type;
-            typedef node_type*                                          node_pointer;
-            typedef RedBlackTree<value_type, Compare, node_type>        tree_type;
-            typedef tree_type*                                          tree_pointer;
-            typedef map_iterator<value_type, Compare, node_type>        iterator;
-            typedef map_iterator<const value_type, Compare, node_type>  const_iterator;
-            typedef rbt_reverse_iterator<iterator>                      reverse_iterator;
-            typedef rbt_reverse_iterator<const_iterator>                const_reverse_iterator;
-            typedef typename allocator_type::difference_type            difference_type;
-            typedef typename allocator_type::size_type                  size_type;
-            typedef typename allocator_type::pointer                    pointer;
-            typedef typename allocator_type::const_pointer              const_pointer;
-            typedef std::allocator<tree_type>                           tree_allocator;
+            typedef Key                                                     key_type;
+            typedef T                                                       mapped_type;
+            typedef ft::pair<const Key, T>                                  value_type;
+            typedef Compare                                                 key_compare;
+            typedef Alloc                                                   allocator_type;
+            typedef typename allocator_type::reference                      reference;
+            typedef typename allocator_type::const_reference                const_reference;
+            typedef RedBlackTree_Node<value_type>                           node_type;
+            typedef node_type*                                              node_pointer;
+            typedef RedBlackTree<value_type, key_compare, node_type>        tree_type;
+            typedef tree_type*                                              tree_pointer;
+            typedef map_iterator<value_type, key_compare, node_type>        iterator;
+            typedef map_iterator<const value_type, key_compare, node_type>  const_iterator;
+            typedef rbt_reverse_iterator<iterator>                          reverse_iterator;
+            typedef rbt_reverse_iterator<const_iterator>                    const_reverse_iterator;
+            typedef typename allocator_type::difference_type                difference_type;
+            typedef typename allocator_type::size_type                      size_type;
+            typedef typename allocator_type::pointer                        pointer;
+            typedef typename allocator_type::const_pointer                  const_pointer;
+            typedef std::allocator<tree_type>                               tree_allocator;
 
             // ----------------------------- Member Classes  ------------------------------ //
 

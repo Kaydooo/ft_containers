@@ -1,17 +1,18 @@
-#include "../../inc/set.hpp"
-#include <set>
 #include <cstdlib>
 
 #ifdef STD
 #define TEST_NAMESPACE std
+#include <set>
 #endif
 
 #ifdef FT
 #define TEST_NAMESPACE ft
+#include "../../../inc/set.hpp"
 #endif
 
 #ifndef TEST_NAMESPACE
 #define TEST_NAMESPACE ft
+#include "../../../inc/set.hpp"
 #endif
 
 int main(int argc, char **argv)

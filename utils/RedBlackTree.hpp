@@ -5,35 +5,23 @@
 #include "map_iterator.hpp"
 #include "rbt_reverse_iterator.hpp"
 
-#define RED_COLOR "\033[0;31m"
-#define CYAN_COLOR "\033[0;36m"
-#define RESET "\033[0m"
-
 #define LEFT  0
 #define RIGHT 1
 #define left  child[LEFT]
 #define right child[RIGHT]
-#define childDir(N) ( N == (N->parent)->right ? RIGHT : LEFT )
-
 
 namespace ft
 {
   template<class T, class Compare, class node_type>
   class RedBlackTree {
     public:
-      typedef map_iterator<T, Compare, node_type>     iterator;
-      typedef map_iterator<const T, Compare, node_type>     const_iterator;
-      typedef node_type*                  node_pointer;
-      typedef std::allocator<node_type>   node_allocator;
-      typedef typename std::allocator<T>::size_type  size_type;
-      
-      node_allocator nodeAllocator;
-      node_pointer  root; 
-      node_pointer  endNode;
-      size_t  treeSize;
-      Compare c;
-    
-     RedBlackTree(): root(NULL),treeSize(0)
+      typedef map_iterator<T, Compare, node_type>       iterator;
+      typedef map_iterator<const T, Compare, node_type> const_iterator;
+      typedef node_type*                                node_pointer;
+      typedef std::allocator<node_type>                 node_allocator;
+      typedef typename std::allocator<T>::size_type     size_type;
+
+       RedBlackTree(): root(NULL),treeSize(0)
       {
         nodeAllocator = node_allocator();
         endNode = nodeAllocator.allocate(1);
@@ -231,7 +219,7 @@ namespace ft
             return;
           } 
           
-          dir = childDir(P); 
+          dir = get_chid_dir(P); 
           U = G->child[1-dir]; 
           if (U == NULL || U->color == BLACK) 
           {
@@ -285,7 +273,7 @@ namespace ft
           }
           if(node->color == RED)
           {
-            node->parent->child[childDir(node)] = NULL;
+            node->parent->child[get_chid_dir(node)] = NULL;
             nodeAllocator.destroy(node);
             nodeAllocator.deallocate(node, 1);
             node = NULL;
@@ -316,7 +304,7 @@ namespace ft
         nodeAllocator.construct(newNode, source->data);
         if(dest->parent)
         { 
-          int dir = childDir(dest);
+          int dir = get_chid_dir(dest);
           dest->parent->child[dir] = newNode;
         }
         else
@@ -361,7 +349,7 @@ namespace ft
         node_pointer C;  
         node_pointer D;  
         
-        dir = childDir(N);       
+        dir = get_chid_dir(N);       
         S = P->child[1-dir];
         nodeAllocator.destroy(P->child[dir]);
         nodeAllocator.deallocate(P->child[dir], 1);
@@ -371,7 +359,7 @@ namespace ft
         {
           if(!first_iteration)
           {
-            dir = childDir(N);
+            dir = get_chid_dir(N);
             first_iteration = false;
           }
           S = P->child[1-dir];
@@ -509,64 +497,73 @@ namespace ft
         return ;
 			}
 
-    template<class U>
-    iterator		lower_bound(const U &key)
-    {
-		  iterator first = begin();
-		  iterator last = end();
-
-		  while (first != last)
-		  {
-		  	if (!c(first->first, key))
-			  	break;
-			  first++;
-		  }
-		  return first;
-	  }
-    template<class U>
-    const_iterator	lower_bound_const(const U &key) const
-    {
-      const_iterator first = begin();
-      const_iterator last = end();
-
-      while (first != last)
+      template<class U>
+      iterator		lower_bound(const U &key)
       {
-        if (!c(first->first, key))
-          break;
-        first++;
+        iterator first = begin();
+        iterator last = end();
+
+        while (first != last)
+        {
+          if (!c(first->first, key))
+            break;
+          first++;
+        }
+        return first;
       }
-      return first;
-    }
-
-    template<class U>
-    iterator		upper_bound(const U &key)
-    {
-      iterator first = begin();
-      iterator last = end();
-
-      while (first != last)
+      template<class U>
+      const_iterator	lower_bound_const(const U &key) const
       {
-        if (c(key, first->first))
-          break;
-        first++;
+        const_iterator first = begin();
+        const_iterator last = end();
+
+        while (first != last)
+        {
+          if (!c(first->first, key))
+            break;
+          first++;
+        }
+        return first;
       }
-      return first;
-    }
 
-  template<class U>
-	const_iterator	upper_bound_const(const U &key) const
-  {
-		const_iterator first = begin();
-		const_iterator last = end();
+      template<class U>
+      iterator		upper_bound(const U &key)
+      {
+        iterator first = begin();
+        iterator last = end();
 
-		while (first != last)
-		{
-			if (c(key, first->first))
-				break;
-			first++;
-		}
-		return first;
-	}
+        while (first != last)
+        {
+          if (c(key, first->first))
+            break;
+          first++;
+        }
+        return first;
+      }
+
+      template<class U>
+      const_iterator	upper_bound_const(const U &key) const
+      {
+        const_iterator first = begin();
+        const_iterator last = end();
+
+        while (first != last)
+        {
+          if (c(key, first->first))
+            break;
+          first++;
+        }
+        return first;
+      }
+
+    private:
+      node_allocator  nodeAllocator;
+      node_pointer    root; 
+      node_pointer    endNode;
+      size_t          treeSize;
+      Compare c;
+
+    bool  get_chid_dir(node_pointer &node) { return (node == (node->parent)->right ? 1 : 0); }
 
   }; // end of class RedBlackTree
 

@@ -41,6 +41,7 @@ int main(int argc, char **argv)
     print_container_content(it, ite);
 
     testVector2.reserve(20);
+
     testVector2.insert(testVector2.begin(), testVector.begin(), testVector.end());
     it = testVector2.begin();
     ite = testVector2.end();
@@ -48,13 +49,15 @@ int main(int argc, char **argv)
     print_container_content(it, ite);
 
     testVector2.resize(2);
-    testVector2.reserve(1);
+    testVector2.reserve(20);
     it = testVector2.begin();
     ite = testVector2.end();
     print_container_size(testVector2);
     print_container_content(it, ite);
 
     testVector2.resize(0);
+    testVector2.resize(500);
+
     it = testVector2.begin();
     ite = testVector2.end();
     print_container_size(testVector2);

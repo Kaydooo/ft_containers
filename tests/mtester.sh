@@ -4,99 +4,112 @@ RED="\e[31m"
 GREEN="\e[92m"
 YELLOW="\e[33m"
 BLUE="\e[34m"
+DBLUE="\e[94m"
+BOLD="\e[1m"
 CYAN="\e[36m"
 MAGENTA="\e[35m"
 WHITE_BK="\e[107m"
 ENDCOLOR="\e[0m"
-numbers=10000
-
+numbers=(10000 100000 1000000 1000000)
+names=("vector" "stack" "map" "set")
 echo > diff.txt
+
+print_header () {
+printf "${BOLD}${DBLUE}\
+◤━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◥
+			     FT_CONTAINERS TESTER
+◣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◢
+${ENDCOLOR}"
+}
+
+print_title()
+{
+    echo -e "\n${BOLD}${YELLOW}$1${ENDCOLOR}"
+    echo "-----------------------------------------------------------------------"
+}
+
 test_speed() {
     # $1 Container 
     # $2 Numbers
-    echo -e "${MAGENTA}$1 speed_test${ENDCOLOR}"
-    echo -e "${CYAN}$2 NUMBER ${ENDCOLOR}"
-    g++ -Werror -Wextra -Wall -std=c++98 $1/speed_test.cpp -D=FT2 > /dev/null
-    ft_speed=`{ time ./a.out $2; } 2>&1 | grep real | awk '{print $2}'`
-    g++ -Werror -Wextra -Wall -std=c++98 $1/speed_test.cpp -D=STD > /dev/null
-    std_speed=`{ time ./a.out $2; } 2>&1 | grep real | awk '{print $2}'`
-
-    echo -e "FT Speed = ${GREEN} $ft_speed ${ENDCOLOR}"
-    echo -e "STD Speed = ${GREEN} $std_speed ${ENDCOLOR}"
-    rm a.out
+    g++ -Werror -Wextra -Wall -std=c++98 $1/speed/speed_test.cpp -D=FT 2> temp.txt
+    compile_res=`cat temp.txt`
+    if [ -z "$compile_res" ]
+    then
+        compiled=✅
+        ft_speed=`{ time ./a.out $2; } 2>&1 | grep real | awk '{print $2}'`
+        g++ -Werror -Wextra -Wall -std=c++98 $1/speed/speed_test.cpp -D=STD > /dev/null
+        std_speed=`{ time ./a.out $2; } 2>&1 | grep real | awk '{print $2}'`
+        printf "%-20s${GREEN}%-20s%-20s%-20s\n${ENDCOLOR}" $2 $compiled $ft_speed $std_speed
+        rm a.out
+    else
+    compiled=❌
+    ft_speed="0s"
+    std_speed="0s"
+    printf "%-20s${RED}%-20s%-20s%-20s\n${ENDCOLOR}" $2 $compiled $ft_speed $std_speed
+    fi
+    rm temp.txt
 }
 
 test() {
-    # $1 Container
-    # $2 test_type
-    g++ -Werror -Wextra -Wall -std=c++98 $1/$2.cpp  -D=FT  2> /dev/null
-    ./a.out > ft_output_test1
-    g++ -Werror -Wextra -Wall -std=c++98 $1/$2.cpp  -D=STD 2> /dev/null
-    ./a.out > std_output_test1
+    # $1 test_type
+    g++ -Werror -Wextra -Wall -std=c++98 $1 -D=FT  2> temp.txt
+    compile_res=`cat temp.txt`
 
-    diff=`diff ft_output_test1 std_output_test1`
-    if [ -z "$diff" ]
+    if [ -z "$compile_res" ]
     then
-        echo -e "${MAGENTA}$1 $2 test ${ENDCOLOR}${GREEN}PASS${ENDCOLOR}"
+        compiled="✅"
+        ./a.out > ft_output_test1
+        g++ -Werror -Wextra -Wall -std=c++98 $1 -D=STD 2> /dev/null
+        ./a.out > std_output_test1
+        diff=`diff ft_output_test1 std_output_test1`
+        rm -r a.out ft_output_test1 std_output_test1
+        if [ -z "$diff" ]
+        then
+            result="Pass"
+            printf "%-30s%-31s${GREEN}%-30s\n" $1 $compiled $result
+        else
+            result="Fail"
+            echo "------------------$1-------------------" >> diff.txt
+            echo " $diff " >> diff.txt
+            printf "%-30s%-31s${RED}%-30s\n" $1 $compiled $result
+        fi
     else
-        echo -e -n "${MAGENTA}$1 $2 test ${ENDCOLOR}${RED}FAIL${ENDCOLOR}"
-        echo " check diff at diff.txt: "
-        echo "------------------$1 $2-------------------" >> diff.txt
-        echo " $diff " >> diff.txt
+        compiled=❌
+        result="Fail"
+        printf "%-30s%-31s${RED}%-30s\n" $1 $compiled $result
     fi
-    rm -r a.out ft_output_test1 std_output_test1
+    echo -e -n ${ENDCOLOR}
+    rm temp.txt
 }
 
 
+run_tests()
+{
+    print_title "SpeedTest"
+    for name in ${names[@]}; do
+        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name^^}
+        printf "${BOLD}%-20s%-20s%-20s%-20s\n${ENDCOLOR}" "Numbers" "Compiled" "FT" "STD"
+        for num in ${numbers[@]}; do
+            test_speed $name $num
+        done
+        echo "-----------------------------------------------------------------------"
+    done
+
+    print_title "FunctionTest"
+    for name in ${names[@]}; do
+        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name^^}
+        printf "${BOLD}%-30s%-30s%-30s\n${ENDCOLOR}" "Test" "Compiled" "Result"
+            for f in $name/*.cpp; do
+                test $f
+            done
+        echo "-----------------------------------------------------------------------"
+    done
+}
+
 if [ $# -ge 1 ]
 then
-    test_speed $1 $numbers
-    exit
+    names=($@)
 fi
-echo "-------------------------------------------------------"
-test_speed vector $numbers
-echo "-------------------------------------------------------"
-test_speed map $numbers
-echo "-------------------------------------------------------"
-test_speed set $numbers
-echo "-------------------------------------------------------"
-test vector constructor
-echo "-------------------------------------------------------"
-test vector iterator
-echo "-------------------------------------------------------"
-test vector capacity
-echo "-------------------------------------------------------"
-test vector element_access
-echo "-------------------------------------------------------"
-test vector modifiers
-echo "-------------------------------------------------------"
-test vector re_op
-echo "-------------------------------------------------------"
-test stack constructor
-echo "-------------------------------------------------------"
-test stack modifiers
-echo "-------------------------------------------------------"
-test stack re_op
-echo "-------------------------------------------------------"
-test map constructor
-echo "-------------------------------------------------------"
-test map element_access
-echo "-------------------------------------------------------"
-test map modifiers
-echo "-------------------------------------------------------"
-test map re_op
-echo "-------------------------------------------------------"
-test set modifiers
-echo "-------------------------------------------------------"
-test set constructor
-echo "-------------------------------------------------------"
-test set re_op
 
-
-
-
-
-
-
-
-
+print_header
+run_tests
