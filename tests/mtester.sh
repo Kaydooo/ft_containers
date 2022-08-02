@@ -9,7 +9,7 @@ BOLD="\e[1m"
 CYAN="\e[36m"
 MAGENTA="\e[35m"
 WHITE_BK="\e[107m"
-ENDCOLOR="\e[0m"
+ENDCOLOR="\x1b[0m"
 numbers=(10000 100000 1000000 1000000)
 names=("vector" "stack" "map" "set")
 echo > diff.txt
@@ -87,7 +87,7 @@ run_tests()
 {
     print_title "SpeedTest"
     for name in ${names[@]}; do
-        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name^^}
+        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name}
         printf "${BOLD}%-20s%-20s%-20s%-20s\n${ENDCOLOR}" "Numbers" "Compiled" "FT" "STD"
         for num in ${numbers[@]}; do
             test_speed $name $num
@@ -97,7 +97,7 @@ run_tests()
 
     print_title "FunctionTest"
     for name in ${names[@]}; do
-        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name^^}
+        printf "${BOLD}${MAGENTA}%35s${ENDCOLOR}\n" ${name}
         printf "${BOLD}%-30s%-30s%-30s\n${ENDCOLOR}" "Test" "Compiled" "Result"
             for f in $name/*.cpp; do
                 test $f

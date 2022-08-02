@@ -9,7 +9,7 @@ void    print_container_size(container &cont)
     std::cout << "Size = " << cont.size() << std::endl;
     std::cout << "Capacity = " << cont.capacity() << std::endl;
     std::cout << "empty() = " << cont.empty() << std::endl;
-    std::cout << "max_size = " << cont.max_size() << std::endl;
+    // std::cout << "max_size = " << cont.max_size() << std::endl;
 
 }
 

@@ -43,10 +43,17 @@ int main(int argc, char **argv)
     print_container_size(testVector2);
     print_container_content(it, ite);
 
+
     for(int i = 0; i < 18; ++i)
         testVector.insert(testVector.begin(), 5);
+        
+   std::cout << "Vector 1 before assiging to vec2" << std::endl;
+    it = testVector.begin();
+    ite = testVector.end();
+    print_container_size(testVector);
+    print_container_content(it, ite);
 
-    std::cout << "Vector 2 --> assign (vect2.begin(), vect2.end())" << std::endl;
+    std::cout << "Vector 2 --> assign (vect.begin(), vect.end())" << std::endl;
     testVector2.assign(testVector.begin(), testVector.end());
     it = testVector2.begin();
     ite = testVector2.end();

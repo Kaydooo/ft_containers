@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/07/31 05:09:38 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/08/02 11:37:31 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ namespace ft
             
             void insert( iterator pos, size_type count, const T& value )
             {
-
+                    
                 pointer temp;
                 size_type insertPos = &(*pos) - vectorData;
                 if(vectorSize + count > vectorCapacity)
@@ -296,7 +296,7 @@ namespace ft
                 size_type insertPos = &(*pos) - vectorData;
                 if(vectorSize + count > vectorCapacity)
                 {
-                    temp = vectorAllocator.allocate(vectorSize + std::max(size(), (size_type) count));
+                    temp = vectorAllocator.allocate( std::max(vectorCapacity + vectorCapacity, vectorSize + (size_type) count));
                     for(size_type i = 0; i < insertPos; ++i)
                         vectorAllocator.construct(&temp[i], vectorData[i]); 
                     for(size_type i = insertPos; i < insertPos + count; ++i)
@@ -309,7 +309,7 @@ namespace ft
                     for(size_t i = 0; i < vectorSize; i++)
                         vectorAllocator.destroy(&vectorData[i]);
                     vectorAllocator.deallocate(vectorData, vectorCapacity);
-                    vectorCapacity = vectorSize + std::max(size(), (size_type) count);
+                    vectorCapacity = std::max(vectorCapacity + vectorCapacity, vectorSize + (size_type) count);
                     vectorSize += count;
                     vectorData = temp;
                 }
@@ -347,13 +347,18 @@ namespace ft
             void assign( size_type count, const T& value )
             {
                 resize(0);
+                if(count > capacity())
+                    reserve(count);
                 insert(begin(), count, value);
             }
 
             template< class InputIt >
-            void assign( InputIt first, InputIt last )
+            void assign( InputIt first, InputIt last , typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
             {
                 resize(0);
+                size_type count = ft::distance(first, last);
+                if(count > capacity())
+                    reserve(count);
                 insert(begin(), first, last);
             }
             

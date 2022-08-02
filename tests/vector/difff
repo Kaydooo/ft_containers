@@ -1,0 +1,52 @@
+11c11
+< Capacity = 84
+---
+> Capacity = 15
+27c27
+< Capacity = 84
+---
+> Capacity = 23
+35c35
+< Capacity = 84
+---
+> Capacity = 23
+45c45
+< Capacity = 84
+---
+> Capacity = 23
+53c53
+< return of second insert = 5
+---
+> return of second insert = 0
+55c55
+< Capacity = 84
+---
+> Capacity = 46
+63c63
+< return of second insert = 5
+---
+> return of second insert = 0
+65c65
+< Capacity = 84
+---
+> Capacity = 92
+72c72
+< return of first insert = 20
+---
+> return of first insert = 0
+75c75
+< Capacity = 168
+---
+> Capacity = 184
+91c91
+< Capacity = 168
+---
+> Capacity = 184
+100c100
+< Capacity = 168
+---
+> Capacity = 184
+117c117
+< Capacity = 168
+---
+> Capacity = 184
