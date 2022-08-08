@@ -32,4 +32,10 @@
 *.app
 
 #local files
-stl_reference
+.devcontainer
+.vscode
+
+
+#testers
+tests
+.containers_test

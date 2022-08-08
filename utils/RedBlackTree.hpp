@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/08 19:05:57 by mal-guna          #+#    #+#             */
+/*   Updated: 2022/08/08 19:05:58 by mal-guna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef REDBLACKTREE_HPP
 #define REDBLACKTREE_HPP
 #include "container_utils.hpp"
@@ -245,7 +257,7 @@ namespace ft
         return;
         
 
-      } // end of insertBalanced
+      }
 
       template<class U>
       size_type   erase_key(U& k)

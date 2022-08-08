@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/08/02 11:37:31 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/08/08 18:57:34 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,13 @@ namespace ft
             /*  */
 
             /* Iterators */
+            
             // * begin() Returns an iterator pointing to the first element in the vector.
             // * end() Returns an iterator referring to the past-the-end element in the vector container.
-            // * rbegin() Returns a reverse iterator pointing to the last element in the vector (i.e., its reverse beginning).
-            // * rend() Returns a reverse iterator pointing to the last element in the vector or simply begin()
-            //  Note: unlike normal iterators, reverse iterators when dereferenced always return the element that precceds the iterator postion
+            
+            // * rbegin() Returns a reverse iterator pointing to the last element in the vector which is the same as end() (i.e., its reverse beginning).
+            // * rend() Returns a reverse iterator pointing to the first element in the vector which is the same as begin()
+            //  Note: unlike normal iterators, reverse iterators when dereferenced always return the element that precceds the iterator postion.
 
             iterator begin() { return iterator(vectorData); }
             iterator end()   { return iterator(vectorData + vectorSize); }
@@ -200,7 +202,9 @@ namespace ft
             /* Element access */
             
             reference operator[] (size_type n){ return (vectorData[n]);}
+
             const_reference operator[] (size_type n) const{ return vectorData[n];}
+            
             reference at (size_type n)
             { 
                 if(n >= vectorSize)
@@ -213,15 +217,20 @@ namespace ft
                     throw std::out_of_range("Out Of Range");
                 return (vectorData[n]);   
             }
+            
             reference front(){ return (vectorData[0]);}
+
             const_reference front() const{ return (vectorData[0]);}
+
             reference back(){ return (vectorData[vectorSize - 1]);}
+            
             const_reference back() const{ return (vectorData[vectorSize - 1]);}
             
             /* Modifiers: */
-            
+            // * Destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
             void clear() { this->resize(0); }
             
+            // * Inserts element value at postion given by iterator pos.
             iterator insert( iterator pos, const T& value )
             {
                 pointer temp;
@@ -257,9 +266,9 @@ namespace ft
                 return (vectorData + insertPos);
             }
             
+            // * Inserts count copies of value value at postion given by iterator pos.
             void insert( iterator pos, size_type count, const T& value )
-            {
-                    
+            {  
                 pointer temp;
                 size_type insertPos = &(*pos) - vectorData;
                 if(vectorSize + count > vectorCapacity)
@@ -288,6 +297,7 @@ namespace ft
                 }
             }
 
+            // * Inserts elements given from the range [first,last). insertion posion is given by iterator pos.
             template< class InputIt >
             void insert( iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
             {
@@ -326,6 +336,7 @@ namespace ft
                 }
             }
             
+            // * Adds element to the end of vector, increaseing its size by 1.
             void push_back (const value_type& val)
             {
                 if(vectorCapacity == 0)
@@ -335,7 +346,8 @@ namespace ft
                 vectorAllocator.construct(&vectorData[vectorSize], val);
                 vectorSize++;
             }
-
+            
+            // * Removes the last element of the container.
             void pop_back()
             {
                 if(vectorSize != 0)
@@ -344,6 +356,8 @@ namespace ft
                     vectorSize--;
                 }
             }
+
+            // * Replaces the contents of container with count copies of value value.
             void assign( size_type count, const T& value )
             {
                 resize(0);
@@ -352,6 +366,7 @@ namespace ft
                 insert(begin(), count, value);
             }
 
+            // * Replaces container contents with copies of those in the range [first, last).
             template< class InputIt >
             void assign( InputIt first, InputIt last , typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL)
             {
@@ -362,7 +377,7 @@ namespace ft
                 insert(begin(), first, last);
             }
             
-
+            // * Exchanges the contents of the container with those of other.
             void swap (vector& x)
             {
                 size_type sTemp = vectorSize;
@@ -380,6 +395,8 @@ namespace ft
                 x.vectorAllocator = aTemp;
                 x.vectorData = dTemp;
             }
+            
+            // * returns container allocator.
             allocator_type get_allocator() const
             {
                 return (vectorAllocator);
@@ -394,6 +411,7 @@ namespace ft
                 return vectorData;
             }
             
+            // * Delets element at postion pos.
             iterator erase( iterator pos )
             {
                 pointer p_pos = &(*pos);
@@ -408,6 +426,7 @@ namespace ft
                 return(iterator(p_pos));
             }
             
+            // * Delets elements in the range [first, last).
             iterator erase( iterator first, iterator last )
             {
                 size_t eraseLen = ft::distance(first, last);

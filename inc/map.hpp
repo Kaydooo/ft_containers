@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/08 18:59:03 by mal-guna          #+#    #+#             */
+/*   Updated: 2022/08/08 19:03:18 by mal-guna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAP_HPP
 #define MAP_HPP
 
@@ -35,8 +47,8 @@ namespace ft
             // ----------------------------- Member Classes  ------------------------------ //
 
             /* Value Compare: create an object that can be used to compare 2 values of 
-            type ft::pair<const Key, T> , object will use the compare  function passed
-             when constructing. only first elements of pair will be compared */
+            type ft::pair<const Key, T> , object will use the Compare function passed
+            as template paramater. only first elements of pair will be compared */
             class value_compare
             : public std::binary_function<value_type, value_type, bool>
             {
@@ -94,7 +106,7 @@ namespace ft
             const_iterator          begin() const { return (mapTree.begin()); }
 
             // * end() returns itreator that points to the element that follows the last element in the tree. 
-            //   which equals to an imaginery node that is present in RedBlackTree object mapTree.
+            //   which equals to an imaginery node endNode that is present in RedBlackTree object mapTree.
             iterator                end() { return (mapTree.end()); }
             const_iterator          end() const { return (mapTree.end()); }
 
@@ -134,7 +146,7 @@ namespace ft
                 return(it->second);
             }
 
-
+            
             ft::pair<iterator,bool> insert( const value_type& value ) { return (mapTree.insert(value)); }
 
             iterator insert (iterator position, const value_type& val)
