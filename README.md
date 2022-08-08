@@ -9,11 +9,9 @@ Implementation of C++ STL (Vector, Stack, Map, Set)
 
 [CPLUSPLUS](https://cplusplus.com/reference/stl/)
 
-https://www.thegeekstuff.com/2015/01/c-cpp-code-optimization/#:~:text=Creating%20temporary%20objects%20in%20the,generate%20a%20slow%20performing%20code.
+[C++ Code Optimzing](https://www.thegeekstuff.com/2015/01/c-cpp-code-optimization/#:~:text=Creating%20temporary%20objects%20in%20the,generate%20a%20slow%20performing%20code.)
 
-https://www.internalpointers.com/post/writing-custom-iterators-modern-cpp#:~:text=An%20iterator%20is%20an%20object,some%20methods%20to%20retrieve%20it.
-
-https://www.youtube.com/watch?v=SgcHcbQ0RCQ&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&index=94&ab_channel=TheCherno
+[Youtube Video - Iterators Introduction](https://www.youtube.com/watch?v=SgcHcbQ0RCQ&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&index=94&ab_channel=TheCherno)
 
 
 
