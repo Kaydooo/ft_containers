@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/vscode/src/Cursus/ft_containers'
-c++ -Werror -Wall -Wextra -g3 -std=c++98   -c -o main.o main.cpp
-c++ main.o -o ft_containers
-make: Leaving directory '/home/vscode/src/Cursus/ft_containers'
- 
