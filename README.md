@@ -9,8 +9,6 @@ Implementation of C++ STL (Vector, Stack, Map, Set)
 
 [CPLUSPLUS](https://cplusplus.com/reference/stl/)
 
-[C++ Code Optimzing](https://www.thegeekstuff.com/2015/01/c-cpp-code-optimization/#:~:text=Creating%20temporary%20objects%20in%20the,generate%20a%20slow%20performing%20code.)
-
 [Youtube Video - Iterators Introduction](https://www.youtube.com/watch?v=SgcHcbQ0RCQ&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&index=94&ab_channel=TheCherno)
 
 
@@ -39,7 +37,7 @@ https://en.wikipedia.org/wiki/Tree_rotation
 
 ### StackOverFlow
 
-https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading
+[Operator Overloading](https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading) (Read About Conversion Operator! will be needed to convert from iterator to const iterator and vice versa)
 
 https://stackoverflow.com/questions/3582608/how-to-correctly-implement-custom-iterators-and-const-iterators#:~:text=78-,I%27m,-going%20to%20show
 
@@ -51,3 +49,7 @@ https://stackoverflow.com/questions/3582608/how-to-correctly-implement-custom-it
 [C++ Templates: The Complete Guide](http://ultra.sdk.free.fr/docs/DxO/C%2B%2B%20Templates%20The%20Complete%20Guide.pdf)
 
 [ISO/IEC 14882]()
+
+### Extra
+
+[C++ Code Optimzing](https://www.thegeekstuff.com/2015/01/c-cpp-code-optimization/)
