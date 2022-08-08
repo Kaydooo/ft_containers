@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 01:56:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/08/08 18:57:34 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/08/08 22:13:32 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ namespace ft
             // * Resizes the container so that it contains n elements.
             void resize (size_type n, value_type val = value_type())
             {
+                if (n > max_size())
+                    throw std::length_error("Resize : Length Error");
                 if(n != vectorSize)
                 {
                     if(n > vectorCapacity)
@@ -179,8 +181,8 @@ namespace ft
             // * Requests that the vector capacity be at least enough to contain n elements.
             void        reserve (size_type n)
             {
-                if(n > max_size())
-                    return ;
+                if (n > max_size())
+                    throw std::length_error("Reserve : Length Error");
                 if(vectorCapacity < n)
                 {
                     pointer temp;
@@ -233,6 +235,8 @@ namespace ft
             // * Inserts element value at postion given by iterator pos.
             iterator insert( iterator pos, const T& value )
             {
+                if (size() == max_size())
+                    throw std::length_error("Insert : Length Error");
                 pointer temp;
                 size_type insertPos = &(*pos) - vectorData;
                 if(capacity() == 0)
@@ -339,6 +343,8 @@ namespace ft
             // * Adds element to the end of vector, increaseing its size by 1.
             void push_back (const value_type& val)
             {
+                if (size() == max_size())
+                    throw std::length_error("push_back : Length Error");
                 if(vectorCapacity == 0)
                     reserve(1);
                 if(vectorSize == vectorCapacity)
