@@ -32,8 +32,8 @@
 *.app
 
 #local files
-.devcontainer
-.vscode
+.*
+!/.gitignore
 
 
 #testers
