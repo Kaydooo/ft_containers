@@ -48,7 +48,7 @@ https://stackoverflow.com/questions/3582608/how-to-correctly-implement-custom-it
 
 [C++ Templates: The Complete Guide](http://ultra.sdk.free.fr/docs/DxO/C%2B%2B%20Templates%20The%20Complete%20Guide.pdf)
 
-[ISO/IEC 14882]()
+[ISO/IEC 14882](https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf)
 
 ### Extra
 
