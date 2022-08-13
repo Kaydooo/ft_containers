@@ -82,10 +82,6 @@ namespace   ft
             pointer_type    itPtr;
     };
 
-    /*  
-        Operators Overload == , != , > , < , >= , <= , - , +  
-        We used template so these overloads can work with iterators and const_interators
-    */
     template<typename T>
     typename ft::Iterator<T>::difference_type  operator==(const ft::Iterator<T> lhs, const ft::Iterator<T> rhs){ return (lhs.getPtr() == rhs.getPtr()); }
     template<typename T1, typename T2>
