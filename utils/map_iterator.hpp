@@ -44,12 +44,9 @@ namespace ft
 
         
         /* Conversion Operators */
-        // * converts normal iterator to constant_iterator
+        // * allows iterator to const_iterator conversion.
         operator map_iterator<const T, Compare, node_type> (void) const { return map_iterator<const T, Compare, node_type> (dataNode, endNode); }
 
-        // * converts const_iterator to iterator but because map doesn't allow const_it to iterator conversion this was commented.
-        // template<typename U>
-        // operator map_iterator<U, Compare, node_type> (void) { return map_iterator<U, Compare, node_type> (dataNode, endNode); }
 
         /*  Copy Assignment Operator */
         map_iterator&   operator=(const map_iterator& rhs)
