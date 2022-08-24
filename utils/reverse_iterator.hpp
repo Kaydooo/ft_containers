@@ -91,10 +91,6 @@ namespace   ft
             iterator_type    baseIterator;
     };
 
-    /*  
-        Operators Overload == , != , > , < , >= , <= , - , +  
-        We used template so these overloads can work with iterators and const_interators
-    */
     template<typename T>
     bool  operator==(const ft::reverse_Iterator<T> lhs, const ft::reverse_Iterator<T> rhs){ return (lhs.base() == rhs.base()); }
     template<typename T1, typename T2>
