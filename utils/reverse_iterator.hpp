@@ -28,11 +28,11 @@ namespace   ft
     {
         public:
             typedef  Iterator                               iterator_type;
-            typedef  typename   Iterator::valuetype         value_type;
-            typedef  typename   Iterator::pointer_type      pointer_type;
-            typedef  typename   Iterator::reference_type    reference_type;
+            typedef  typename   Iterator::value_type        value_type;
+            typedef  typename   Iterator::pointer           pointer;
+            typedef  typename   Iterator::reference         reference;
             typedef  ptrdiff_t                              difference_type;
-            typedef  typename Iterator::iterator_category             iterator_category;
+            typedef  typename Iterator::iterator_category   iterator_category;
 
             reverse_Iterator(void): baseIterator(NULL){}
 
@@ -51,11 +51,11 @@ namespace   ft
                 return (baseIterator);
             }	
 
-            reference_type operator*() const 
+            reference operator*() const 
             { 			
 			    return (*(baseIterator - 1));
             }
-            pointer_type operator->() { return (&operator*()); }
+            pointer operator->() { return (&operator*()); }
 
             // Prefix increment
             reverse_Iterator& operator++() { --baseIterator; return *this; }  

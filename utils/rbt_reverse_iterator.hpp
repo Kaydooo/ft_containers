@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/* *********reference_type***************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   rbt_reverse_iterator.hpp                           :+:      :+:    :+:   */
@@ -31,8 +31,8 @@ namespace   ft
         public:
             typedef  Iterator                               iterator_type;
             typedef  typename   Iterator::value_type        value_type;
-            typedef  typename   Iterator::pointer_type      pointer_type;
-            typedef  typename   Iterator::reference_type    reference_type;
+            typedef  typename   Iterator::pointer           pointer;
+            typedef  typename   Iterator::reference         reference;
             typedef  ptrdiff_t                              difference_type;
             typedef  typename Iterator::iterator_category   iterator_category;
 
@@ -51,13 +51,13 @@ namespace   ft
 
             iterator_type base()const { return (baseIterator); }	
 
-            reference_type operator*() const 
+            reference operator*() const 
             { 			
                 iterator_type temp = baseIterator;
 			    return (*(--temp));
             }
 
-            pointer_type operator->() const { return (&operator*()); }
+            pointer operator->() const { return (&operator*()); }
 
             rbt_reverse_iterator& operator++() { --baseIterator; return *this; }  
 

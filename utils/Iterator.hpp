@@ -29,14 +29,14 @@ namespace   ft
     class   Iterator
     {
         public:
-            typedef  T valuetype;
-            typedef  T* pointer_type;
-            typedef  T& reference_type;
+            typedef  T value_type;
+            typedef  T* pointer;
+            typedef  T& reference;
             typedef  std::ptrdiff_t difference_type;
-            typedef  random_access_iterator_tag iterator_category;
+            typedef  std::random_access_iterator_tag iterator_category;
 
             Iterator(void): itPtr(NULL){}
-            Iterator(pointer_type ptr): itPtr(ptr){}
+            Iterator(pointer ptr): itPtr(ptr){}
             template <typename U>
             Iterator(const Iterator<U>& other): itPtr(other.getPtr()){}
             Iterator&   operator=(const Iterator& rhs)
@@ -46,11 +46,11 @@ namespace   ft
             }
 
             
-            pointer_type getPtr() const { return (this->itPtr); }
+            pointer getPtr() const { return (this->itPtr); }
 
-            reference_type operator*() const { return *itPtr; }
+            reference operator*() const { return *itPtr; }
 
-            pointer_type operator->() { return itPtr; }
+            pointer operator->() { return itPtr; }
 
             Iterator& operator++() { itPtr++; return *this; }  
 
@@ -74,12 +74,12 @@ namespace   ft
 				return (*this);
 			}
 
-            valuetype& operator[](difference_type num) {
+            value_type& operator[](difference_type num) {
 				return (*(itPtr + num));
 			}
 
         private:
-            pointer_type    itPtr;
+            pointer    itPtr;
     };
 
     template<typename T>

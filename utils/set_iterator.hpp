@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 19:06:02 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/08/08 19:06:42 by mal-guna         ###   ########.fr       */
+/*   Updated: 2023/01/21 20:09:05 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ namespace ft
     {
         public:
             typedef T                           value_type;
-            typedef T*                          pointer_type;
-            typedef T&                          reference_type;
+            typedef T*                          pointer;
+            typedef T&                          reference;
             typedef node_type*                  node_pointer;
             typedef std::ptrdiff_t              difference_type;
-            typedef bidirectional_iterator_tag  iterator_category;
+            typedef std::bidirectional_iterator_tag  iterator_category;
 
 
             /* Iterator class vars */
@@ -58,9 +58,9 @@ namespace ft
 
             bool  operator!=(const set_iterator& other) const { return(this->dataNode != other.dataNode); }
 
-            reference_type  operator*() const { return( dataNode->data ); }
+            reference  operator*() const { return( dataNode->data ); }
 
-            pointer_type operator->()const { return &operator*(); }
+            pointer operator->()const { return &operator*(); }
 
             set_iterator&       operator++()
             {
