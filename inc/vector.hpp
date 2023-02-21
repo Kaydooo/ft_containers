@@ -31,7 +31,6 @@ namespace ft
     class vector
     {
         public:
-            //Typedefs for shorter and more readable code.
             typedef T                                           value_type;
             typedef Alloc                                       allocator_type;
             typedef typename allocator_type::reference          reference;
